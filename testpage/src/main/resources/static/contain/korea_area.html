@@ -9,20 +9,6 @@ data API2.0 활용 샘플
 </head>
 <link rel="stylesheet" href="http://openlayers.org/en/latest/css/ol.css" type="text/css">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<body>
-	<!-- 브이월드 행정구역도를 이용한 셀렉트 박스 국가공간정보포털보다 느림 -->
-	<form id="nsdiSearchForm" action="#" class="form_data" onsubmit="return false;search();">
-
-		<select id="sido_code">
-			<option>선택</option>
-		</select>
-		<select id="sigoon_code">
-			<option>선택</option>
-		</select>
-		<select id="dong_code">
-			<option>선택</option>
-		</select>
-	</form>
 <script>
 $.support.cors = true;
 
@@ -103,15 +89,31 @@ $(function(){
 	});
 
 	$(document).on("change", "#dong_code", function() {
-		let selectedOption = $(this).find('option:selected');
-		let x = selectedOption.data('x');
-		let y = selectedOption.data('y');
-		
-		if (x && y) {
-			parent.postMessage({ x: x, y: y }, '*');
-		}
+	    let sidoText = $("#sido_code option:selected").text();
+	    let sigoonText = $("#sigoon_code option:selected").text();
+	    let dongText = $("#dong_code option:selected").text();
+	    let fullAddress = sidoText + " " + sigoonText + " " + dongText;
+	    
+	    if (fullAddress) {
+	        parent.postMessage({ address: fullAddress }, '*');
+	    }
 	});
-});
+ })
+	
 </script>
+<body>
+	<!-- 브이월드 행정구역도를 이용 국가공간정보포털보다 느림 -->
+	<form id="nsdiSearchForm" action="#" class="form_data" onsubmit="return false;search();">
+
+		<select id="sido_code">
+			<option>선택</option>
+		</select>
+		<select id="sigoon_code">
+			<option>선택</option>
+		</select>
+		<select id="dong_code">
+			<option>선택</option>
+		</select>
+	</form>
 </body>
 </html>

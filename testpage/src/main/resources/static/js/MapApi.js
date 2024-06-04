@@ -462,7 +462,7 @@ function itemClickEvent(marker, itemEl) {
     map.setLevel(3);
 
     var content = '<div style="padding:10px;">' +
-        '<h5>' + itemEl.dataset.placeName + '</h5>' +
+        '<h5>' + itemEl.dataset.placeName + '</h5>' + '<button type="button"> ' + '북마크하기' + ' </button>' +
         '<a href="' + itemEl.dataset.placeUrl + '" target="_blank">카카오맵에서 보기</a><br>' +
         '<span>전화번호: ' + itemEl.dataset.phone + '</span><br>' +
         '<span>주소: ' + itemEl.dataset.address + '</span><br>' +
@@ -513,7 +513,7 @@ function removeAllChildNods(el) {
 
 // 지역별 정보 
 function area_check() {
-    $('#areaSelection').load('korea_area.html', function(response, status, xhr) {
+    $('#areaSelection').load('contain/korea_area.html', function(response, status, xhr) {
         if (status == "error") {
             alert("An error occurred while loading the page: " + xhr.status + " " + xhr.statusText);
         } else {
@@ -521,3 +521,28 @@ function area_check() {
         }
     });
 }
+
+var mapContainer = document.getElementById('map'); 
+    var mapOption = { 
+        center: new kakao.maps.LatLng(37.56381, 126.97836), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨 
+    };  
+
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성
+    
+var geocoder = new kakao.maps.services.Geocoder(); 
+
+// Listen for messages from the iframe
+window.addEventListener('message', function(event) {
+    if (event.data && event.data.address) {
+        var address = event.data.address;
+        geocoder.addressSearch(address, function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                map.setCenter(coords);
+            } else {
+                alert("주소를 찾을 수 없습니다.");
+            }
+        });
+    }
+});

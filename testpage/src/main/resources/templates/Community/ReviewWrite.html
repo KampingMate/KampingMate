@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>리뷰쓰기</title>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+</head>
+<body>
+    <h2 style="text-align: center;">리뷰 작성 페이지입니다</h2>
+    제목 : <input type="text" id="title" placeholder="제목을 입력하세요" />
+    캠핑장 : <input type="text" id="kakao_name" placeholder="카카오 이름을 입력하세요" />
+    <button type="button" onclick="review_campingsearch()">캠핑장찾기</button>
+    <div id="content"></div>
+    <button id="submitReview">리뷰 제출</button>
+
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script>
+    const editor = new toastui.Editor({
+        el: document.querySelector('#content'),
+        height: '500px',
+        initialEditType: 'markdown',
+        initialValue: '',
+        previewStyle: 'vertical',
+        placeholder: '내용을 입력해 주세요.',
+        hooks: {
+            async addImageBlobHook(blob, callback) {
+                try {
+                    const formData = new FormData();
+                    formData.append('image', blob);
+                    const response = await fetch('/tui-editor/image-upload', {
+                        method: 'POST',
+                        body: formData,
+                    });
+                    const filename = await response.text();
+                    const imageUrl = `/tui-editor/image-print?filename=${filename}`;
+                    callback(imageUrl, 'image alt attribute');
+                    addImagePathToHiddenField(imageUrl); // 이미지 경로를 히든 필드에 저장
+                } catch (error) {
+                    console.error('업로드 실패 : ', error);
+                }
+            }
+        }
+    });
+
+    function addImagePathToHiddenField(imageUrl) {
+        const hiddenField = document.getElementById('imagePaths');
+        hiddenField.value += imageUrl + ';';
+    }
+
+    document.getElementById('submitReview').addEventListener('click', async () => {
+        const title = document.getElementById('title').value;
+        const kakaoName = document.getElementById('kakao_name').value;
+        const content = editor.getMarkdown();
+        const imagePaths = document.getElementById('imagePaths').value;
+        const reviewData = {
+            title: title,
+            kakao_name: kakaoName,
+            content: content,
+            images: imagePaths.split(';').filter(path => path)
+        };
+        const response = await fetch('/reviewwrite/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reviewData)
+        });
+        if (response.ok) {
+            alert('리뷰가 성공적으로 저장되었습니다.');
+        } else {
+            alert('리뷰 저장에 실패했습니다.');
+        }
+    });
+
+    function review_campingsearch() {
+        window.open('/kakao-map', '카카오 지도', 'width=800,height=600');
+    }
+
+    window.addEventListener('message', function(event) {
+        if (event.data.type === 'selectedCampsite') {
+            document.getElementById('kakao_name').value = event.data.name;
+            const mapImage = `![캠핑장 위치](https://maps.googleapis.com/maps/api/staticmap?center=${event.data.lat},${event.data.lng}&zoom=15&size=600x300&maptype=roadmap&markers=color:red%7Clabel:C%7C${event.data.lat},${event.data.lng}&key=fce0b8a7ee9bc8a40e8d1d30dee82622)`;
+            editor.insertText(mapImage);
+        }
+    });
+    </script>
+    <input type="hidden" id="imagePaths" value="">
+</body>
+</html>

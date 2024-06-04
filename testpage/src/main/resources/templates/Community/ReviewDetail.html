@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>리뷰 글</title>
+</head>
+<body>
+	<h3>리뷰 상세페이지</h3>
+	<form name="frm" method="post">
+	<input type="hidden" name="review_seq" id="review_seq" th:value="${reviewVO.review_seq}">
+		<table>
+			<tr>
+			<!-- 메인이미지 -->
+				<td><img th:src="${reviewVO.mainimg}"
+					style="width: 400px; height: 300px;" /></td>					
+					<!-- 버튼들 / 공유, 추천, 북마크 -->
+				<td><a class="icon-text" onclick="copyboard()"> <i
+						class="fa fa-share"></i> 공유하기
+				</a> <th:block
+						th:if="${session.goodPointStatusMap != null and session.goodPointStatusMap[reviewVO.review_seq] == 'on'}">
+						<a th:attr="data-seq=${reviewVO.review_seq}"
+							onclick="goodpoint_plus(this)">추천해제 [[${reviewVO.goodpoint}]]</a>
+					</th:block> <th:block
+						th:if="${session.goodPointStatusMap == null or session.goodPointStatusMap[reviewVO.review_seq] != 'on'}">
+						<a th:attr="data-seq=${reviewVO.review_seq}"
+							onclick="goodpoint_plus(this)">추천하기
+							[[${reviewVO.goodpoint}]]</a>
+					</th:block> <th:block
+						th:if="${session.bookmarkStatusMap != null and session.bookmarkStatusMap[reviewVO.review_seq] == 'on'}">
+						<a th:attr="data-seq=${reviewVO.review_seq}"
+							onclick="bookmark_plus(this)">북마크해제 [[${reviewVO.bookmark}]]</a>
+					</th:block> <th:block
+						th:if="${session.bookmarkStatusMap == null or session.bookmarkStatusMap[reviewVO.review_seq] != 'on'}">
+						<a th:attr="data-seq=${reviewVO.review_seq}"
+							onclick="bookmark_plus(this)">북마크하기 [[${reviewVO.bookmark}]]</a>
+					</th:block>
+			</tr>
+			
+			<!-- 상세내용 -->
+			<tr>
+				<th>제목</th>
+				<td>[[${reviewVO.title}]]</td>
+			</tr>
+			<tr>
+				<th>캠핑장</th>
+				<td>[[${reviewVO.kakao_name}]]</td>
+			</tr>
+			<tr>
+				<th>등록일</th>
+				<td>[[${#dates.format(reviewVO.write_date, "yyyy-MM-dd") }]]</td>
+			</tr>
+			<tr>
+				<th>작성자</th>
+				<td>[[${reviewVO.member_data.id}]]</td>
+			</tr>
+			<tr>
+				<th>조회수</th>
+				<td>[[${reviewVO.cnt}]]</td>
+			</tr>
+			<tr>
+				<th>리뷰내용</th>
+				<td>[[${reviewVO.content}]]</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

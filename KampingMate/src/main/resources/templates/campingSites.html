@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Camping Sites</title>
+    <style>
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination li a {
+            text-decoration: none;
+            padding: 8px 16px;
+            color: #007bff;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        .pagination li a.current {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .pagination li a:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+        .item {
+            margin-bottom: 20px;
+        }
+        .item img {
+            max-width: 200px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Camping Sites</h1>
+
+    <div th:if="${error}" th:text="${error}"></div>
+
+    <div th:unless="${error}">
+        <p>Total Count: <span th:text="${totalCount}"></span></p>
+        <div th:each="item : ${items}" class="item">
+            <h2 th:text="${item.facltNm}">야영장명</h2>
+            <p><strong>한줄소개:</strong> <span th:text="${item.lineIntro}">한줄소개</span></p>
+            <p><strong>운영기관:</strong> <span th:text="${item.mgcDiv}">운영기관</span></p>
+            <p><strong>특징:</strong> <span th:text="${item.featureNm}">특징</span></p>
+            <p><strong>주소:</strong> <span th:text="${item.addr1}">주소</span> <span th:text="${item.addr2}">상세주소</span></p>
+            <p><strong>전화:</strong> <span th:text="${item.tel}">전화</span></p>
+            <p><strong>홈페이지:</strong> <a th:href="${item.homepage}" th:text="${item.homepage}">홈페이지</a></p>
+            <p><strong>등록일:</strong> <span th:text="${item.createdtime}">등록일</span></p>
+            <p><strong>수정일:</strong> <span th:text="${item.modifiedtime}">수정일</span></p>
+             <p><strong>소화기개수:</strong> <span th:text="${item.extshrCo}">소화기개수</span></p>
+            <img th:if="${item.firstImageUrl != 'N/A'}" th:src="${item.firstImageUrl}" alt="대표이미지">
+        </div>
+
+        <div>
+            <ul class="pagination">
+                <li th:if="${hasPrev}">
+                    <a th:href="@{/campingSites(page=${startPage - 1})}">이전</a>
+                </li>
+                <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+                    <a th:href="@{/campingSites(page=${pageNum})}" th:text="${pageNum}" th:class="${pageNum == currentPage ? 'current' : ''}"></a>
+                </li>
+                <li th:if="${hasNext}">
+                    <a th:href="@{/campingSites(page=${endPage + 1})}">다음</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

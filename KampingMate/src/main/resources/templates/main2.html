@@ -5,35 +5,29 @@
 <title>Main</title>
 <link rel="stylesheet" th:href="@{/css/main.css}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.ajax-cross-origin.min.js"></script><!-- 크로스도메인 해결 플러그인 -->    
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a77e619adb52e6d650de29bcd7ef2670&libraries=services,clusterer,drawing"></script>
-<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/main2.js}"></script>
 </head>
 <body>
 <!-- 헤더 -->
 <th:block th:insert="~{include/header}"></th:block>
     <div class="container">
         <!-- 날씨 왼쪽 -->
-        <div id="weather">
-        	<ul>
-				<li class="temperature"></li>
-				<li class="place"></li>
-				<li class="description"></li>
-				<li><img class="w-icon"></li>
-			</ul>
+        <div id="weatherInfo">
+	        <p id="currentCoordinates">현재 위치 정보 값: </p>
+	    	<p id="kmaCoordinates">기상청 API에 쓸 격자 좌표 값: </p>
+        	<p>접속한 시간의 기온 : <span id="currentWeather"></span></p>
+	        <p>오늘 최고온도: <span id="maxTemperature"></span> / 최저온도: <span id="minTemperature"></span></p>
+	        <p>접속한 시간의 하늘 상태: <span id="skyStatus"></span></p>
         </div>
         <!-- 지도 test -->
         <div id="map" style="width:200px; height:200px;"></div>
         <div class="daily-forecast">
         <!-- 날씨 정보가 이곳에 동적으로 추가 -->
     	</div>
-        <!-- 고캠핑 test -->
-        <div id="go-camping">
-        	<section class="go-sites" th:each="item : ${items}">
-        		<div class="camp-img"></div>
-        		<div class="camp-name"></div>
-        		<div class="camp-address"></div>
-        	</section>
-        </div>
+        
     </div>
 <!-- 푸터 -->
 <th:block th:insert="~{include/footer}"></th:block>

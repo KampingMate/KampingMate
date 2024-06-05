@@ -67,24 +67,29 @@ ul, li {
 	display: flex;
 	justify-content: center; /* 수평 중앙 정렬 */
 	text-align: center;
-	padding: 20px;
 	font-weight: bold; /* 텍스트에 bold 효과 적용 */
 }
 .header-bottom {
-	/* 로고와 사이트 이름 밑에 중앙 가로 배치 */
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	color: white;
-	height: 40px;
+    display: flex;
+    flex-direction: column; /* 검색창과 목록을 세로로 정렬 */
+    align-items: center; /* 가운데 정렬 */
+    color: white;
+}
+
+.header-bottom input {
+    margin-bottom: 0; /* 검색창 아래에 여백 추가 */
 }
 /* 링크 스타일 설정 */
-a {
+.header-top a,
+.header-mid a,
+.header-bottom a {
 	color: white;
 	text-decoration: none; /* 밑줄 제거 */
 	transition: color 0.3s; /* 색 변환 애니메이션 */
 }
-a:hover {
+.header-top a:hover,
+.header-mid a:hover,
+.header-bottom a:hover {
 	color: #fbe091; /* 호버 시 색상 변경 */
 }
 
@@ -107,7 +112,11 @@ a:hover {
 
 
 /* 푸터 */
-
+.copyright a {
+	color: #fbe091;
+	text-decoration: none; /* 밑줄 제거 */
+	transition: color 0.3s; /* 색 변환 애니메이션 */
+}
 
 
 

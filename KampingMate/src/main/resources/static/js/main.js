@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     displayWeatherIcon(data);
 				})
 				.catch(error => alert(error));
-			// 일별 날씨 정보 가져오기
+			/*// 일별 날씨 정보 가져오기
             fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&appid=${api_key}&units=metric&lang=kr`)
                 .then(response => response.json())
                 .then(data => {
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         forecastContainer.appendChild(forecastElement);
                     });
                 })
-                .catch(error => alert(error));
+                .catch(error => alert(error));*/
 		}, function() {
 			alert("좌표를 받아올 수 없음");
 		});

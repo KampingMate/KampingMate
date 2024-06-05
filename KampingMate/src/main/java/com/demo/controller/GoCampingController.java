@@ -36,6 +36,6 @@ public class GoCampingController {
             model.addAttribute("error", "Failed to load camping sites");
             e.printStackTrace();
         }
-        return "campingSites";
+        return "fragments/campingSites";
     }
 }

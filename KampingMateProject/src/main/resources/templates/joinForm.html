@@ -188,7 +188,6 @@ document.addEventListener('DOMContentLoaded', function () {
     birthDayEl.addEventListener('change', displaySelectedDate);
 });
 </script>
-
 </head>
 <body>
 
@@ -197,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <form onsubmit="return validateForm()" method="post" action="/oauth/joinAction">
             <input type="hidden" name="id" th:value="${id}">
             <p>이름</p>
-            <span><input type="text" name="name" required></span>
+            <span><input type="text" name="name" th:value="${name}" required></span>
             <p>생년월일</p>
             <div class="info" id="info__birth">
   				<select class="box" id="birth-year">

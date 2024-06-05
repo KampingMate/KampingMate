@@ -14,9 +14,7 @@ public class MainController {
 	@GetMapping("/")
 	public String MainView(HttpSession session, Model model) {
 		MemberData member = (MemberData) session.getAttribute("loginUser");
-		
 		model.addAttribute("loginUser", member);
-		
 		return "loginForm";
 	}
 	

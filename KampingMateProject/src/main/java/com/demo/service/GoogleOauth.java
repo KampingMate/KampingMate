@@ -1,4 +1,4 @@
-package com.demo.service.social;
+package com.demo.service;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -25,14 +25,14 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class GoogleOauth implements SocialOauth {
+public class GoogleOauth {
+
     private final String GOOGLE_SNS_BASE_URL = "https://accounts.google.com/o/oauth2/v2/auth";
     private final String GOOGLE_SNS_CLIENT_ID = "77559460292-67etdiipjfgk8ih2k4l706oog2ghftde.apps.googleusercontent.com";
-    private final String GOOGLE_SNS_CALLBACK_URL = "http://localhost:8090/auth/google/callback";
+    private final String GOOGLE_SNS_CALLBACK_URL = "http://localhost:8090/oauth/google/callback";
     private final String GOOGLE_SNS_CLIENT_SECRET = "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";
     private final String GOOGLE_SNS_TOKEN_BASE_URL = "https://oauth2.googleapis.com/token";
 
-    @Override
     public String getOauthRedirectURL() {
         Map<String, Object> params = new HashMap<>();
         params.put("scope", "profile email");
@@ -47,7 +47,6 @@ public class GoogleOauth implements SocialOauth {
         return GOOGLE_SNS_BASE_URL + "?" + parameterString;
     }
 
-    @Override
     public Map<String, String> requestAccessToken(String code) {
         RestTemplate restTemplate = new RestTemplate();
 

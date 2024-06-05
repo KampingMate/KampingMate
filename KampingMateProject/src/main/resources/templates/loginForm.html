@@ -21,23 +21,15 @@
     <meta name="google-signin-client_id" content="77559460292-67etdiipjfgk8ih2k4l706oog2ghftde.apps.googleusercontent.com">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
-<style>
-.button-no-style {
-    border: none;
-    background-color: transparent;
-    padding: 0;
-    cursor: pointer;
-}
-</style>
+
 <body>
-    <!-- 로그인 버튼 노출 영역 -->
     <div>
         <h1>로그인(소셜로그인)</h1>
         <div id="naver_id_login"></div>
         <div id="kakao_id_login"></div>
         <div id="google_id_login"></div>
         
-        <p>로그인 확인용(로그인id, 나중에 삭제)</p>
+        <p>로그인 확인용</p>
         <div th:if="${loginUser} != null">
             [[${loginUser.id}]]
         </div>
@@ -52,22 +44,6 @@
         naver_id_login.setState(state);
         naver_id_login.setPopup(true); // 팝업 모드 활성화
         naver_id_login.init_naver_id_login();
-
-        // 부모 창에서 호출될 함수
-        function handleNaverLogin(email, id, provider, accessToken) {
-            $.ajax({
-                url: '/oauth/saveUserSession',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ email: email, id: id, provider: provider, accessToken: accessToken }),
-                success: function() {
-                    window.location.href = "/auth/contract";
-                },
-                error: function(err) {
-                    console.error('세션 저장 중 오류 발생:', err);
-                }
-            });
-        }
     </script>
     
     <!-- 카카오 로그인 -->
@@ -105,7 +81,7 @@
                                     })
                                 }).then(response => {
                                     if (response.ok) {
-                                        window.location.href = '/auth/contract';
+                                        window.location.href = '/oauth/contract';
                                     }
                                 }).catch(error => {
                                     console.error('Error:', error);
@@ -145,40 +121,31 @@
 
     <!-- 구글 로그인 -->
     <div id="g_id_onload"
-         data-client_id="77559460292-67etdiipjfgk8ih2k4l706oog2ghftde.apps.googleusercontent.com"
-         data-callback="onGoogleSignIn"
-         data-auto_prompt="false">
+    	data-client_id="77559460292-67etdiipjfgk8ih2k4l706oog2ghftde.apps.googleusercontent.com"
+         data-callback="onSignIn"
+         data-auto_prompt="false"
+         >
     </div>
 
-    <div class="g_id_signin"
-         data-type="standard"
-         data-shape="rectangular"
-         data-theme="outline"
-         data-text="sign_in_with"
+    <div class="g_id_signin" 
+         data-type="standard" 
+         data-shape="rectangular" 
+         data-theme="outline" 
+         data-text="continue_with" 
          data-size="large">
+         구글 로그인
     </div>
     
     <script type="text/javascript">
-        function onGoogleSignIn(response) {
+        function onSignIn(response) {
             const userObject = parseJwt(response.credential);
             var id = userObject.sub;
             var username = userObject.name;
             var img = userObject.picture;
             var email = userObject.email;
+            var provider = "google";
             
-            fetch('/oauth/saveUserSession', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id: id, username: username, email: email, img: img, provider: 'google' })
-            }).then(response => {
-                if (response.ok) {
-                    window.location.href = '/auth/contract';
-                }
-            }).catch(error => {
-                console.error('Error:', error);
-            });
+            post_to_url("/oauth/google/callback", {'id': id, 'username': username, 'email': email, 'img': img, 'provider': provider});
         }
 
         function parseJwt(token) {
@@ -189,6 +156,24 @@
             }).join(''));
 
             return JSON.parse(jsonPayload);
+        }
+
+        function post_to_url(path, params, method='post') {
+            const form = document.createElement('form');
+            form.method = method;
+            form.action = path;
+            
+            for(const key in params) {
+                if(params.hasOwnProperty(key)) {
+                    const hiddenField = document.createElement('input');
+                    hiddenField.type = 'hidden';
+                    hiddenField.name = key;
+                    hiddenField.value = params[key];
+                    form.appendChild(hiddenField);
+                }
+            }
+            document.body.appendChild(form);
+            form.submit();
         }
     </script>
 </body>

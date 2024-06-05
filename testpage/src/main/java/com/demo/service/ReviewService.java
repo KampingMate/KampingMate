@@ -21,6 +21,10 @@ public interface ReviewService {
 	
 	public Page<Review> getAllReview(int review_seq, int page, int size); //전체 페이징
 	
+	public Page<Review> getReviewBykakao_id(int review_seq, int page, int size, String title);//카카오아이디로
+	
+	public List<Review> getReviewsByKakaoId(String kakao_id);
+	
 	public Page<Review> getReviewByTitle(int review_seq, int page, int size, String title); // 제목으로검색
 	
 	public Page<Review> getReviewByWriter(int review_seq, int page, int size, String id); //작성자로 검색
@@ -32,26 +36,5 @@ public interface ReviewService {
 	public Page<Review> getReviewByGoodpoint(int review_seq, int page, int size); // 추천순 정렬
 	
 	public Page<Review> getReviewByBookmark(int review_seq, int page, int size); //북마크순 정렬
-	
-	/**
-	 * 
-	 * 여기서부터 댓글
-	 */
-	
-//	public void insertReply(Reply vo);
-//	
-//	public void updateReply(Reply vo);
-//	
-//	public void deleteReply(Reply vo);
-//	
-//	public List<Reply> getReplyBySeq(int seq);
-//	
-//	public Page<Reply> getReplyList_paging(int replynum , int page, int size);
-//	
-//	public Reply findReplyByreplynum(int replynum);
-//	
-//	// 회원별 작성한 레시피 목록(마이페이지용)
-//    public List<Com_Board_Detail> getMyRecipe(String id);
-
 
 }

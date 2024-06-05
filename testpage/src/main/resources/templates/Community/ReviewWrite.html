@@ -8,7 +8,7 @@
 <body>
     <h2 style="text-align: center;">리뷰 작성 페이지입니다</h2>
     제목 : <input type="text" id="title" placeholder="제목을 입력하세요" />
-    캠핑장 : <input type="text" id="kakao_name" placeholder="카카오 이름을 입력하세요" />
+    캠핑장 : <input type="text" id="kakao_name" onclick="review_campingsearch()" placeholder="캠핑장 이름을 입력하세요" />
     <button type="button" onclick="review_campingsearch()">캠핑장찾기</button>
     <div id="content"></div>
     <button id="submitReview">리뷰 제출</button>
@@ -31,9 +31,8 @@
                         method: 'POST',
                         body: formData,
                     });
-                    const filename = await response.text();
-                    const imageUrl = `/tui-editor/image-print?filename=${filename}`;
-                    callback(imageUrl, 'image alt attribute');
+                    const imageUrl = await response.text();
+                    callback(`/tui-editor/image-print?filename=${imageUrl}`, 'image alt attribute');
                     addImagePathToHiddenField(imageUrl); // 이미지 경로를 히든 필드에 저장
                 } catch (error) {
                     console.error('업로드 실패 : ', error);
@@ -75,12 +74,9 @@
     function review_campingsearch() {
         window.open('/kakao-map', '카카오 지도', 'width=800,height=600');
     }
-
     window.addEventListener('message', function(event) {
         if (event.data.type === 'selectedCampsite') {
             document.getElementById('kakao_name').value = event.data.name;
-            const mapImage = `![캠핑장 위치](https://maps.googleapis.com/maps/api/staticmap?center=${event.data.lat},${event.data.lng}&zoom=15&size=600x300&maptype=roadmap&markers=color:red%7Clabel:C%7C${event.data.lat},${event.data.lng}&key=fce0b8a7ee9bc8a40e8d1d30dee82622)`;
-            editor.insertText(mapImage);
         }
     });
     </script>

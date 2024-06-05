@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8" name="viewport"
 	content="width=device-width, initial-scale=1">
+	<script type="text/javascript" th:src="@{js/ReviewList.js}"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <title>캠핑장 리뷰</title>
 </head>
 <body>
@@ -17,7 +19,7 @@
 	</form>
 
 	<!-- 글쓰기버튼 -->
-	<form id="writeForm" method="get" action="/review_write">
+	<form id="writeForm" method="get" action="/reviewwrite">
 		<button type="submit">글쓰기</button>
 	</form>
 
@@ -27,6 +29,7 @@
 			<th:block th:each="reviewVO : ${reviewList}">
 				<tr>
 					<td>[[${reviewVO.review_seq}]]</td>
+					<td>[[${reviewVO.kakao_name}]]</td>
 					<td style="width: 60%; text-align: center;"><a
 						href="javascript:void(0);"
 						th:onclick="'go_view(' + ${reviewVO.review_seq} + ');'"

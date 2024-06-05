@@ -101,5 +101,16 @@ public class ReviewServiceImpl implements ReviewService {
 		Pageable pageable = PageRequest.of(page - 1, size, Direction.ASC, "review_seq");
 		return reviewRepo.findAllByOrderByBookmarkDesc(bookmark, pageable);
 	}
+	
+	// 캠핑장별 리뷰
+	public List<Review> getReviewsByKakaoId(String kakao_id) {
+        return reviewRepo.findByKakaoId(kakao_id);
+    }
+	
+	@Override
+	public Page<Review> getReviewBykakao_id(int review_seq, int page, int size, String kakao_id) {
+		Pageable pageable = PageRequest.of(page - 1, size, Direction.ASC, "review_seq");
+		return reviewRepo.findReviewByKakao_idOrderByKakao_id(kakao_id, review_seq, pageable);
+	}
 
 }

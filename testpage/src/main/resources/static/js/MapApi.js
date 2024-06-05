@@ -461,16 +461,33 @@ function itemClickEvent(marker, itemEl) {
     map.setCenter(marker.getPosition());
     map.setLevel(3);
 
-    var content = '<div style="padding:10px;">' +
-        '<h5>' + itemEl.dataset.placeName + '</h5>' + '<button type="button"> ' + '북마크하기' + ' </button>' +
+    var content = '<form name="frm" id="frm" method="get">' +
+        '<input type="hidden" name="kakao_id" value="' + itemEl.dataset.id + '"/>' +
+        '<h5>' + itemEl.dataset.placeName + '</h5>' + '<button type="button" onclick="bookmarkplus()">북마크하기</button>' +
         '<a href="' + itemEl.dataset.placeUrl + '" target="_blank">카카오맵에서 보기</a><br>' +
         '<span>전화번호: ' + itemEl.dataset.phone + '</span><br>' +
         '<span>주소: ' + itemEl.dataset.address + '</span><br>' +
-        '<a href=" + # + " target="_blank">리뷰페이지로</a><br>' +
-        '</div>';
-	
+        '<button type="button" onclick="go_reviewpage(\'' + itemEl.dataset.id + '\')">리뷰페이지로</button><br>' +
+        '</form>';
+    
     infowindow.setContent(content);
     infowindow.open(map, marker);
+}
+
+// 리뷰페이지로 이동
+function go_reviewpage(kakao_id) {
+    var theForm = document.createElement('form');
+    theForm.method = "get";
+    theForm.action = "/map_review_detail";
+
+    var hiddenField = document.createElement('input');
+    hiddenField.type = "hidden";
+    hiddenField.name = "kakao_id";
+    hiddenField.value = kakao_id;
+
+    theForm.appendChild(hiddenField);
+    document.body.appendChild(theForm);
+    theForm.submit();
 }
 
 // 검색결과 페이징처리

@@ -3,7 +3,6 @@ package com.demo.controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,9 +16,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,19 +27,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.demo.domain.MemberData;
 import com.demo.domain.Review;
 import com.demo.domain.ReviewReply;
 import com.demo.service.ReviewReplyService;
 import com.demo.service.ReviewService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 
@@ -53,9 +49,10 @@ public class ReviewController {
     @Autowired
     ReviewReplyService replysv;
     
-    private final String uploads = Paths.get("E:", "tui-editor", "upload").toString();
+    @PersistenceContext
+    private EntityManager entityManager;
     
-    
+    private final String uploads = Paths.get(System.getProperty("user.dir"), "uploads").toString();  
     
     //큰메뉴 캠핑장검색페이지로
     @GetMapping("/map")
@@ -133,30 +130,33 @@ public class ReviewController {
 	}
 
 
-    //리뷰쓰기
+	// 리뷰 쓰기
     @GetMapping("/reviewwrite")
     public String getReviewWriteView(HttpSession session) {
         return "Community/ReviewWrite";
     }
 
-    //리뷰 글 전송
+    // 리뷰 글 전송
     @Transactional
-    @PostMapping("/reviewwrite/submit")
-    public String insertReview(HttpSession session, Model model, @RequestBody Review review) {
+    @PostMapping("/reviewwritesubmit")
+    public ResponseEntity<String> insertReview(HttpSession session, @RequestBody Review review) {
         MemberData loginUser = (MemberData) session.getAttribute("loginUser");
         
+        if (loginUser == null) {
+            return new ResponseEntity<>("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED);
+        }
+        loginUser = entityManager.merge(loginUser);
         review.setMember_data(loginUser);
         reviewsv.insertReview(review);
-
-        model.addAttribute("totalPages", session.getAttribute("totalPages"));
-        model.addAttribute("pageNumber", session.getAttribute("pageNumber"));
-
-        return "redirect:/review";
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/Community/ReviewList"));
+        return new ResponseEntity<>("Review submitted successfully", HttpStatus.OK);
     }
 
-    //이미지업로드
+    // 이미지 업로드
     @PostMapping("/tui-editor/image-upload")
-    public ResponseEntity<String> uploadEditorImage(@RequestParam final MultipartFile image) {
+    public ResponseEntity<String> uploadEditorImage(@RequestParam("image") MultipartFile image) {
         if (image.isEmpty()) {
             return new ResponseEntity<>("Empty file.", HttpStatus.BAD_REQUEST);
         }
@@ -175,30 +175,14 @@ public class ReviewController {
         try {
             File uploadFile = new File(fileFullPath);
             image.transferTo(uploadFile);
-            return new ResponseEntity<>(saveFilename, HttpStatus.OK); // 단순 파일 이름만 반환
+            String imageUrl = "/uploads/" + saveFilename; // 정적 리소스 URL 반환
+            return new ResponseEntity<>(imageUrl, HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>("File upload error.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
-    //이미지 출력
-    @GetMapping(value = "/tui-editor/image-print", produces = {MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
-    public ResponseEntity<byte[]> printEditorImage(@RequestParam final String filename) {
-        String fileFullPath = Paths.get(uploads, filename).toString();
-        File uploadedFile = new File(fileFullPath);
-        if (!uploadedFile.exists()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        try {
-            byte[] imageBytes = Files.readAllBytes(uploadedFile.toPath());
-            return new ResponseEntity<>(imageBytes, HttpStatus.OK);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
     
 	// 제목, 작성자, 캠핑장명으로 검색
 	@GetMapping("/review_search")
@@ -390,7 +374,7 @@ public class ReviewController {
 				reply.setContent(reply_content);
 				
 				replysv.insertReply(reply);
-				return "redirect:/ReviewDetail?review_seq=" + review_seq;
+				return "redirect:/review_detail?review_seq=" + review_seq;
 				}
 		}
 		

@@ -35,33 +35,16 @@
 							onclick="bookmark_plus(this)">북마크하기 [[${reviewVO.bookmark}]]</a>
 					</th:block>
 			</tr>
+			</table>
 
 			<!-- 상세내용 -->
-			<tr>
-				<th>제목</th>
-				<td>[[${reviewVO.title}]]</td>
-			</tr>
-			<tr>
-				<th>캠핑장</th>
-				<td>[[${reviewVO.kakao_name}]]</td>
-			</tr>
-			<tr>
-				<th>등록일</th>
-				<td>[[${#dates.format(reviewVO.write_date, "yyyy-MM-dd") }]]</td>
-			</tr>
-			<tr>
-				<th>작성자</th>
-				<td>[[${reviewVO.member_data.id}]]</td>
-			</tr>
-			<tr>
-				<th>조회수</th>
-				<td>[[${reviewVO.cnt}]]</td>
-			</tr>
-			<tr>
-				<th>리뷰내용</th>
-				<td>[[${reviewVO.content}]]</td>
-			</tr>
-		</table>
+			<h2>제목 :[[${reviewVO.title}]]</h2>
+			<h3>캠핑장 : [[${reviewVO.kakao_name}]]</h3>
+			<h3>등록일 : [[${#dates.format(reviewVO.write_date, "yyyy-MM-dd") }]]</h3>
+			<h3>작성자 : [[${reviewVO.member_data.id}]]</h3>
+			<h3>조회수 : [[${reviewVO.cnt}]]</h3>
+			<h3>리뷰내용 :</h3> 
+			<div th:utext="${reviewVO.content}"></div>
 	</form>
 
 	<!-- 댓글입력 -->
@@ -106,7 +89,7 @@
 		<input type="hidden" value="[[${reviewVO.review_seq}]]"> <input
 			type="button" value="목록" onClick="go_list()">
 		<th:block
-			th:if="${session.loginUser != null and (Review.member_data.id).equals(session.loginUser.id)}">
+			th:if="${session.loginUser != null and (reviewVO.member_data.no_data)==(session.loginUser.no_data)}">
 			<input type="button" value="수정" onClick="review_update()">
 			<input type="button" value="삭제" onClick="review_delete()">
 		</th:block>

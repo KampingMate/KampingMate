@@ -13,6 +13,7 @@ body, html {
     font-family: Arial, sans-serif;
     position: relative;
 }
+
 #overlay p {
     text-align: center;
 }
@@ -26,7 +27,7 @@ body, html {
     background-image: url('/images/mountain1.jpg');
     background-size: cover;
     background-position: center;
-    filter: brightness(70%); 
+    filter: brightness(70%);
     opacity: 0;
     transition: opacity 2s ease-in-out;
 }
@@ -54,12 +55,13 @@ body, html {
     margin-bottom: 20px;
 }
 
-.social-buttons {
+.button-container {
     display: flex;
-    gap: 10px; /* 버튼 간 간격 조절 */
+    justify-content: center;
+    gap: 20px; /* 버튼 사이의 간격 */
 }
 
-.social-buttons a, .main-button a {
+.login-button a, .main-button a {
     text-decoration: none;
     color: #fff;
     background: rgba(0, 0, 0, 0.5);
@@ -73,7 +75,7 @@ body, html {
     height: 50px; /* 버튼 크기 통일 */
 }
 
-.social-buttons a:hover, .main-button a:hover {
+.login-button a:hover, .main-button a:hover {
     background: rgba(0, 0, 0, 0.7);
     transform: scale(1.1); /* 호버 시 확대 효과 */
 }

@@ -32,3 +32,34 @@
 		theForm.submit();
 	}	
 	
+	//페이징
+	        function go_page(page) {
+            var form = document.searchForm;
+            var pageInput = form.querySelector('input[name="page"]');
+            pageInput.value = page;
+            form.submit();
+        }
+        
+   
+   //기본정렬
+    	function go_list() {
+		var theForm = document.frm;
+		theForm.method = "get";
+		theForm.action = "review_list";
+		theForm.submit();
+	}
+	
+	//인기도 정렬
+	function keyClick(event) {
+		var category = event.target.getAttribute('data-category');
+		var url = '/category';
+		if (category === 'cnt_sort' || category === 'goodpoint_sort'
+				|| category === 'bookmark_sort') {
+			url = '/sorted_Review';
+			url += '?sort=' + category;
+		} else {
+			url += '?category=' + encodeURIComponent(category);
+		}
+		window.location.href = url;
+	}     
+	

@@ -73,10 +73,14 @@ public class ReviewController {
                                 @RequestParam(value = "size", defaultValue = "6") int size, Model model) {
         Page<Review> pageList = reviewsv.getAllReview(review_seq, page, size);
         List<Review> reviewList = pageList.getContent();
+        
+        long totalElements = pageList.getTotalElements();
+        long startNumber = totalElements - (page - 1) * size;
 
         model.addAttribute("reviewList", reviewList);
         model.addAttribute("totalPages", pageList.getTotalPages());
         model.addAttribute("pageNumber", page);
+        model.addAttribute("startNumber", startNumber);
 
         return "Community/ReviewList";
     }
@@ -94,10 +98,14 @@ public class ReviewController {
         List<Review> reviewList = reviewsv.getReviewsByKakaoId(kakao_id);
         Page<Review> pageList = reviewsv.getReviewBykakao_id(review_seq, page, size, kakao_id);
         reviewList.sort(Comparator.comparingInt(Review::getReview_seq));
+        long totalElements = pageList.getTotalElements();
+        long startNumber = totalElements - (page - 1) * size;
+       
 
         model.addAttribute("reviewList", reviewList);
         model.addAttribute("totalPages", pageList.getTotalPages());
         model.addAttribute("pageNumber", page);
+        model.addAttribute("startNumber", startNumber);
         
         return "Community/ReviewList";
     }
@@ -133,6 +141,11 @@ public class ReviewController {
 	// 리뷰 쓰기
     @GetMapping("/reviewwrite")
     public String getReviewWriteView(HttpSession session) {
+    	MemberData loginUser = (MemberData) session.getAttribute("loginUser");
+    	if (loginUser == null) {
+    		return "member/login";
+        }
+    
         return "Community/ReviewWrite";
     }
 
@@ -142,9 +155,6 @@ public class ReviewController {
     public ResponseEntity<String> insertReview(HttpSession session, @RequestBody Review review) {
         MemberData loginUser = (MemberData) session.getAttribute("loginUser");
         
-        if (loginUser == null) {
-            return new ResponseEntity<>("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED);
-        }
         loginUser = entityManager.merge(loginUser);
         review.setMember_data(loginUser);
         reviewsv.insertReview(review);
@@ -153,6 +163,7 @@ public class ReviewController {
         headers.setLocation(URI.create("/Community/ReviewList"));
         return new ResponseEntity<>("Review submitted successfully", HttpStatus.OK);
     }
+    
 
     // 이미지 업로드
     @PostMapping("/tui-editor/image-upload")
@@ -194,27 +205,21 @@ public class ReviewController {
 		Page<Review> pageList;
 
 		if ("title".equals(searchType)) {
-			pageList = reviewsv.getReviewByTitle(seq, page, size, keyword);
-			List<Review> searchResult = pageList.getContent();
-			model.addAttribute("reviewList", searchResult);
-		     model.addAttribute("totalPages", pageList.getTotalPages());
-		     model.addAttribute("pageNumber", page);
+	        pageList = reviewsv.getReviewByTitle(seq, page, size, keyword);
+	    } else if ("Kamping".equals(searchType)) {
+	        pageList = reviewsv.getReviewByCamping(seq, page, size, keyword);
+	    } else {
+	        pageList = reviewsv.getReviewByWriter(seq, page, size, keyword);
+	    }
 
-		}else if ("Kamping".equals(searchType)) {
-			pageList = reviewsv.getReviewByCamping(seq, page, size, keyword);
-			List<Review> searchResult = pageList.getContent();
-			model.addAttribute("reviewList", searchResult);
-		     model.addAttribute("totalPages", pageList.getTotalPages());
-		     model.addAttribute("pageNumber", page);
-		}
-		
-		else {
-			pageList = reviewsv.getReviewByWriter(seq, page, size, keyword);
-			List<Review> searchResult = pageList.getContent();
-			model.addAttribute("reviewList", searchResult);
-		     model.addAttribute("totalPages", pageList.getTotalPages());
-		     model.addAttribute("pageNumber", page);
-		}
+	    List<Review> searchResult = pageList.getContent();
+	    long totalElements = pageList.getTotalElements();
+	    long startNumber = totalElements - (page - 1) * size;
+
+	    model.addAttribute("reviewList", searchResult);
+	    model.addAttribute("totalPages", pageList.getTotalPages());
+	    model.addAttribute("pageNumber", page);
+	    model.addAttribute("startNumber", startNumber);
 
 		return "Community/ReviewList";
 	}
@@ -228,7 +233,9 @@ public class ReviewController {
 
 			if (loginUser == null) { 
 				return "member/login"; 
-			} else {
+			} else if(!(loginUser.getId()).equals(reviewVO.getMember_data().getId())){
+				return "본인이 작성한 글만 수정가능합니다.";
+			}else {
 				
 		        model.addAttribute("reviewVO", reviewVO);
 		        }
@@ -237,11 +244,23 @@ public class ReviewController {
 			
 	}
 	
+	
 	//글 수정
-	@PostMapping("/review_update_t")
-	public String updateReview(@RequestParam("review_seq") int review_seq) {
-		return "redirect:/review_detail?review_seq=" + review_seq; 
+	@Transactional
+	@PostMapping("/reviewupdatesubmit")
+	public ResponseEntity<String> updateReview(HttpSession session, @RequestBody Review review) {
+		MemberData loginUser = (MemberData) session.getAttribute("loginUser");
+		
+		loginUser = entityManager.merge(loginUser);
+        review.setMember_data(loginUser);
+        reviewsv.updateReview(review);
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/review_detail?review_seq=" + review.getReview_seq()));
+        return new ResponseEntity<>("Review submitted successfully", HttpStatus.OK);
+        
 	}
+
 	
 	// 글 삭제
 	@GetMapping("/review_delete")
@@ -289,6 +308,42 @@ public class ReviewController {
 		return "redirect:/review_detail?review_seq=" + review_seq;
 	}
 	
+	//북마크 관리
+	@PostMapping("/bookmark")
+	public String bookMark_Action(@RequestParam("review_seq") int review_seq, HttpSession session) {
+		MemberData loginUser = (MemberData) session.getAttribute("loginUser");
+		if (loginUser == null) { 
+			return "member/login"; 
+		}else {
+		Review vo = reviewsv.getReview(review_seq);
+	    HashMap<Integer, String> bookmarkStatusMap = (HashMap<Integer, String>) session.getAttribute("bookmarkStatusMap");
+
+	    if (bookmarkStatusMap == null) {
+	    	bookmarkStatusMap = new HashMap<>();
+	        session.setAttribute("bookmarkStatusMap", bookmarkStatusMap);
+	    }
+
+	    String bookmarkStatus = bookmarkStatusMap.get(review_seq);
+
+	    if (bookmarkStatus == null || bookmarkStatus.equals("off")) {
+	        if (vo != null) {
+	            vo.setBookmark(vo.getBookmark() + 1);
+	            reviewsv.updateReview(vo);
+	            bookmarkStatusMap.put(review_seq, "on");
+	        }
+	    } else if (bookmarkStatus.equals("on")) {
+	        if (vo != null) {
+	        	vo.setBookmark(vo.getBookmark() - 1);
+	            reviewsv.updateReview(vo);
+	            bookmarkStatusMap.put(review_seq, "off");
+	        }
+		    }
+		}
+		return "redirect:/review_detail?review_seq=" + review_seq;
+	}
+	
+	
+	
 	//인기도 정렬
 	 @GetMapping(value = "/sorted_Review", produces = MediaType.TEXT_HTML_VALUE)
 	    public String getSortedReviewListHtml(@RequestParam(value = "review_seq", defaultValue = "1") int review_seq,
@@ -308,17 +363,17 @@ public class ReviewController {
 	            case "bookmark_sort":
 	                pageList = reviewsv.getReviewByBookmark(review_seq, page, size);
 	                break;    
-	            case "date_sort":
-	                pageList = reviewsv.getAllReview(review_seq, page, size);
-	                break;
 	        }
 
 	        List<Review> reviewList = pageList.getContent();
+	        long totalElements = pageList.getTotalElements();
+	        long startNumber = totalElements - (page - 1) * size;
 
 
 	        model.addAttribute("reviewList", reviewList);
 	        model.addAttribute("totalPages", pageList.getTotalPages());
 		    model.addAttribute("pageNumber", page);
+		    model.addAttribute("startNumber", startNumber);
 	        
 	        List<Review> top3Cnt = new ArrayList<>();
 	        List<Review> top3Goodpoint = new ArrayList<>();

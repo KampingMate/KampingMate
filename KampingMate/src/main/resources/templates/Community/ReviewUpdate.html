@@ -4,83 +4,58 @@
     <meta charset="UTF-8">
     <title>리뷰수정</title>
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-table/latest/toastui-editor-plugin-table.min.css" />
 </head>
+
 <body>
-    <h2 style="text-align: center;">리뷰 작성 페이지입니다</h2>
-    제목 : <input type="text" id="title" placeholder="제목을 입력하세요" />
-    캠핑장 : <input type="text" id="kakao_name" onclick="review_campingsearch()" placeholder="캠핑장 이름을 입력하세요" />
+    <h2 style="text-align: center;">리뷰 수정 페이지입니다</h2>
+    <input type="hidden" id="review_seq" name="review_seq" th:value="${reviewVO.review_seq}">
+	<input type="hidden" id="write_date" name="write_date" th:value="${reviewVO.write_date}">
+    제목 : <input type="text" id="title" th:value="${reviewVO.title}" />
+    캠핑장 : <input type="text" id="kakao_name" onclick="review_campingsearch()" th:value="${reviewVO.kakao_name}" />
     <input type="hidden" id="kakao_id" name="kakao_id" />
     <button type="button" onclick="review_campingsearch()">캠핑장찾기</button>
+    <!-- div부분이 에디터 -->
     <div id="content"></div>
-    <button type="button" onclick="submitReview()">리뷰 제출</button>
-
+    <button type="button" onclick="usubmitReview()">리뷰 제출</button>
+	
+	<script type="text/javascript" th:src="@{js/ReviewW_U.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-    <script>
-    const editor = new toastui.Editor({
-        el: document.querySelector('#content'),
-        height: '500px',
-        initialEditType: 'wysiwyg',
-        initialValue: '',
-        previewStyle: 'vertical',
-        placeholder: '내용을 입력해 주세요.',
-        hooks: {
-            async addImageBlobHook(blob, callback) {
-                try {
-                    const formData = new FormData();
-                    formData.append('image', blob);
-                    const response = await fetch('/tui-editor/image-upload', {
-                        method: 'POST',
-                        body: formData,
-                    });
-                    if (response.ok) {
-                        const imageUrl = await response.text();
-                        callback(imageUrl, 'image alt attribute');
-                    } else {
-                        console.error('업로드 실패 : ', response.statusText);
-                    }
-                } catch (error) {
-                    console.error('업로드 실패 : ', error);
+    <script src="https://uicdn.toast.com/editor-plugin-table/latest/toastui-editor-plugin-table.min.js"></script>
+</body>
+
+<!-- script -->
+<script th:inline="javascript">
+const initialContent = /*[[${reviewVO.content}]]*/ '';
+const editor = new toastui.Editor({
+    el: document.querySelector('#content'),
+    height: '500px',
+    initialEditType: 'wysiwyg',
+    initialValue: initialContent,
+    previewStyle: 'vertical',
+    placeholder: '내용을 입력해 주세요.',
+    hooks: {
+        async addImageBlobHook(blob, callback) {
+            try {
+                const formData = new FormData();
+                formData.append('image', blob);
+                const response = await fetch('/tui-editor/image-upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+                if (response.ok) {
+                    const imageUrl = await response.text();
+                    callback(imageUrl, 'image alt attribute');
+                } else {
+                    console.error('업로드 실패 : ', response.statusText);
                 }
+            } catch (error) {
+                console.error('업로드 실패 : ', error);
             }
         }
-    });
-
-    async function submitReview() {
-        const title = document.getElementById('title').value;
-        const kakaoName = document.getElementById('kakao_name').value;
-        const kakaoId = document.getElementById('kakao_id').value;
-        const content = editor.getHTML();
-        const reviewData = {
-            title: title,
-            kakao_name: kakaoName,
-            kakao_id: kakaoId,
-            content: content
-        };
-        const response = await fetch('/reviewwritesubmit', { // URL 수정
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(reviewData)
-        });
-        if (response.ok) {
-            alert('리뷰가 성공적으로 저장되었습니다.');
-            window.location.href = '/review_list';
-        } else {
-            alert('리뷰 저장에 실패했습니다.');
-        }
     }
-
-    function review_campingsearch() {
-        window.open('/kakao-map', '카카오 지도', 'width=800,height=600');
-    }
-
-    window.addEventListener('message', function(event) {
-        if (event.data.type === 'selectedCampsite') {
-            document.getElementById('kakao_name').value = event.data.name;
-            document.getElementById('kakao_id').value = event.data.id; // 추가된 부분
-        }
-    });
-    </script>
-</body>
+});
+</script>
 </html>
+

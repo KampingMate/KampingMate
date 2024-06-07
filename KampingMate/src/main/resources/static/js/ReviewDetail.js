@@ -98,6 +98,20 @@ function reply_list() {
             element.classList.add('red');
         }
 	}
+	
+	//북마크
+	function bookmark_plus(button) {
+		var theForm = document.frm;
+		theForm.method = "post";
+		theForm.action = "bookmark";
+		theForm.submit();
+		
+		 if (element.classList.contains('red')) {
+            element.classList.remove('red');
+        } else {
+            element.classList.add('red');
+        }
+	}
 
 	
 

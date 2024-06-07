@@ -8,12 +8,14 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Temporal;
@@ -47,6 +49,8 @@ public class Review {
     @JoinColumn(name="id", nullable=false)
 	private MemberData member_data; //글쓴이아이디 (멤버테이블에서 가져오기)
 	
+	@Lob
+    @Column(name = "content", columnDefinition = "CLOB")
 	private String content; //글내용
 	
 	@Temporal(value=TemporalType.TIMESTAMP)

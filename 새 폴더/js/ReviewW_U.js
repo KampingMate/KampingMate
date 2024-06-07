@@ -5,6 +5,19 @@
  // reviewWrite
  
  async function wsubmitReview() {
+	 if ($("#title").val() == "") {
+		alert("제목을 입력하세요.");
+		$("#title").focus();
+		return false;
+	}else if($("#kakao_name").val() == ""){
+		alert("캠핑장을 입력하세요.");
+		$("#kakao_name").focus();
+		return false;
+	}else if(editor.getMarkdown().trim() == ""){
+		alert("내용을 입력하세요.");
+		$("#content").focus();
+		return false;
+	}
     const title = document.getElementById('title').value;
     const kakaoName = document.getElementById('kakao_name').value;
     const kakaoId = document.getElementById('kakao_id').value;
@@ -66,10 +79,10 @@
             body: JSON.stringify(reviewData)
         });
         if (response.ok) {
-            alert('리뷰가 성공적으로 저장되었습니다.');
+            alert('리뷰가 성공적으로 수정되었습니다.');
             window.location.href = '/review_detail?review_seq=' + review_seq;
         } else {
-            alert('리뷰 저장에 실패했습니다.');
+            alert('리뷰 수정에 실패했습니다.');
         }
     }
  

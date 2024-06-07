@@ -15,8 +15,8 @@ ul, li {
     width: 100%;
     display: flex;
     flex-direction: column;
-    background-image: url('/images/camping1.jpg'); /* 이미지 경로 수정 */
-    filter: brightness(70%); /* 밝기 조절 */
+    background-image: url('/images/camp2.jpg'); /* 이미지 경로 수정 */
+    filter: brightness(90%); /* 밝기 조절 */
     background-size: cover;
     background-position: center 55%; /* 이미지를 중앙 상단에 위치시킴 */
     position: relative; /* 상대 위치 설정 */

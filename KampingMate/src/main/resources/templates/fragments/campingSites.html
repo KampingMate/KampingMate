@@ -25,6 +25,9 @@
                         <a th:if="${item.firstImageUrl != 'N/A'}" th:href="${item.homepage}">
                             <img th:src="${item.firstImageUrl}" alt="대표이미지">
                         </a>
+                        <a th:unless="${item.firstImageUrl != 'N/A'}" th:href="${item.homepage}">
+                        	<img th:src="@{/images/no_img.jpg}" alt="이미지 준비중">
+                        </a>
                         <!-- 야영장명 -->
                         <h2 th:text="${item.facltNm}">야영장명</h2>
                         <p><strong>번호:</strong> <span th:text="${item.tel}"></span></p>

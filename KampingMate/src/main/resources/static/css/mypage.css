@@ -1,0 +1,66 @@
+/* menu */
+#my_menu {
+	background: #4682B4; /* 파란색 계열 */
+	overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+#my_menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* 메뉴 항목을 가로로 배치하기 위해 추가 */
+}
+#my_menu li {
+    /* float: left; */
+    margin: 0 10px; /* 좌우 여백 추가 */
+}
+#my_menu li a {
+    display: block;
+    color: #FFFFFF; /* 텍스트 색상을 흰색으로 변경하여 파란색 배경과 대비 */
+    text-align: center;
+    padding: 10px 20px; /* 패딩 조정 */
+    text-decoration: none;
+    transition: background-color 0.3s; /* 호버 효과를 위한 전환 효과 추가 */
+}
+#my_menu li a:hover {
+    background-color: #87CEEB; /* 호버 시 배경색을 밝은 파란색으로 변경 */
+}
+
+
+
+/* 뉴스 관련? */
+.news-container {
+    border: 2px solid black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+    text-align: center; /* 안의 요소들을 가운데 정렬 */
+    margin: 20px auto; /* 마진 20px auto */
+    width: 80%; /* 넓이는 전체 넓이의 80% */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #4682B4; /* 파란색 테두리 */
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #4682B4; /* 진한 파란색 배경 */
+    color: white; /* 흰색 텍스트 */
+}
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* 짝수 행 배경색 */
+}
+tr:hover {
+    background-color: #87CEEB; /* 호버 시 배경색 */
+}
+a {
+    color: #4682B4; /* 파란색 링크 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+a:hover {
+    text-decoration: underline; /* 호버 시 밑줄 추가 */
+}

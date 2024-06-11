@@ -120,8 +120,8 @@ function fetchWeatherData(nx, ny) {
                 type: 'GET',
                 data: {
                     serviceKey: apiKey,
-                    pageNo: '1',
-                    numOfRows: '1000',
+                    pageNo: 1,
+                    numOfRows: 1000,
                     dataType: 'json',
                     base_date: baseDate,
                     base_time: baseTime,
@@ -159,12 +159,12 @@ function fetchWeatherData(nx, ny) {
 
             // 단기 예보 조회
             $.ajax({
-                url: `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst`,
+                url: `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst`,
                 type: 'GET',
                 data: {
                     serviceKey: apiKey,
-                    pageNo: '1',
-                    numOfRows: '1000',
+                    pageNo: 1,
+                    numOfRows: 1000,
                     dataType: 'json',
                     base_date: baseDate,
                     base_time: baseTime,
@@ -195,7 +195,7 @@ function fetchWeatherDay(day, nx, ny) {
 	var baseTime = getBaseTime();
 	
 	$.ajax({
-		url: `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst`,
+		url: `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst`,
 		type: 'GET',
 		data: {
 			serviceKey: apiKey,
@@ -289,10 +289,6 @@ function drawTemperatureGraph(temperature, w_time) {
 	});
 }
 
-// 일몰 / 일출
-function fetchSun() {
-	
-}
 // 기본 날짜와 시간을 얻는 함수
 function getBaseDate() {
 	var date = new Date();

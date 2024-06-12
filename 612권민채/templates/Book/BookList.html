@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" th:src="@{js/Book.js}"></script>
+<title>나의 예약목록</title>
+</head>
+<body>
+	
+	<button onclick="location.href='/book'">예약으로</button>
+    <h3>예약목록</h3>
+    <!-- 검색 -->
+    <form id="searchForm" name="searchForm" method="get" onsubmit="return submitSearch()">
+        <select name="searchType" id="searchType">
+            <option value="campingname">▼ 캠핑장명</option>
+        </select> 
+        <input type="text" name="searchKeyword" id="searchKeyword"> 
+        <input type="hidden" name="page" id="page" value="1">
+        <a href="#" onclick="submitSearch()">검색버튼</a>
+    </form>
+    
+    <!-- 예약목록 리스트  -->
+    <form name="frm" id="frm" method="post">
+        <div th:each="BookVO : ${BookList}">
+            <input type="hidden" name="bookseq" th:value="${BookVO.bookseq}" />
+            <input type="hidden" name="campingid" th:value="${BookVO.campingid}" />
+            <a href="javascript:void(0);" th:onclick="'go_view(' + ${BookVO.bookseq} + ');'">
+                예약일자 : <span th:text="${#dates.format(BookVO.bookdateS, 'yyyy-MM-dd')}"></span> ~ <span th:text="${#dates.format(BookVO.bookdateE, 'yyyy-MM-dd')}"></span><br>
+                캠핑장명 : <span th:text="${BookVO.campingname}"></span>
+            </a><br>
+            상태 : <span id="condition" th:data-condition="${BookVO.condition}" th:switch="${BookVO.condition}">
+                <span th:case="0">대기중</span>
+                <span th:case="1">예약완료</span>
+                <span th:case="2">예약불가</span>
+            </span><br>
+            <button type="button" th:onclick="'bookupdate(' + ${BookVO.bookseq} + ');'">수정</button>
+            <button type="button" th:onclick="'bookdelete(' + ${BookVO.bookseq} + ');'">삭제</button>
+        </div>
+    </form>
+
+    <!-- 페이징처리 -->
+    <div class="pagination">
+        <ul>
+            <li th:if="${pageNumber > 1}">
+                <a href="javascript:void(0);" th:onclick="'go_page(' + (${pageNumber} - 1) + ');'">&laquo; 이전</a>
+            </li>
+            <li th:if="${totalPages != null}" th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == pageNumber} ? ' active'">
+                <a href="javascript:void(0);" th:onclick="'go_page(' + ${i} + ');'" th:text="${i}">1</a>
+            </li>
+            <li th:if="${pageNumber < totalPages}">
+                <a href="javascript:void(0);" th:onclick="'go_page(' + (${pageNumber} + 1) + ');'">다음 &raquo;</a>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

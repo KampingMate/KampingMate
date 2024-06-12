@@ -1,0 +1,70 @@
+<!-- 변경사항 : 6/7 날짜추가 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" name="viewport"
+	content="width=device-width, initial-scale=1">
+	<script type="text/javascript" th:src="@{js/ReviewList.js}"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<title>캠핑장 리뷰</title>
+</head>
+<body>
+<!-- 정렬버튼 -->
+<button type="button" onclick="go_list()">최신순정렬</button>
+<button type="button" data-category="cnt_sort" onclick="keyClick(event)">조회수정렬</button>
+<button type="button" data-category="goodpoint_sort" onclick="keyClick(event)">추천수정렬</button>
+<button type="button" data-category="bookmark_sort" onclick="keyClick(event)">북마크수정렬</button>
+
+	<!-- 검색란 -->
+	<form id="searchForm" name="searchForm" method="get" onsubmit="return submitSearch()">
+		<select name="searchType" id="searchType">
+			<option value="title">▼ 글제목</option>
+			<option value="id">▼ ID</option>
+			<option value="Kamping">▼ 캠핑장명</option>
+		</select> 
+		<input type="text" name="searchKeyword" id="searchKeyword"> 
+		<input type="hidden" name="page" id="page" value="1">
+		<a href="#" onclick="submitSearch()">검색버튼</a>
+	</form>
+
+	<!-- 글쓰기버튼 -->
+	<form id="writeForm" method="get" action="/reviewwrite">
+		<button type="submit">글쓰기</button>
+	</form>
+
+	<!-- 리뷰 게시글 리스트 -->
+	<form name="frm" method="get">
+		<table>
+			<th:block th:each="reviewVO, iterStat : ${reviewList}">
+				<tr>
+					<td>[[${startNumber - iterStat.index}]]</td>
+					<td>[[${reviewVO.kakao_name}]]</td>
+					<td style="width: 60%; text-align: center;">
+						<a href="javascript:void(0);" th:onclick="'go_view(' + ${reviewVO.review_seq} + ');'" th:text="${reviewVO.title}" class="truncate">[[${reviewVO.title}]]</a>
+					</td>
+					<td>작성자 : [[${reviewVO.member_data.id}]]</td>
+					<td>조회수 : [[${reviewVO.cnt}]]</td>
+					<td>추천수 : [[${reviewVO.goodpoint}]]</td>
+					<td>날짜 : [[${#dates.format(reviewVO.write_date, 'yyyy-MM-dd')}]]</td>
+					<td>북마크수 : [[${reviewVO.bookmark}]]</td>
+				</tr>
+			</th:block>
+		</table>
+	</form>
+
+	<!-- 페이징처리 -->
+    <div class="pagination">
+        <ul>
+            <li th:if="${pageNumber > 1}">
+                <a href="javascript:void(0);" th:onclick="'go_page(' + (${pageNumber} - 1) + ');'">&laquo; 이전</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == pageNumber} ? ' active'">
+                <a href="javascript:void(0);" th:onclick="'go_page(' + ${i} + ');'" th:text="${i}">1</a>
+            </li>
+            <li th:if="${pageNumber < totalPages}">
+                <a href="javascript:void(0);" th:onclick="'go_page(' + (${pageNumber} + 1) + ');'">다음 &raquo;</a>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -29,9 +29,10 @@
 
 
 
-/* 뉴스 관련? */
+/* 뉴스 관련 */
 .news-container {
-    border: 2px solid black;
+    border: 1px solid black;
+    border-radius: 10px; /* 테두리의 모서리를 둥글게 만듦 */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
     text-align: center; /* 안의 요소들을 가운데 정렬 */
     margin: 20px auto; /* 마진 20px auto */
@@ -39,8 +40,11 @@
 }
 
 table {
-    width: 100%;
+    width: 90%;
     border-collapse: collapse;
+    margin: 0 auto; /* 테이블을 중앙 정렬 */
+    border: 1px solid #4682B4; /* 테이블에 테두리 추가 */
+    margin-bottom: 10px;
 }
 th, td {
     border: 1px solid #4682B4; /* 파란색 테두리 */

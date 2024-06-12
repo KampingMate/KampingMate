@@ -108,85 +108,85 @@ function dfs_xy_conv(code, v1, v2) {
 }
 
 function fetchWeatherData(nx, ny) {
-            var apiKey = "WuMkHTh0aSvlWEtIHd7EkY%2B02m%2BOyVb6UcNDRYXc2kRCohnhAvj%2Ft11Zbjb8KuDwusQlhukBJWddx%2FsBexnBeQ%3D%3D";
-            var baseDate = getBaseDate();
-            var baseTime = getBaseTime();
-            console.log(baseDate);
-            console.log(baseTime);
+    var apiKey = "WuMkHTh0aSvlWEtIHd7EkY%2B02m%2BOyVb6UcNDRYXc2kRCohnhAvj%2Ft11Zbjb8KuDwusQlhukBJWddx%2FsBexnBeQ%3D%3D";
+    var baseDate = getBaseDate();
+    var baseTime = getBaseTime();
+    console.log(baseDate);
+    console.log(baseTime);
 
-            // 초단기 예보 조회
-            $.ajax({
-                url: `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst`,
-                type: 'GET',
-                data: {
-                    serviceKey: apiKey,
-                    pageNo: 1,
-                    numOfRows: 1000,
-                    dataType: 'json',
-                    base_date: baseDate,
-                    base_time: baseTime,
-                    nx: nx,
-                    ny: ny
-                },
-                success: function (data) {
-                    var items = data.response.body.items.item;
-                    for (var i = 0; i < items.length; i++) {
-                        var item = items[i];
-                        if (item.category == "T1H") {
-                            document.getElementById("currentWeather").innerText = item.fcstValue + "°C";
-                        } else if (item.category == "SKY") {
-                            var skyStatus = item.fcstValue;
-                            var skyStatusText;
+    // 초단기 예보 조회
+    $.ajax({
+        url: `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst`,
+        type: 'GET',
+        data: {
+            serviceKey: apiKey,
+            pageNo: 1,
+            numOfRows: 1000,
+            dataType: 'json',
+            base_date: baseDate,
+            base_time: baseTime,
+            nx: nx,
+            ny: ny
+        },
+        success: function (data) {
+            var items = data.response.body.items.item;
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                if (item.category == "T1H") {
+                    document.getElementById("currentWeather").innerText = item.fcstValue + "°C";
+                } else if (item.category == "SKY") {
+                    var skyStatus = item.fcstValue;
+                    var skyStatusText;
 
-                            if (skyStatus == 1) {
-                                skyStatusText = "맑음";
-                            } else if (skyStatus == 3) {
-                                skyStatusText = "구름 많음";
-                            } else if (skyStatus == 4) {
-                                skyStatusText = "흐림";
-                            } else {
-                                skyStatusText = "알 수 없음";
-                            }
-
-                            document.getElementById("skyStatus").innerText = skyStatusText;
-                        }
+                    if (skyStatus == 1) {
+                        skyStatusText = "맑음";
+                    } else if (skyStatus == 3) {
+                        skyStatusText = "구름 많음";
+                    } else if (skyStatus == 4) {
+                        skyStatusText = "흐림";
+                    } else {
+                        skyStatusText = "알 수 없음";
                     }
-                },
-                error: function (error) {
-                    console.log("초단기 실황 조회 api 반환 중 오류...", error);
-                }
-            });
 
-            // 단기 예보 조회
-            $.ajax({
-                url: `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst`,
-                type: 'GET',
-                data: {
-                    serviceKey: apiKey,
-                    pageNo: 1,
-                    numOfRows: 1000,
-                    dataType: 'json',
-                    base_date: baseDate,
-                    base_time: baseTime,
-                    nx: nx,
-                    ny: ny
-                },
-                success: function (data) {
-                    var items = data.response.body.items.item;
-                    for (var i = 0; i < items.length; i++) {
-                        var item = items[i];
-                        if (item.category == "TMX") {
-                            document.getElementById("maxTemperature").innerText = item.fcstValue + "°C";
-                        } else if (item.category == "TMN") {
-                            document.getElementById("minTemperature").innerText = item.fcstValue + "°C";
-                        }
-                    }
-                },
-                error: function (error) {
-                    console.log("단기 예보 조회 api 반환 중 오류...", error);
+                    document.getElementById("skyStatus").innerText = skyStatusText;
                 }
-            });
+            }
+        },
+        error: function (error) {
+            console.log("초단기 실황 조회 api 반환 중 오류...", error);
         }
+    });
+
+    // 단기 예보 조회
+    $.ajax({
+        url: `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst`,
+        type: 'GET',
+        data: {
+            serviceKey: apiKey,
+            pageNo: 1,
+            numOfRows: 1000,
+            dataType: 'json',
+            base_date: baseDate,
+            base_time: baseTime,
+            nx: nx,
+            ny: ny
+        },
+        success: function (data) {
+            var items = data.response.body.items.item;
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                if (item.category == "TMX") {
+                    document.getElementById("maxTemperature").innerText = item.fcstValue + "°C";
+                } else if (item.category == "TMN") {
+                    document.getElementById("minTemperature").innerText = item.fcstValue + "°C";
+                }
+            }
+        },
+        error: function (error) {
+            console.log("단기 예보 조회 api 반환 중 오류...", error);
+        }
+    });
+}
 
 // 특정 날짜의 날씨 데이터를 가져와서 차트로 그리는 함수
 function fetchWeatherDay(day, nx, ny) {

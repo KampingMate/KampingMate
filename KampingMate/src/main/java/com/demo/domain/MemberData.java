@@ -27,8 +27,9 @@ import lombok.ToString;
 public class MemberData {
    @Id
    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_generator")
-    @SequenceGenerator(name="member_generator", sequenceName = "MEMBER_SEQ", allocationSize = 1)
-    private long no_data;
+   @SequenceGenerator(name="member_generator", sequenceName = "MEMBER_SEQ", allocationSize = 1)
+   private long no_data;
+   
    @ColumnDefault("0")
    private long usercode;
    
@@ -38,7 +39,7 @@ public class MemberData {
     private long age;
     private String name;
     private String email;
-    private String provider;
     private String telephone;
+    private String provider;
     
 }

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>캠핑장 상세 정보</title>
+</head>
+<body>
+    <h1 th:text="${campDetail.facltNm}">캠핑장 이름</h1>
+    <div>
+        <img th:src="@{${campDetail.firstImageUrl}}" alt="캠핑장 이미지" style="width:400px;height:auto;">
+    </div>
+    <p>
+        <strong>도:</strong> <span th:text="${campDetail.doNm}">도 이름</span><br>
+        <strong>구/군:</strong> <span th:text="${campDetail.sigunguNm}">구/군 이름</span><br>
+        <strong>소개:</strong> <span th:text="${campDetail.intro}">소개 텍스트</span><br>
+        <strong>주소:</strong> <span th:text="${campDetail.addr1}">주소 텍스트</span><br>
+        <strong>전화:</strong> <span th:text="${campDetail.tel}">전화번호</span><br>
+        <strong>편의시설:</strong> <span th:text="${campDetail.sbrsCl}">편의시설 텍스트</span>
+    </p>
+</body>
+</html>

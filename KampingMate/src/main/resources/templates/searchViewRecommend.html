@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>검색 결과</title>
+</head>
+
+
+<body>
+    <h1>캠핑장 리스트</h1>
+   
+    <div th:if="${#lists.isEmpty(goCampingList)}">검색 결과가 없습니다.</div>
+    <ul>
+        <li th:each="camp : ${goCampingList}">
+        	<h2>[[${camp.facltNm}]]</h2>
+            <div class="c_list update">
+                <a th:href="@{/detailView(contentId=${camp.contentId})}" class="dc_none"><span class="skip"></span>
+                    <div class="img_box">
+                        <img th:src="@{${camp.firstImageUrl}}" alt="캠핑장 이미지">
+                    </div>    
+                </a>
+                
+                <div class="camp_cont">
+                <!--  정보칸(삭제가능)
+                    <p class="item_group">
+                        <span class="item_t01">관광사업자 등록업체</span>
+                        <span class="item_t02">리뷰수 0</span>
+                        <span class="item_t03">조회수 257398</span>
+                        <span class="item_t04">추천수 17</span>
+                    </p>
+                   -->  
+                    <h2 class="camp_tt">
+                    <!-- 자세히 보기 위와같이 수정
+                        <a th:href="@{/bsite/camp/info/read.do(c_no=${camp.contentId}, viewType='read01', listOrdrTrget='c_rdcnt')}" th:text="[(${camp.doNm})] ${camp.facltNm}">캠핑장 이름</a>
+                     -->
+                    </h2>
+                    <span class="camp_stt" th:text="${camp.intro}">일몰과 바다 전망이 장관인 솔섬오토캠핑장.</span>
+                    <span class="camp_txt">
+                    <!-- 자세히 보기 위와같이 수정
+                        <a th:href="@{/bsite/camp/info/read.do(c_no=${camp.contentId}, viewType='read01', listOrdrTrget='c_rdcnt')}">
+                         -->    
+                            <span class="skip">캠핑장정보 더보기</span>
+                            <span th:text="${camp.intro}">캠핑장 소개 텍스트</span>
+                        <!--
+                        </a>
+                          -->
+                    </span>
+                    <ul class="camp_info01">
+                        <li class="addr" th:text="${camp.addr1}">주소 텍스트</li>
+                        <li class="call_num" th:text="${camp.tel}">전화번호</li>
+                    </ul>
+                    <!--아이콘모음-->
+                     <div class="camp_item_box">
+                        <ul>
+                            <li th:if="${camp.sbrsCl != null and camp.sbrsCl.contains('전기')}"><i class="ico_volt"><span>전기</span></i></li>
+                            <li th:if="${camp.sbrsCl != null and camp.sbrsCl.contains('와이파이')}"><i class="ico_wifi"><span>와이파이</span></i></li>
+                            <li th:if="${camp.sbrsCl != null and camp.sbrsCl.contains('장작판매')}"><i class="ico_wood"><span>장작판매</span></i></li>
+                            <li th:if="${camp.sbrsCl != null and camp.sbrsCl.contains('온수')}"><i class="ico_hotwater"><span>온수</span></i></li>
+                            <li th:if="${camp.sbrsCl != null and camp.sbrsCl.contains('물놀이장')}"><i class="ico_pool"><span>물놀이장</span></i></li>
+                            <li th:if="${camp.sbrsCl != null and camp.sbrsCl.contains('놀이터')}"><i class="ico_playzone"><span>놀이터</span></i></li>
+                            <li th:if="${camp.sbrsCl != null and camp.sbrsCl.contains('운동시설')}"><i class="ico_ico_sports"><span>운동시설</span></i></li>
+                        </ul>
+                    </div>
+                    <!--//아이콘모음-->
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <div th:if="${totalPages > 0}" id="pagination" class="pagination">
+        <span th:if="${currentPage > 1}">
+            <a th:href="@{/getSearchList(doNm=${param.doNm}, gungu=${param.gungu}, faclt=${param.faclt}, lct=${param.lct}, induty=${param.induty}, bottom=${param.bottom}, sbrs=${param.sbrs}, page=1)}">&laquo; 처음</a>
+            <a th:href="@{/getSearchList(doNm=${param.doNm}, gungu=${param.gungu}, faclt=${param.faclt}, lct=${param.lct}, induty=${param.induty}, bottom=${param.bottom}, sbrs=${param.sbrs}, page=${currentPage - 1})}">&lt; 이전</a>
+        </span>
+        <span th:each="i : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage < totalPages - 2 ? currentPage + 2 : totalPages)}">
+            <a th:href="@{/getSearchList(doNm=${param.doNm}, gungu=${param.gungu}, faclt=${param.faclt}, lct=${param.lct}, induty=${param.induty}, bottom=${param.bottom}, sbrs=${param.sbrs}, page=${i})}" th:text="${i}" th:class="${i == currentPage ? 'active' : ''}">1</a>
+        </span>
+        <span th:if="${currentPage < totalPages}">
+            <a th:href="@{/getSearchList(doNm=${param.doNm}, gungu=${param.gungu}, faclt=${param.faclt}, lct=${param.lct}, induty=${param.induty}, bottom=${param.bottom}, sbrs=${param.sbrs}, page=${currentPage + 1})}">다음 &gt;</a>
+            <a th:href="@{/getSearchList(doNm=${param.doNm}, gungu=${param.gungu}, faclt=${param.faclt}, lct=${param.lct}, induty=${param.induty}, bottom=${param.bottom}, sbrs=${param.sbrs}, page=${totalPages})}">마지막 &raquo;</a>
+        </span>
+    </div>
+</body>
+</html>

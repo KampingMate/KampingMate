@@ -51,6 +51,8 @@
         if (event.data.type === 'selectedCampsite') {
             document.getElementById('kakao_name').value = event.data.name;
             document.getElementById('kakao_id').value = event.data.id; 
+            console.log("캠핑아이디 : ", event.data.id);
+            console.log("캠핑이름 : ", event.data.name);
         }
     });
     

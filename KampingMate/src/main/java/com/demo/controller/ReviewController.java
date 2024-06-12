@@ -141,6 +141,11 @@ public class ReviewController {
 	// 리뷰 쓰기
     @GetMapping("/reviewwrite")
     public String getReviewWriteView(HttpSession session) {
+    	MemberData loginUser = (MemberData) session.getAttribute("loginUser");
+    	if (loginUser == null) {
+    		return "member/login";
+        }
+    
         return "Community/ReviewWrite";
     }
 
@@ -150,9 +155,6 @@ public class ReviewController {
     public ResponseEntity<String> insertReview(HttpSession session, @RequestBody Review review) {
         MemberData loginUser = (MemberData) session.getAttribute("loginUser");
         
-        if (loginUser == null) {
-            return new ResponseEntity<>("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED);
-        }
         loginUser = entityManager.merge(loginUser);
         review.setMember_data(loginUser);
         reviewsv.insertReview(review);
@@ -231,7 +233,9 @@ public class ReviewController {
 
 			if (loginUser == null) { 
 				return "member/login"; 
-			} else {
+			} else if(!(loginUser.getId()).equals(reviewVO.getMember_data().getId())){
+				return "본인이 작성한 글만 수정가능합니다.";
+			}else {
 				
 		        model.addAttribute("reviewVO", reviewVO);
 		        }
@@ -303,6 +307,42 @@ public class ReviewController {
 		    
 		return "redirect:/review_detail?review_seq=" + review_seq;
 	}
+	
+	//북마크 관리
+	@PostMapping("/bookmark")
+	public String bookMark_Action(@RequestParam("review_seq") int review_seq, HttpSession session) {
+		MemberData loginUser = (MemberData) session.getAttribute("loginUser");
+		if (loginUser == null) { 
+			return "member/login"; 
+		}else {
+		Review vo = reviewsv.getReview(review_seq);
+	    HashMap<Integer, String> bookmarkStatusMap = (HashMap<Integer, String>) session.getAttribute("bookmarkStatusMap");
+
+	    if (bookmarkStatusMap == null) {
+	    	bookmarkStatusMap = new HashMap<>();
+	        session.setAttribute("bookmarkStatusMap", bookmarkStatusMap);
+	    }
+
+	    String bookmarkStatus = bookmarkStatusMap.get(review_seq);
+
+	    if (bookmarkStatus == null || bookmarkStatus.equals("off")) {
+	        if (vo != null) {
+	            vo.setBookmark(vo.getBookmark() + 1);
+	            reviewsv.updateReview(vo);
+	            bookmarkStatusMap.put(review_seq, "on");
+	        }
+	    } else if (bookmarkStatus.equals("on")) {
+	        if (vo != null) {
+	        	vo.setBookmark(vo.getBookmark() - 1);
+	            reviewsv.updateReview(vo);
+	            bookmarkStatusMap.put(review_seq, "off");
+	        }
+		    }
+		}
+		return "redirect:/review_detail?review_seq=" + review_seq;
+	}
+	
+	
 	
 	//인기도 정렬
 	 @GetMapping(value = "/sorted_Review", produces = MediaType.TEXT_HTML_VALUE)

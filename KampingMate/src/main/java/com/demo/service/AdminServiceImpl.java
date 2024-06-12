@@ -2,7 +2,6 @@ package com.demo.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.demo.domain.AdminQnaBoard;
 import com.demo.domain.MemberData;
+import com.demo.domain.Notice;
 import com.demo.domain.askBoard;
 import com.demo.persistence.AdminAskBoardRepository;
+import com.demo.persistence.AdminNoticeRepository;
 import com.demo.persistence.AdminQnaBoardRepository;
 import com.demo.persistence.MemberRepository;
 
@@ -39,6 +40,9 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Autowired
 	private MemberRepository memberRepo;
+	
+	@Autowired
+	private AdminNoticeRepository adminNoticeRepo;
 
 	@Override
 	public int adminCheck(MemberData vo) {
@@ -171,6 +175,53 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public MemberData validateLogin(String id, String password) {
 		return memberRepo.findByIdAndPassword(id, password);
+	}
+
+	@Override
+	public void withdrawMember(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Page<Notice> getAllNoticeList(Pageable pageable) {
+		
+		// regdate 컬럼을 기준으로 내림차순 정렬하는 Sort 객체 생성
+	    Sort sort = Sort.by(Sort.Direction.DESC, "notice_date");
+	    // 페이징과 정렬 정보를 포함하는 Pageable 객체 생성
+	    Pageable sortedByNotice_dateDesc = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+		
+	    return adminNoticeRepo.findAll(sortedByNotice_dateDesc);
+	}
+	
+	@Override
+	public List<Notice> getAllNoticeListMain() {
+		// TODO Auto-generated method stub
+		return adminNoticeRepo.getAllListMain();
+	}
+
+	@Override
+	public void updateAdminNotice(Notice vo) {
+		vo.setNotice_date(new Date());
+        adminNoticeRepo.save(vo);
+		
+	}
+
+	@Override
+	public void deleteAdminNotice(int boardnum2) {
+		adminNoticeRepo.deleteById(boardnum2);
+		
+	}
+
+	@Override
+	public Notice getByNoticeBoardnum(int boardnum) {
+		return adminNoticeRepo.findById(boardnum).orElse(null);
+	}
+
+	@Override
+	public void insertNotice(Notice vo) {
+		adminNoticeRepo.save(vo);
+		
 	}
 
 	

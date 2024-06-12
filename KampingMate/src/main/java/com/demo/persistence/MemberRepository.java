@@ -38,14 +38,18 @@ public interface MemberRepository extends JpaRepository<MemberData, Long> {
 	int getMemberCount();
 	
 	
-	//마이페이지
 	// 개인정보 수정
-	@Transactional
-	@Modifying
-	@Query("UPDATE MemberData md SET md.password=:password, md.email=:email WHERE md.id=:id")
-	public void updateMemberData(@Param("id") String id, @Param("password") String password, @Param("email") String email);
+    @Transactional
+    @Modifying
+    @Query("UPDATE MemberData md SET md.password = :password, md.email = :email WHERE md.id = :id")
+    public void updateMemberData(@Param("id") String id, @Param("password") String password, @Param("email") String email);
 
-	MemberData findByIdAndPassword(String id, String password);
+    MemberData findByIdAndPassword(String id, String password);
 
+    // 회원탈퇴
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM MemberData md WHERE md.id = :id")
+    void deleteById(@Param("id") String id);
 
 }

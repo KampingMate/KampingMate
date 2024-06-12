@@ -18,8 +18,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.demo.domain.AdminQnaBoard;
 import com.demo.domain.MemberData;
+import com.demo.domain.Notice;
 import com.demo.domain.askBoard;
 import com.demo.service.AdminService;
+import com.demo.service.MemberService;
+import com.demo.service.NoticeService;
+
+import jakarta.persistence.EntityManager;
 
 @Controller
 @SessionAttributes("loginUser")
@@ -27,6 +32,13 @@ public class AdminController {
 
     @Autowired
     AdminService adminService;
+    @Autowired
+    NoticeService noticeService;
+    @Autowired
+    MemberService memberService;
+    
+    @Autowired
+    private EntityManager entityManager;
 
     @GetMapping("/admin")
     public String mainView() {
@@ -245,4 +257,41 @@ public class AdminController {
         return "redirect:/admin_ask.do";
     }
 
+    @GetMapping("/admin_notice.do")
+    public String Notice(@ModelAttribute("loginUser") MemberData loginUser, Model model, Pageable pageable) {
+        if (loginUser != null && loginUser.getId() != null) {
+            adminService.adminCheck(loginUser);
+
+       
+            
+            return "admin/boardForm/noticeForm";
+        } else {
+            return "redirect:/admin";
+        }
+    }
+
+    @PostMapping("/noticeReg.do")
+    public String noticeRegister(@ModelAttribute("loginUser") MemberData loginUser, Notice vo) {
+        if (loginUser != null && loginUser.getId() != null) {
+            adminService.adminCheck(loginUser);
+            
+            // 사용자 ID를 사용하여 MemberData 객체를 데이터베이스에서 조회
+            MemberData memberData = memberService.findById(loginUser.getId());
+            if (memberData != null) {
+                // Notice 엔티티에 조회된 MemberData 객체를 설정
+                vo.setMember_data(memberData);
+                
+                // Notice 엔티티 저장
+                adminService.insertNotice(vo);
+                
+                return "admin/boardPage/admin_noticelist";
+            } else {
+                // MemberData가 조회되지 않은 경우 처리
+                // 예: 사용자 ID가 존재하지 않는 경우 등
+                return "redirect:/admin";
+            }
+        } else {
+            return "redirect:/admin";
+        }
+    }
 }

@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.demo.domain.GoCamping;
-import com.demo.dto.GoCampingSearchList;
 
 @Repository
 public interface GoCampingRepository extends JpaRepository<GoCamping, Integer> {
@@ -31,14 +30,30 @@ public interface GoCampingRepository extends JpaRepository<GoCamping, Integer> {
     @Query("SELECT g.sbrsCl FROM GoCamping g")
 	List<String> findAllSbrsClList();
     
-    @Query("SELECT g.doNm, g.sigunguNm, g.facltNm, g.intro, g.addr1, g.tel, g.firstImageUrl, g.sbrsCl FROM GoCamping g")
-    List<GoCampingSearchList> getAllSearchList();
-    
-    @Query("SELECT new com.demo.dto.GoCampingSearchList(g.doNm, g.sigunguNm, g.facltNm, g.intro, g.addr1, g.tel, g.firstImageUrl, g.sbrsCl) " +
-            "FROM GoCamping g " +
-            "WHERE (:doNm IS NULL OR :doNm = '' OR g.doNm = :doNm) " +
-            "AND (:sigunguNm IS NULL OR :sigunguNm = '' OR g.sigunguNm = :sigunguNm) " +
-            "AND (:lctCl IS NULL OR :lctCl = '' OR g.lctCl = :lctCl)")
-    Page<GoCampingSearchList> getSearchList(@Param("doNm") String doNm, @Param("sigunguNm") String sigunguNm, @Param("lctCl") String lctCl, Pageable pageable);
+    @Query(value = "SELECT * FROM go_camping g WHERE (:doNm IS NULL OR g.do_nm = :doNm)", nativeQuery = true)
+    List<GoCamping> findByDoNm(@Param("doNm") String doNm);
 
+    @Query(value = "SELECT * FROM go_camping g WHERE (:sigunguNm IS NULL OR g.sigungu_nm = :sigunguNm)", nativeQuery = true)
+    List<GoCamping> findBySigunguNm(@Param("sigunguNm") String sigunguNm);
+
+    @Query(value = "SELECT * FROM go_camping g WHERE (:lctCl IS NULL OR g.lct_cl = :lctCl)", nativeQuery = true)
+    List<GoCamping> findByLctCl(@Param("lctCl") String lctCl);
+
+    @Query(value = "SELECT * FROM go_camping g WHERE (:faclt IS NULL OR g.faclt_div_nm = :faclt)", nativeQuery = true)
+    List<GoCamping> findByFaclt(@Param("faclt") String faclt);
+
+    @Query(value = "SELECT * FROM go_camping g WHERE (:induty IS NULL OR g.induty = :induty)", nativeQuery = true)
+    List<GoCamping> findByInduty(@Param("induty") String induty);
+
+    @Query(value = "SELECT * FROM go_camping g WHERE (:sbrsCl IS NULL OR g.sbrs_cl = :sbrsCl)", nativeQuery = true)
+    List<GoCamping> findBySbrsCl(@Param("sbrsCl") String sbrsCl);
+
+    @Query(value = "SELECT * FROM go_camping g WHERE (:bottom IS NULL OR :bottom = '' " +
+            "OR (:bottom = '잔디' AND g.site_bottom_cl1 > 0) " +
+            "OR (:bottom = '파쇄석' AND g.site_bottom_cl2 > 0) " +
+            "OR (:bottom = '데크' AND g.site_bottom_cl3 > 0) " +
+            "OR (:bottom = '자갈' AND g.site_bottom_cl4 > 0) " +
+            "OR (:bottom = '맨흙' AND g.site_bottom_cl5 > 0))",
+            nativeQuery = true)
+    List<GoCamping> findByBottom(@Param("bottom") String bottom);
 }

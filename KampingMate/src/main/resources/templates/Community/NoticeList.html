@@ -14,7 +14,7 @@
 <button type="button" data-category="이벤트" onclick="keyClick(event)">이벤트만 보기</button>
 
 	<!-- 검색란 -->
-	<form id="searchForm" name="searchForm" method="get">
+	<form id="searchForm" name="searchForm" method="get" onsubmit="return submitSearch()">
 		<select name="searchType" id="searchType">
 			<option value="title">▼ 제목</option>
 		</select> 

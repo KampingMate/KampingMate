@@ -1,9 +1,8 @@
 package com.demo.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,21 +10,21 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.demo.domain.GoCamping;
 import com.demo.dto.CampingItem;
-import com.demo.dto.GoCampingSearchList;
 import com.demo.persistence.GoCampingRepository;
 import com.demo.service.GoCampingAPI;
 import com.demo.service.RegionMapping;
 import com.demo.service.SigunguService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class GoCampingController {
@@ -113,41 +112,82 @@ public class GoCampingController {
     }
     
     @GetMapping("/getSearchList")
-    public String getNormalSearchList(@RequestParam String doNm,
-                                      @RequestParam String gungu,
-                                      @RequestParam String faclt,
-                                      @RequestParam String lct,
-                                      @RequestParam String induty,
-                                      @RequestParam String bottom,
-                                      @RequestParam String sbrs,
-                                      @RequestParam(defaultValue = "1") int page,
+    public String getNormalSearchList(@RequestParam(name = "doNm", required = false) String doNmStr,
+                                      @RequestParam(name = "gungu", required = false) String gunguStr,
+                                      @RequestParam(name = "faclt", required = false) String facltStr,
+                                      @RequestParam(name = "lct", required = false) String lctStr,
+                                      @RequestParam(name = "induty", required = false) String indutyStr,
+                                      @RequestParam(name = "bottom", required = false) String bottom,
+                                      @RequestParam(name = "sbrs", required = false) String sbrsStr,
+                                      @RequestParam(defaultValue = "0") int page,
                                       Model model) {
-        try {
-            doNm = doNm != null ? URLDecoder.decode(doNm, StandardCharsets.UTF_8.toString()) : "";
-            gungu = gungu != null ? URLDecoder.decode(gungu, StandardCharsets.UTF_8.toString()) : "";
-            lct = lct != null ? URLDecoder.decode(lct, StandardCharsets.UTF_8.toString()) : "";
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+
+        List<GoCamping> combinedResults = new ArrayList<>();
+
+        // 각 조건에 대해 개별 쿼리를 실행하고 결과를 합침
+        if (doNmStr != null) {
+            List<String> doNmList = Arrays.asList(doNmStr.split(","));
+            for (String doNm : doNmList) {
+                combinedResults.addAll(gocampingRepo.findByDoNm(doNm));
+            }
         }
 
-        // 페이지 인덱스를 1보다 작지 않도록 보정
-        page = Math.max(page, 1);
-        Pageable pageable = PageRequest.of(page - 1, 10);
+        if (gunguStr != null) {
+            List<String> gunguList = Arrays.asList(gunguStr.split(","));
+            for (String gungu : gunguList) {
+                combinedResults.addAll(gocampingRepo.findBySigunguNm(gungu));
+            }
+        }
 
-        System.out.println("doNm: " + doNm + ", gungu: " + gungu + ", faclt: " + faclt + ", lct: " + lct);
+        if (facltStr != null) {
+            List<String> facltList = Arrays.asList(facltStr.split(","));
+            for (String faclt : facltList) {
+                combinedResults.addAll(gocampingRepo.findByFaclt(faclt));
+            }
+        }
 
-        Page<GoCampingSearchList> goCampingPage = gocampingRepo.getSearchList(doNm, gungu, lct, pageable);
+        if (lctStr != null) {
+            List<String> lctList = Arrays.asList(lctStr.split(","));
+            for (String lct : lctList) {
+                combinedResults.addAll(gocampingRepo.findByLctCl(lct));
+            }
+        }
 
-        List<GoCampingSearchList> goCampingList = goCampingPage.getContent();
-        int totalPages = goCampingPage.getTotalPages();
-        long totalElements = goCampingPage.getTotalElements();
+        if (indutyStr != null) {
+            List<String> indutyList = Arrays.asList(indutyStr.split(","));
+            for (String induty : indutyList) {
+                combinedResults.addAll(gocampingRepo.findByInduty(induty));
+            }
+        }
 
-        model.addAttribute("goCampingList", goCampingList);
+        if (sbrsStr != null) {
+            List<String> sbrsList = Arrays.asList(sbrsStr.split(","));
+            for (String sbrs : sbrsList) {
+                combinedResults.addAll(gocampingRepo.findBySbrsCl(sbrs));
+            }
+        }
+
+        if (bottom != null && !bottom.isEmpty()) {
+            combinedResults.addAll(gocampingRepo.findByBottom(bottom));
+        }
+
+        // 중복 제거
+        Set<GoCamping> resultSet = new HashSet<>(combinedResults);
+
+        // 페이지네이션
+        List<GoCamping> goCampingList = new ArrayList<>(resultSet);
+        int start = Math.min(page * 10, goCampingList.size());
+        int end = Math.min((page + 1) * 10, goCampingList.size());
+
+        List<GoCamping> paginatedList = goCampingList.subList(start, end);
+        int totalPages = (int) Math.ceil((double) goCampingList.size() / 10);
+
+        // 조회된 캠핑장 리스트를 모델에 추가합니다.
+        model.addAttribute("goCampingList", paginatedList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalElements", totalElements);
 
-        return "searchView";
+        return "searchView"; // 뷰 페이지 이름을 반환합니다.
     }
     
     @GetMapping("/get_sigungu")
@@ -164,5 +204,47 @@ public class GoCampingController {
         return RegionMapping.DO_NAME_MAPPING;
     }
     
+    @GetMapping("/detailView")
+    public String goDetailView(@RequestParam("contentId") int contentId, Model model) {
+        // contentId를 이용해 캠핑장 정보를 조회
+        GoCamping campDetail = gocampingRepo.findById(contentId).orElse(null);
+
+        // 캠핑장 정보를 모델에 추가
+        model.addAttribute("campDetail", campDetail);
+
+        return "detailView"; // detailView 템플릿을 반환
+    }
+    
+    @PostMapping("/getRecommendList")
+    public String getRecommendListView(HttpSession session, 
+                                       @RequestParam(defaultValue = "0") int page,
+                                       Model model) {
+        // 세션에서 recommendations를 불러옴
+        List<Integer> recommendations = (List<Integer>) session.getAttribute("recommendations");
+
+        if (recommendations == null || recommendations.isEmpty()) {
+            model.addAttribute("goCampingList", new ArrayList<>());
+            model.addAttribute("currentPage", 0);
+            model.addAttribute("totalPages", 0);
+            return "searchView";
+        }
+
+        // 추천 캠핑장 목록 조회
+        List<GoCamping> recommendedCamps = gocampingRepo.findAllById(recommendations);
+
+        // 페이지네이션
+        int start = Math.min(page * 10, recommendedCamps.size());
+        int end = Math.min((page + 1) * 10, recommendedCamps.size());
+
+        List<GoCamping> paginatedList = recommendedCamps.subList(start, end);
+        int totalPages = (int) Math.ceil((double) recommendedCamps.size() / 10);
+
+        // 조회된 캠핑장 리스트를 모델에 추가
+        model.addAttribute("goCampingList", paginatedList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+
+        return "searchViewRecommend";
+    }
     
 }

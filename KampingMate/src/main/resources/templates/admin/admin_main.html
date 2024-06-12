@@ -19,7 +19,7 @@
             </a><br>
             <a class="admin-a" th:href="@{/admin_QnA.do}">Q&A 게시판</a><br>
             <a class="admin-a" th:href="@{/admin_ask.do}">1:1 문의 게시판</a><br>
-            <a class="admin-a" th:href="@{/admin_notice.do}">공지사항 등록</a>
+            <a class="admin-a" th:href="@{/noticeReg.do}">공지사항 게시판</a>
         </div>
         <div class="admin-side">
             <h4>관리자 계정 : [[${loginUser.id}]]</h4>
@@ -29,73 +29,73 @@
     <main id="admin-main">
         <div class="admin-content">
             <h1>관리자 페이지</h1>
-                <div class="content-box">
-                    <h4>Q&A 게시판</h4>
-                    <div class="content-body">
-                        <table id="datatablesSimple" width="100%" style="text-align:left">
-                            <thead>
-                                <tr>
-                                    <th>게시물ID</th>
-                                    <th>자주묻는 질문</th>
-                                    <th>최근 수정시간</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <th:block th:if="${#lists.size(qnaBoardList) <= 0}">
-                                    <tr>
-                                        <td colspan="3">등록된 게시글이 존재하지 않습니다.</td>
-                                    </tr>
-                                </th:block>
-                                <th:block th:if="${#lists.size(qnaBoardList) > 0}">
-                                    <th:block th:each="qna, status : ${qnaBoardList}">
-                                        <tr>
-                                            <td>[[${qna.qna_boardnum}]]</td>
-                                            <td>[[${qna.question}]]</td>
-                                            <td>[[${qna.regdate}]]</td>
-                                        </tr>
-                                    </th:block>
-                                </th:block>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="content-body">
-                        <a class="admin-a" th:href="@{/admin_QnA.do}">View Details</a>
-                        <i class="fas fa-angle-right"></i>
-                    </div>
-                </div>
-                <div class="content-box">
-                    <h4><i class="fas fa-table me-1"></i>&nbsp;최근 문의내용</h4>
-                    <table id="datatablesSimple">
+            <div class="content-box">
+                <h4>Q&A 게시판</h4>
+                <div class="content-body">
+                    <table id="datatablesSimple" width="100%" style="text-align:left">
                         <thead>
                             <tr>
-                                <th>문의번호</th>
-                                <th>회원명</th>
-                                <th>제목</th>
+                                <th>게시물ID</th>
+                                <th>자주묻는 질문</th>
+                                <th>최근 수정시간</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <th:block th:if="${#lists.size(askBoardList) <= 0}">
+                            <th:block th:if="${#lists.size(qnaBoardList) <= 0}">
                                 <tr>
                                     <td colspan="3">등록된 게시글이 존재하지 않습니다.</td>
                                 </tr>
                             </th:block>
-                            <th:block th:if="${#lists.size(askBoardList) > 0}">
-                                <th:block th:each="askBoard, status : ${askBoardList}">
-                                    <!-- 해당 페이지로 액션할떄 모든 회원 정보를 memberList에 담아서 -->
-                                    <!-- memberList에 들어있는 값으로 아래 인자(이름) 수정 -->
-                                    <div>
-                                        <tr>
-                                            <td>[[${askBoard.inquiry_id}]]</td>
-                                            <td>[[${askBoard.name}]]</td>
-                                            <td>[[${askBoard.subject}]]</td>
-                                        </tr>
-                                    </div>
+                            <th:block th:if="${#lists.size(qnaBoardList) > 0}">
+                                <th:block th:each="qna, status : ${qnaBoardList}">
+                                    <tr>
+                                        <td>[[${qna.qna_boardnum}]]</td>
+                                        <td>[[${qna.question}]]</td>
+                                        <td>[[${qna.regdate}]]</td>
+                                    </tr>
                                 </th:block>
                             </th:block>
                         </tbody>
                     </table>
                 </div>
+                <div class="content-body">
+                    <a class="admin-a" th:href="@{/admin_QnA.do}">View Details</a>
+                    <i class="fas fa-angle-right"></i>
+                </div>
             </div>
-        </main>
+            <div class="content-box">
+                <h4><i class="fas fa-table me-1"></i>&nbsp;최근 문의내용</h4>
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>문의번호</th>
+                            <th>회원명</th>
+                            <th>제목</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <th:block th:if="${#lists.size(askBoardList) <= 0}">
+                            <tr>
+                                <td colspan="3">등록된 게시글이 존재하지 않습니다.</td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="${#lists.size(askBoardList) > 0}">
+                            <th:block th:each="askBoard, status : ${askBoardList}">
+                                <!-- 해당 페이지로 액션할떄 모든 회원 정보를 memberList에 담아서 -->
+                                <!-- memberList에 들어있는 값으로 아래 인자(이름) 수정 -->
+                                <div>
+                                    <tr>
+                                        <td>[[${askBoard.inquiry_id}]]</td>
+                                        <td>[[${askBoard.name}]]</td>
+                                        <td>[[${askBoard.subject}]]</td>
+                                    </tr>
+                                </div>
+                            </th:block>
+                        </th:block>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

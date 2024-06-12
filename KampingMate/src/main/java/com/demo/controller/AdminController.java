@@ -114,6 +114,7 @@ public class AdminController {
             return "redirect:/admin";
         }
     }
+    
 
     @GetMapping("/qnaRegister.do")
     public String qnaRegiView(@ModelAttribute("loginUser") MemberData loginUser) {
@@ -257,39 +258,25 @@ public class AdminController {
         return "redirect:/admin_ask.do";
     }
 
-    @GetMapping("/admin_notice.do")
-    public String Notice(@ModelAttribute("loginUser") MemberData loginUser, Model model, Pageable pageable) {
+    @GetMapping("/noticeRegister.do")
+    public String Notice(@ModelAttribute("loginUser") MemberData loginUser) {
         if (loginUser != null && loginUser.getId() != null) {
             adminService.adminCheck(loginUser);
-
-       
-            
             return "admin/boardForm/noticeForm";
         } else {
             return "redirect:/admin";
         }
     }
 
-    @PostMapping("/noticeReg.do")
-    public String noticeRegister(@ModelAttribute("loginUser") MemberData loginUser, Notice vo) {
+    @GetMapping("/noticeReg.do")
+    public String noticeRegister(@ModelAttribute("loginUser") MemberData loginUser, Model model, Pageable pageable) {
         if (loginUser != null && loginUser.getId() != null) {
             adminService.adminCheck(loginUser);
             
-            // 사용자 ID를 사용하여 MemberData 객체를 데이터베이스에서 조회
-            MemberData memberData = memberService.findById(loginUser.getId());
-            if (memberData != null) {
-                // Notice 엔티티에 조회된 MemberData 객체를 설정
-                vo.setMember_data(memberData);
-                
-                // Notice 엔티티 저장
-                adminService.insertNotice(vo);
-                
-                return "admin/boardPage/admin_noticelist";
-            } else {
-                // MemberData가 조회되지 않은 경우 처리
-                // 예: 사용자 ID가 존재하지 않는 경우 등
-                return "redirect:/admin";
-            }
+            Page<Notice> noticePage = adminService.getAllNoticeList(PageRequest.of(pageable.getPageNumber(), 10));
+            model.addAttribute("noticePage", noticePage);
+            
+            return "admin/boardPage/admin_noticelist";
         } else {
             return "redirect:/admin";
         }

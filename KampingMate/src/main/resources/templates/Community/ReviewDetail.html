@@ -5,9 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" th:src="@{js/ReviewDetail.js}"></script>
+<link rel="stylesheet" th:href="@{/css/review.css}">
 <title>리뷰 글</title>
 </head>
 <body id="replyjs">
+<!-- 헤더 -->
+<th:block th:insert="~{include/header}"></th:block>
+<div class="review-detail">
 	<h3>리뷰 상세페이지</h3>
 	<form name="frm" method="post">
 		<input type="hidden" name="review_seq" id="review_seq" th:value="${reviewVO.review_seq}">
@@ -98,5 +102,6 @@
 			<input type="button" value="삭제" onClick="review_delete()">
 		</th:block>
 	</form>
+</div>
 </body>
 </html>

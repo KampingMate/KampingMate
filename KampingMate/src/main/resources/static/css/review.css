@@ -1,0 +1,270 @@
+body, html {
+    width: 100%;
+    height: 100%;
+}
+.review-container {
+    margin: 0 auto;
+    padding: 20px;
+    height: 100%;
+    background-image: url('/images/camp3.jpg');
+    background-size: cover;
+    background-position: center 20%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center; /* 가운데 정렬 */
+}
+
+.review-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.review-main button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    font-size: 16px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.review-main button:hover {
+    background-color: #0056b3;
+}
+
+#writeForm button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#writeForm button:hover {
+    background-color: #0056b3;
+}
+
+.sort-btn button:hover {
+    background-color: #0056b3;
+}
+
+.hidden-btns {
+    display: none;
+}
+
+.hidden-btns.active {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 40px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    z-index: 1;
+}
+
+.hidden-btns button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+}
+
+.hidden-btns button:last-child {
+    border-bottom: none;
+}
+
+.hidden-btns button:hover {
+    background-color: #f9f9f9;
+}
+
+.review-list {
+    width: 100%;
+}
+
+.review-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.review-list th, .review-list td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px; /* 페이징 부분과의 간격 조절 */
+}
+
+.pagination ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+}
+
+.pagination ul li {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.pagination ul li a {
+    padding: 8px 16px;
+    background-color: #f9f9f9;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.pagination ul li.active a {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination ul li a:hover {
+    background-color: #ddd;
+}
+
+/* 검색란 스타일 */
+#searchForm {
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+#searchType, #searchKeyword {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+}
+
+#searchKeyword {
+    width: 200px; /* 입력 필드 너비 조절 */
+}
+
+#searchForm a {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s; /* 텍스트 색상 변화 효과 추가 */
+}
+
+#searchForm a:hover {
+    background-color: #0056b3;
+}
+
+
+
+/* review-detail */
+.review-detail {
+    width: 80%;
+    padding: 20px;
+    border-radius: 10px;
+    background-image: url('/images/camp1.jpg');
+    background-size: cover;
+    background-position: center 20%;
+    text-align: center; /* 가운데 정렬 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    /* 추가 스타일 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.r-content {
+    background-color: rgba(0, 0, 0, 0.5); /* 배경을 검정색 반투명으로 설정 */
+    color: white; /* 텍스트 색상을 흰색으로 설정 */
+    padding: 20px; /* 적절한 패딩을 추가 */
+    border-radius: 10px; /* 테두리 모서리를 둥글게 */
+    margin: 20px 0; /* 위아래로 일정 간격 추가 */
+}
+.review-detail h1 {
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.1); /* 패딩 반투명 배경이 보이게 */
+    border-radius: 5px;
+}
+
+.review-detail table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.review-detail a {
+    padding: 10px 15px; /* a 링크들에 패딩을 추가하여 버튼처럼 보이게 */
+    border-radius: 5px;
+    text-decoration: none; /* 밑줄 제거 */
+    color: inherit; /* 색깔 유지 */
+    display: inline-block;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.review-detail a:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* 호버 효과 */
+}
+
+.form-1 h2, .form-1 h3, .form-1 h4, .form-1 h5 {
+    text-align: left; /* 제목, 작성자, 등록일, 조회수 등의 위치는 왼쪽 정렬 */
+    padding: 5px;
+    margin: 5px 0;
+}
+
+.form-1 h3 {
+    color: #333;
+}
+
+/* 댓글 입력 */
+textarea {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+input[type="button"] {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+
+/* 버튼들 */
+.form-1 input[type="button"] {
+    margin: 5px;
+}
+
+.form-1 {
+    margin-top: 20px; /* 일정 간격 */
+}

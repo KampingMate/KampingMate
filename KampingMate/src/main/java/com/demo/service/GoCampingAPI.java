@@ -1,17 +1,26 @@
 package com.demo.service;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.stereotype.Service;
 
 import com.demo.dto.CampingItem;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
+@Service
 public class GoCampingAPI {
     private static final String SERVICE_KEY = "fnb%2FPvsKoyOP9rj3vWkyGBtUun17J%2BDKEakIEuGJgj6Swq1nm6ILNuPBpz0S6hmW3sI8Jc54%2FR%2FB1k5heAIuig%3D%3D";
     private static final String ENDPOINT = "http://apis.data.go.kr/B551011/GoCamping/basedList";
@@ -34,8 +43,7 @@ public class GoCampingAPI {
         }
     }
 
-
-    public static CampingApiResponse getCampingSites(int page, int pageSize) throws Exception {
+    public CampingApiResponse getCampingSites(int page, int pageSize) throws Exception {
         String urlStr = ENDPOINT +
                 "?serviceKey=" + SERVICE_KEY +
                 "&numOfRows=" + pageSize +
@@ -51,7 +59,7 @@ public class GoCampingAPI {
         System.out.println("Response Code : " + responseCode);
 
         if (responseCode == HttpURLConnection.HTTP_OK) { // 200
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
             String inputLine;
             StringBuffer response = new StringBuffer();
 
@@ -72,19 +80,42 @@ public class GoCampingAPI {
             JSONArray jsonItems = responseBody.getJSONObject("items").getJSONArray("item");
             for (int i = 0; i < jsonItems.length(); i++) {
                 JSONObject item = jsonItems.getJSONObject(i);
+                
+                // Aggregating room counts
+                int gnrlSiteCo = item.optInt("gnrlSiteCo", 0);
+                int autoSiteCo = item.optInt("autoSiteCo", 0);
+                int glampSiteCo = item.optInt("glampSiteCo", 0);
+                int caravSiteCo = item.optInt("caravSiteCo", 0);
+                int indvdlCaravSiteCo = item.optInt("indvdlCaravSiteCo", 0);
+                int roomCount = gnrlSiteCo + autoSiteCo + glampSiteCo + caravSiteCo + indvdlCaravSiteCo;
+                
                 CampingItem campingItem = new CampingItem(
                         item.optString("facltNm", "N/A"),
-                        item.optString("lineIntro", "N/A"),
-                        item.optString("mgcDiv", "N/A"),
-                        item.optString("featureNm", "N/A"),
+                        item.optString("contentId", "N/A"),
+                        item.optString("manageSttus", "N/A"),
+                        item.optString("induty", "N/A"),
+                        item.optString("lctCl", "N/A"),
+                        item.optString("doNm", "N/A"),
+                        item.optString("sigunguNm", "N/A"),
+                        item.optString("operPdCl", "N/A"),
+                        item.optString("sbrsCl", "N/A"),
+                        item.optString("facltDivNm", "N/A"),
+                        item.optString("siteBottomCl1", "N/A"),
+                        item.optString("siteBottomCl2", "N/A"),
+                        item.optString("siteBottomCl3", "N/A"),
+                        item.optString("siteBottomCl4", "N/A"),
+                        item.optString("siteBottomCl5", "N/A"),
+                        item.optString("intro", "N/A"),
+                        item.optString("firstImageUrl", "N/A"),
                         item.optString("addr1", "N/A"),
-                        item.optString("addr2", "N/A"),
                         item.optString("tel", "N/A"),
                         item.optString("homepage", "N/A"),
-                        item.optString("firstImageUrl", "N/A"),
-                        item.optString("createdtime", "N/A"),
-                        item.optString("modifiedtime", "N/A"),
-                        item.optString("extshrCo", "N/A")
+                        item.optString("resveUrl", "N/A"),
+                        item.optString("resveCl", "N/A"),
+                        item.optString("themaEnvrnCl", "N/A"),
+                        item.optString("eqpmnLendCl", "N/A"),
+                        Integer.toString(roomCount) // Converting roomCount to String
+                        
                 );
                 items.add(campingItem);
             }
@@ -93,5 +124,57 @@ public class GoCampingAPI {
         } else {
             throw new RuntimeException("API request failed with response code: " + responseCode);
         }
+    }
+
+    public List<CampingItem> getAllCampingSites() throws Exception {
+        List<CampingItem> allItems = new ArrayList<>();
+        int page = 1;
+        int pageSize = 1000; // 최대 크기로 설정하여 여러 번 호출 필요 줄이기
+        int totalCount;
+
+        do {
+            CampingApiResponse response = getCampingSites(page, pageSize);
+            totalCount = response.getTotalCount();
+            allItems.addAll(response.getItems());
+            page++;
+        } while (allItems.size() < totalCount);
+
+        return allItems;
+    }
+
+ // Method to convert data to CSV
+    public ByteArrayOutputStream convertToCSV(List<CampingItem> items) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (CSVPrinter csvPrinter = new CSVPrinter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8), 
+                                                    CSVFormat.DEFAULT
+                                                    .withHeader("facltNm", "contentId", "manageSttus", "induty", "lctCl", "doNm", "sigunguNm",
+                                                                "operPdCl", "sbrsCl", "facltDivNm", "siteBottomCl1",
+                                                                "siteBottomCl2", "siteBottomCl3", "siteBottomCl4", "siteBottomCl5",
+                                                                "intro", "firstImageUrl", "addr1", "tel", "homepage", "resveUrl",
+                                                                "resveCl", "themaEnvrnCl", "eqpmnLendCl", "roomCount")
+                                                    .withDelimiter(',') // Ensure proper delimiter
+                                                    .withQuoteMode(org.apache.commons.csv.QuoteMode.ALL))) { // Ensure all fields are quoted
+            for (CampingItem item : items) {
+                csvPrinter.printRecord(item.getFacltNm(), item.getContentId(), item.getManageSttus(), item.getInduty(), item.getLctCl(),
+                        item.getDoNm(), item.getSigunguNm(), item.getOperPdCl(), item.getSbrsCl(), item.getFacltDivNm(), item.getSiteBottomCl1(), item.getSiteBottomCl2(),
+                        item.getSiteBottomCl3(), item.getSiteBottomCl4(), item.getSiteBottomCl5(), item.getIntro(), item.getFirstImageUrl(), item.getAddr1(), item.getTel(),
+                        item.getHomepage(), item.getResveUrl(), item.getResveCl(), item.getThemaEnvrnCl(), item.getEqpmnLendCl(), item.getRoomCount());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return outputStream;
+    }
+
+    // Method to convert data to XML
+    public ByteArrayOutputStream convertToXML(List<CampingItem> items) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        XmlMapper xmlMapper = new XmlMapper();
+        try {
+            xmlMapper.writeValue(outputStream, items);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return outputStream;
     }
 }

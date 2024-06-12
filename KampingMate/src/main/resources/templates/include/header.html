@@ -64,8 +64,8 @@ function toggleTheme() {
 			<ul>
             <li><h3><a th:href="@{/introduce}">Introduce</a></h3></li>
             <li><h3><a th:href="@{/campingSites}">Camping-Sites</a></h3></li>
-            <li><h3><a href="#"></a>test</h3></li>
-            <li><h3><a href="#">test</a></h3></li>
+            <li><h3><a th:href="@{/map}">map</a></h3></li>
+            <li><h3><a th:href="@{/recommend}">reco</a></h3></li>
         </ul>
     </div>
 </div>
@@ -76,8 +76,8 @@ function toggleTheme() {
 		<ul>
 			<li><a th:href="@{/introduce}">Kamping-Mate</a></li>
 			<li><a th:href="@{/campingSites}">Camping-Sites</a></li>
-			<li><a href="#">test</a></li>
-			<li><a href="#">test</a></li>
+			<li><a th:href="@{/map}">map</a></li>
+			<li><a th:href="@{/recommend}">reco</a></li>
 			<li>
 				<i id="themeToggleButtonLight" class="fas fa-sun" style="cursor: pointer;"
 					 onclick="toggleTheme()" title="라이트 테마로 변경"></i>

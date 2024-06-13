@@ -40,21 +40,32 @@
 	</div>
 
 	<!-- 리뷰 게시글 리스트 -->
-	<div class="review-main">
+	<div class="review-list">
 		<form name="frm" method="get">
 			<table>
+				<tr>
+					<th>No.</th>
+					<th>캠핑장소</th>
+					<th style="width:20%; text-align: center;" colspan="2">내용</th>
+					<th>작성자</th>
+					<th>조회수</th>
+					<th>추천수</th>
+					<th>날짜</th>
+					<th>북마크수</th>
+					
+				</tr>
 				<th:block th:each="reviewVO, iterStat : ${reviewList}">
 					<tr>
 						<td>[[${startNumber - iterStat.index}]]</td>
 						<td>[[${reviewVO.kakao_name}]]</td>
-						<td style="width: 60%; text-align: center;">
+						<td style="width:20%; text-align: center;" colspan="2">
 							<a href="javascript:void(0);" th:onclick="'go_view(' + ${reviewVO.review_seq} + ');'" th:text="${reviewVO.title}" class="truncate">[[${reviewVO.title}]]</a>
 						</td>
-						<td>작성자 : [[${reviewVO.member_data.id}]]</td>
-						<td>조회수 : [[${reviewVO.cnt}]]</td>
-						<td>추천수 : [[${reviewVO.goodpoint}]]</td>
-						<td>날짜 : [[${#dates.format(reviewVO.write_date, 'yyyy-MM-dd')}]]</td>
-						<td>북마크수 : [[${reviewVO.bookmark}]]</td>
+						<td>[[${reviewVO.member_data.id}]]</td>
+						<td>[[${reviewVO.cnt}]]</td>
+						<td>[[${reviewVO.goodpoint}]]</td>
+						<td>[[${#dates.format(reviewVO.write_date, 'yyyy-MM-dd')}]]</td>
+						<td>[[${reviewVO.bookmark}]]</td>
 					</tr>
 				</th:block>
 			</table>

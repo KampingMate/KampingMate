@@ -5,50 +5,52 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" th:src="@{js/Book.js}"></script>
+<link rel="stylesheet" th:href="@{/css/book.css}">
 <title>예약페이지</title>
 </head>
 <body>
-    <h3>예약</h3>
-    <form id="frm" name="frm" method="Post">
-        <input type="hidden" name="userId" id="userId" th:value="${session.loginUser.id}">
-
-        시작일자
-        <input type="date" name="bookdateS" id="bookdateS" onchange="onStartDateChange()">
-
-        종료일자
-        <input type="date" name="bookdateE" id="bookdateE" onchange="onEndDateChange()"> <br>
-
-        기간 (<span id="period">0</span>)일 <br>
-
-        캠핑장명
-        <input type="text" name="campingname" id="campingname" onclick="book_campingsearch()"> 
-        <button type="button" onclick="book_campingsearch()">캠핑장찾기</button>
-        <input type="hidden" name="campingid" id="campingid"> 
-        <br>
-
-        인원수 
-        <select name="headcount" id="headcount">
-            <option value="0">선택하세요</option>
-            <option value="1">1명</option>
-            <option value="2">2명</option>
-            <option value="3">3명</option>
-            <option value="4">4명</option>
-            <option value="5">5명</option>
-            <option value="6">6명</option>
-        </select>
-        <br>
-
-        예약자 성함
-        <input type="text" name="bookname" id="bookname" th:value="${session.loginUser.name}"><br>
-
-        연락처 (- 없이 숫자만 적어주세요)
-        <input type="text" name="phone" id="phone" th:value="${session.loginUser.telephone}"><br>
-
-        예약관련 상세
-        <textarea name="message" id="message" placeholder="예약관련 상세한 내용을 적어주세요"></textarea><br>
-
-        <button type="button" onclick="gobook(event)">예약하기</button><br>
-        <button type="button" onclick="goBookList()">나의 예약 목록</button>
-    </form>
+<!-- 헤더 -->
+<th:block th:insert="~{include/header}"></th:block>
+    <div class="book-container">
+        <h1>예약하기</h1>
+        <form id="frm" name="frm" method="Post">
+            <input type="hidden" name="userId" id="userId" th:value="${session.loginUser.id}">
+            <div class="book-content">
+                <h3>여행 기간</h3>
+                <label class="b-label">시작일자</label>
+                <input type="date" name="bookdateS" id="bookdateS" onchange="onStartDateChange()">
+                <labe class="b-label">종료일자</labe>
+                <input type="date" name="bookdateE" id="bookdateE" onchange="onEndDateChange()"><br>
+                <h4>여행기간 (<span id="period">0</span>)일</h4>
+            </div>
+            <div class="book-content">
+                <h3>캠핑장소</h3>
+                <input type="text" name="campingname" id="campingname" onclick="book_campingsearch()"> 
+                <button type="button" onclick="book_campingsearch()">캠핑장찾기</button>
+                <input type="hidden" name="campingid" id="campingid"> 
+            </div>
+            <div class="book-content">
+                <h3>상세정보</h3>
+                <label class="b-label">인원수</label>
+                <select name="headcount" id="headcount" class="b-select">
+                    <option value="0">선택하세요</option>
+                    <option value="1">1명</option>
+                    <option value="2">2명</option>
+                    <option value="3">3명</option>
+                    <option value="4">4명</option>
+                    <option value="5">5명</option>
+                    <option value="6">6명</option>
+                </select><br>
+                <label class="b-label">예약자 성함</label>
+                <input type="text" name="bookname" id="bookname" th:value="${session.loginUser.name}" placeholder="이름을 입력하세요."><br>
+                <label class="b-label">연락처</label>
+                <input type="text" name="phone" id="phone" th:value="${session.loginUser.telephone}" placeholder="'-'없이 숫자만 입력해 주세요."><br>
+                <label class="b-label">예약관련 상세</label>
+                <textarea name="message" id="message" placeholder="예약관련 상세한 내용을 적어주세요"></textarea><br>
+            </div>
+            <button type="button" onclick="gobook(event)">예약하기</button><br>
+            <button type="button" onclick="goBookList()">나의 예약 목록</button>
+        </form>
+    </div>
 </body>
 </html>

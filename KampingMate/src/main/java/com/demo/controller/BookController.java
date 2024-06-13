@@ -182,10 +182,10 @@ public class BookController {
 		        loginUser = entityManager.merge(loginUser);
 		    }
 
-		    // bookseq를 요청 본문에서 가져옴
+		    
 		    int bookseq = (int) bookData.get("bookseq");
 		    
-		    // 기존 책 정보를 가져옴
+		    // 기존 책 정보
 		    Book book = booksv.getBook(bookseq);
 		    if (book == null) {
 		        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "해당 책 정보를 찾을 수 없습니다."));
@@ -202,14 +202,13 @@ public class BookController {
 		        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "날짜 변환 실패했습니다"));
 		    }
 
-//		    book.setCampingname(bookData.get("campingname").toString());
-//		    book.setCampingid(bookData.get("campingid").toString());
+
 		    book.setHeadcount(bookData.get("headcount").toString());
 		    book.getMember_data().setName(bookData.get("bookname").toString());
 		    book.getMember_data().setTelephone(bookData.get("phone").toString());
 		    book.setMessage(bookData.get("message").toString());
 
-		    // 업데이트된 엔티티를 저장
+		   
 		    booksv.updateBook(book);
 
 		    Map<String, Object> response = new HashMap<>();

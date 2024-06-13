@@ -6,6 +6,35 @@
 <script type="text/javascript" th:src="@{js/ReviewList.js}"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="stylesheet" th:href="@{/css/review.css}">
+<style>
+
+.star_rating {
+    width: 100%; 
+    box-sizing: border-box; 
+    display: inline-flex; 
+    float: left;
+    flex-direction: row; 
+    justify-content: flex-start;
+}
+.star_rating .star {
+    width: 25px; 
+    height: 25px; 
+    margin-right: 10px;
+    display: inline-block; 
+    background: url('images/nostar.png') no-repeat; 
+    background-size: 100%; 
+    box-sizing: border-box; 
+}
+.star_rating .star.on {
+    width: 25px; 
+    height: 25px;
+    margin-right: 10px;
+    display: inline-block; 
+    background: url('images/star.png') no-repeat;
+    background-size: 100%; 
+    box-sizing: border-box; 
+}
+</style>
 <title>캠핑장 리뷰</title>
 </head>
 <body>
@@ -47,6 +76,7 @@
 					<th>No.</th>
 					<th>캠핑장소</th>
 					<th style="width:20%; text-align: center;" colspan="2">내용</th>
+					<th>별점</th>
 					<th>작성자</th>
 					<th>조회수</th>
 					<th>추천수</th>
@@ -61,6 +91,13 @@
 						<td style="width:20%; text-align: center;" colspan="2">
 							<a href="javascript:void(0);" th:onclick="'go_view(' + ${reviewVO.review_seq} + ');'" th:text="${reviewVO.title}" class="truncate">[[${reviewVO.title}]]</a>
 						</td>
+						<td>
+							<div class="star_rating">
+				                <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+				                    <span class="star" th:classappend="${i <= reviewVO.reviewrate} ? 'on'"></span>
+				                </th:block>
+				            </div>
+			            </td>
 						<td>[[${reviewVO.member_data.id}]]</td>
 						<td>[[${reviewVO.cnt}]]</td>
 						<td>[[${reviewVO.goodpoint}]]</td>

@@ -4,7 +4,37 @@
     <meta charset="UTF-8">
     <title>리뷰수정</title>
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-table/latest/toastui-editor-plugin-table.min.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" th:src="@{js/ReviewW_U.js}"></script>
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <style>
+   .star_rating {
+  width: 100%; 
+  box-sizing: border-box; 
+  display: inline-flex; 
+  float: left;
+  flex-direction: row; 
+  justify-content: flex-start;
+}
+.star_rating .star {
+  width: 25px; 
+  height: 25px; 
+  margin-right: 10px;
+  display: inline-block; 
+  background: url('images/nostar.png') no-repeat; 
+  background-size: 100%; 
+  box-sizing: border-box; 
+}
+.star_rating .star.on {
+  width: 25px; 
+  height: 25px;
+  margin-right: 10px;
+  display: inline-block; 
+  background: url('images/star.png') no-repeat;
+  background-size: 100%; 
+  box-sizing: border-box; 
+}
+    </style>
 </head>
 
 <body>
@@ -15,14 +45,19 @@
     캠핑장 : <input type="text" id="kakao_name" onclick="review_campingsearch()" th:value="${reviewVO.kakao_name}" />
     <input type="hidden" id="kakao_id" name="kakao_id" />
     <button type="button" onclick="review_campingsearch()">캠핑장찾기</button>
+    <br></br>
+    <div class ="star_rating" th:data-rating="${reviewVO.reviewrate}">
+    별점  : 
+  	 <span class="star" data-value="1"> </span>
+  	 <span class="star" data-value="2"> </span>
+ 	 <span class="star" data-value="3"> </span>
+ 	 <span class="star" data-value="4"> </span>
+  	 <span class="star" data-value="5"> </span>
+	</div>
+	<br></br>
     <!-- div부분이 에디터 -->
     <div id="content"></div>
     <button type="button" onclick="usubmitReview()">리뷰 제출</button>
-	
-	<script type="text/javascript" th:src="@{js/ReviewW_U.js}"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-    <script src="https://uicdn.toast.com/editor-plugin-table/latest/toastui-editor-plugin-table.min.js"></script>
 </body>
 
 <!-- script -->
@@ -55,6 +90,27 @@ const editor = new toastui.Editor({
             }
         }
     }
+});
+
+$(document).ready(function() { // jQuery를 사용한 별점 초기화 및 클릭 이벤트 등록
+    var reviewRate = /*[[${reviewVO.reviewrate}]]*/ 0;
+    $('.star_rating .star').each(function() {
+        if ($(this).data('value') <= reviewRate) {
+            $(this).addClass('on');
+        }
+    });
+
+    $('.star_rating .star').on('click', function() {
+        var selectedRating = $(this).data('value');
+        $('.star_rating .star').each(function() {
+            if ($(this).data('value') <= selectedRating) {
+                $(this).addClass('on');
+            } else {
+                $(this).removeClass('on');
+            }
+        });
+        $('#review_rate').val(selectedRating);
+    });
 });
 </script>
 </html>

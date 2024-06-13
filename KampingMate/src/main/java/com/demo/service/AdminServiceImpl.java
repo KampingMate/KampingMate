@@ -2,6 +2,7 @@ package com.demo.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,12 +10,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.demo.domain.AdminQnaBoard;
+import com.demo.domain.Book;
 import com.demo.domain.MemberData;
 import com.demo.domain.Notice;
 import com.demo.domain.askBoard;
 import com.demo.persistence.AdminAskBoardRepository;
+import com.demo.persistence.AdminBookRepository;
 import com.demo.persistence.AdminNoticeRepository;
 import com.demo.persistence.AdminQnaBoardRepository;
 import com.demo.persistence.MemberRepository;
@@ -43,6 +47,9 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Autowired
 	private AdminNoticeRepository adminNoticeRepo;
+	
+	@Autowired
+	private AdminBookRepository adminBookRepo;
 
 	@Override
 	public int adminCheck(MemberData vo) {
@@ -73,7 +80,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<MemberData> getAllMemberList() {
 		// TODO Auto-generated method stub
-		return memberRepo.getAllMember();
+		return memberRepo.findAllByUsercodeIsZero();
 	}
 	
 	
@@ -183,19 +190,10 @@ public class AdminServiceImpl implements AdminService {
 		
 	}
 
-	@Override
-	public Page<Notice> getAllNoticeList(Pageable pageable) {
-		
-		// regdate 컬럼을 기준으로 내림차순 정렬하는 Sort 객체 생성
-	    Sort sort = Sort.by(Sort.Direction.DESC, "notice_date");
-	    // 페이징과 정렬 정보를 포함하는 Pageable 객체 생성
-	    Pageable sortedByNotice_dateDesc = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
-		
-	    return adminNoticeRepo.findAll(sortedByNotice_dateDesc);
-	}
+
 	
 	@Override
-	public List<Notice> getAllNoticeListMain() {
+	public List<Notice> getAllListMain() {
 		// TODO Auto-generated method stub
 		return adminNoticeRepo.getAllListMain();
 	}
@@ -223,6 +221,41 @@ public class AdminServiceImpl implements AdminService {
 		adminNoticeRepo.save(vo);
 		
 	}
+
+	@Override
+	public List<Notice> getAllList(String string) {
+		return adminNoticeRepo.findAll();
+	}
+
+	@Override
+	public List<Notice> getAllNotices() {
+	    return adminNoticeRepo.getAllNotices();
+	}
+
+	@Override
+	public List<Notice> getAllEvents() {
+	    return adminNoticeRepo.getAllEvents();
+	}
+
+	public List<Book> getAllBookings() {
+        return adminBookRepo.findAll();
+    }
+
+    @Transactional
+    public void updateBookingCondition(int bookseq, int condition) {
+    	adminBookRepo.updateBookCondition(bookseq, condition);
+    }
+
+    @Override
+    public Notice getBySeq(int noticeSeq) {
+        return adminNoticeRepo.findBySeq(noticeSeq);
+    }
+
+    @Override
+    public void saveNotice(Notice notice) {
+    	adminNoticeRepo.save(notice);
+    }
+
 
 	
 

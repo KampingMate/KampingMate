@@ -60,6 +60,7 @@ public class Review {
 	private int cnt; //조회수
 	private int goodpoint; // 추천수
 	private int bookmark; // 북마크수
+	private int reviewrate; //별점
 	
 	@ElementCollection
     private List<String> images;

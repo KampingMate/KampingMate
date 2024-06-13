@@ -52,4 +52,6 @@ public interface MemberRepository extends JpaRepository<MemberData, Long> {
     @Query("DELETE FROM MemberData md WHERE md.id = :id")
     void deleteById(@Param("id") String id);
 
+    @Query("SELECT m FROM MemberData m WHERE m.usercode = 0")
+    List<MemberData> findAllByUsercodeIsZero();
 }

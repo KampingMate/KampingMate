@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>공지사항 목록(관리자페이지)</title>
+    <title>예약 목록(관리자페이지)</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="/css/admin_styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="admin_main">관리자 메인</a>
     </nav>
     <div id="layoutSidenav">
@@ -43,32 +43,52 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">공지사항 목록</h1>
+                    <h1 class="mt-4">예약 목록</h1>
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th>번호</th>
-                                <th>제목</th>
+                                <th>캠핑 이름</th>
                                 <th>작성자</th>
-                                <th>작성일</th>
+                                <th>인원수</th>
+                                <th>시작일</th>
+                                <th>종료일</th>
+                                <th>상태</th>
+                                <th>변경</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="notice, stat : ${notices}">
+                            <tr th:each="booking, stat : ${bookings}">
                                 <td th:text="${stat.index + 1}"></td>
+                                <td th:text="${booking.campingname}"></td>
+                                <td th:text="${booking.member_data.name}"></td>
+                                <td th:text="${booking.headcount}"></td>
+                                <td th:text="${#dates.format(booking.bookdateS, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${#dates.format(booking.bookdateE, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${booking.condition == 0 ? '대기' : (booking.condition == 1 ? '확정' : '불가')}"></td>
                                 <td>
-            <a th:href="@{/admin_noticeDetail(notice_seq=${notice.notice_seq})}" th:text="${notice.notice_title}"></a>
-        </td>
-                                <td th:text="${notice.member_data.name}"></td>
-                                <td th:text="${#dates.format(notice.notice_date, 'yyyy-MM-dd')}"></td>
+                                    <form th:action="@{/updateBookingCondition.do}" method="post">
+                                        <input type="hidden" name="bookseq" th:value="${booking.bookseq}" />
+                                        <select name="condition">
+                                            <option value="0" th:selected="${booking.condition == 0}">대기</option>
+                                            <option value="1" th:selected="${booking.condition == 1}">확정</option>
+                                            <option value="2" th:selected="${booking.condition == 2}">불가</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-primary">변경</button>
+                                    </form>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
-                    <div>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href='admin_notice.do'">공지사항 등록</button>
-                    </div>
                 </div>
             </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2024</div>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

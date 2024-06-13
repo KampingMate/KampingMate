@@ -59,13 +59,15 @@ function toggleTheme() {
     <div class="header-bottom">
 		<form onsubmit="searchPlaces(); return false;">
 			<input type="text" value="" id="keyword" size="15" placeholder="검색어를 입력하세요.">
-			<button type="submit"><i class="fas fa-search"></i></button>
+			<button type="submit" class="header-serarch"><i class="fas fa-search"></i></button>
 		</form>
 			<ul>
             <li><h3><a th:href="@{/introduce}">Introduce</a></h3></li>
             <li><h3><a th:href="@{/campingSites}">Camping-Sites</a></h3></li>
             <li><h3><a th:href="@{/map}">map</a></h3></li>
             <li><h3><a th:href="@{/recommend}">reco</a></h3></li>
+            <li><h3><a th:href="@{/notice}">reco</a></h3></li>
+            <li><h3><a th:href="@{/book}">book</a></h3></li>
         </ul>
     </div>
 </div>

@@ -463,7 +463,8 @@ function itemClickEvent(marker, itemEl) {
 
     var content = '<form name="frm" id="frm" method="get">' +
         '<input type="hidden" name="kakao_id" value="' + itemEl.dataset.id + '"/>' +
-        '<h5>' + itemEl.dataset.placeName + '</h5>' + '<button type="button" onclick="bookmarkplus()">북마크하기</button>' +
+        '<h5>' + itemEl.dataset.placeName + '</h5>' + 
+        '<a href="#" th:attr="data-seq=${kakao_id}" onclick="camping_plus(this)">마음에드는 캠핑장</a><br>' +
         '<a href="' + itemEl.dataset.placeUrl + '" target="_blank">카카오맵에서 보기</a><br>' +
         '<span>전화번호: ' + itemEl.dataset.phone + '</span><br>' +
         '<span>주소: ' + itemEl.dataset.address + '</span><br>' +
@@ -473,6 +474,7 @@ function itemClickEvent(marker, itemEl) {
     infowindow.setContent(content);
     infowindow.open(map, marker);
 }
+
 
 // 리뷰페이지로 이동
 function go_reviewpage(kakao_id) {

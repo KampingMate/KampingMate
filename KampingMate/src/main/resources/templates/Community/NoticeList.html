@@ -1,45 +1,52 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8" name="viewport"
-	content="width=device-width, initial-scale=1">
-	<script type="text/javascript" th:src="@{js/notice.js}"></script>
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" th:src="@{js/notice.js}"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="stylesheet" th:href="@{/css/review.css}">
 <title>공지사항 / 이벤트 </title>
 </head>
 <body>
-<!-- 정렬버튼 -->
-<button type="button" onclick="go_list()">모두 보기</button>
-<button type="button" data-category="공지사항" onclick="keyClick(event)">공지사항 보기</button>
-<button type="button" data-category="이벤트" onclick="keyClick(event)">이벤트만 보기</button>
-
+<div class="notice-container">
+	<!-- 정렬버튼 -->
+	<div class="notice-main">
+		<button type="button" onclick="go_list()">모두 보기</button>
+		<button type="button" data-category="공지사항" onclick="keyClick(event)">공지사항 보기</button>
+		<button type="button" data-category="이벤트" onclick="keyClick(event)">이벤트만 보기</button>
+	</div>
+	
 	<!-- 검색란 -->
-	<form id="searchForm" name="searchForm" method="get">
-		<select name="searchType" id="searchType">
-			<option value="title">▼ 제목</option>
-		</select> 
-		<input type="text" name="searchKeyword" id="searchKeyword"> 
-		<input type="hidden" name="page" id="page" value="1">
-		<a href="#" onclick="submitSearch()">검색버튼</a>
-	</form>
-
+	<div class="notice-main">
+		<form id="searchForm" name="searchForm" method="get" onsubmit="return submitSearch()">
+			<select name="searchType" id="searchType">
+				<option value="title">▼ 제목</option>
+			</select> 
+			<input type="text" name="searchKeyword" id="searchKeyword"> 
+			<input type="hidden" name="page" id="page" value="1">
+			<a href="#" onclick="submitSearch()">검색버튼</a>
+		</form>
+	</div>
+	
 	<!-- 리뷰 게시글 리스트 -->
-	<form name="frm" method="get">
-		<table>
-			<th:block th:each="noticeVO, iterStat : ${NoticeList}">
-				<tr>
-					<td>[[${startNumber - iterStat.index}]]</td>
-					<td>[[${noticeVO.notice_cate}]]</td>
-					<td style="width: 60%; text-align: center;">
-						<a href="javascript:void(0);" th:onclick="'go_view(' + ${noticeVO.notice_seq} + ');'" th:text="${noticeVO.notice_title}" class="truncate">[[${noticeVO.notice_title}]]</a>
-					</td>
-					<td>날짜 : [[${#dates.format(noticeVO.notice_date, 'yyyy-MM-dd')}]]</td>
-					<td>조회수 : [[${noticeVO.notice_cnt}]]</td>
-				</tr>
-			</th:block>
-		</table>
-	</form>
-
+	<div class="notice-main">
+		<form name="frm" method="get">
+			<table>
+				<th:block th:each="noticeVO, iterStat : ${NoticeList}">
+					<tr>
+						<td>[[${startNumber - iterStat.index}]]</td>
+						<td>[[${noticeVO.notice_cate}]]</td>
+						<td style="width: 60%; text-align: center;">
+							<a href="javascript:void(0);" th:onclick="'go_view(' + ${noticeVO.notice_seq} + ');'" th:text="${noticeVO.notice_title}" class="truncate">[[${noticeVO.notice_title}]]</a>
+						</td>
+						<td>날짜 : [[${#dates.format(noticeVO.notice_date, 'yyyy-MM-dd')}]]</td>
+						<td>조회수 : [[${noticeVO.notice_cnt}]]</td>
+					</tr>
+				</th:block>
+			</table>
+		</form>
+	</div>
+	
 	<!-- 페이징처리 -->
     <div class="pagination">
         <ul>
@@ -54,5 +61,6 @@
             </li>
         </ul>
     </div>
+</div>
 </body>
 </html>

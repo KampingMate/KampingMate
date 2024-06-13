@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8" />
-<meta name="author" content="" />
 <title>관리자 페이지(Admin)</title>
 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -50,6 +49,7 @@ function go_edit(button) {
             </a><br>
             <a class="admin-a" th:href="@{/admin_QnA.do}">Q&A 게시판</a><br>
             <a class="admin-a" th:href="@{/admin_ask.do}">1:1 문의 게시판</a><br>
+            <a class="admin-a" th:href="@{/noticeReg.do}">공지사항 게시판</a>
         </div>
         <div class="admin-side">
             <h4>관리자 계정 : [[${loginUser.id}]]</h4>

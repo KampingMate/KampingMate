@@ -53,8 +53,8 @@ public class MainController {
     
     // 로그아웃 처리
     @GetMapping("/logout")
-    public String logout(SessionStatus status) {
-        status.setComplete(); // 세션 완료 상태로 설정
+    public String logout(HttpSession session) {
+        session.removeAttribute("loginUser");
         return "main"; // 로그아웃 후 로그인 화면으로 리다이렉트
     }
 	

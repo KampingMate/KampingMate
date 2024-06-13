@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.demo.domain.Review;
 
@@ -54,5 +55,13 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 	@Query(value="SELECT * FROM Review ORDER BY bookmark DESC ", nativeQuery=true)
 	public Page<Review> findAllByOrderByBookmarkDesc(int review_seq, Pageable pageable);
 	
+	 // 사용자 ID로 리뷰 가져오기
+    @Query(value="SELECT r FROM Review r WHERE r.member_data.id = :id")
+    List<Review> getReviewsById(@Param("id") String id);
+    
+ // 사용자 ID로 사용자가 북마크한 리뷰와 해당 리뷰를 작성한 다른 사람이 작성한 글 중에서 북마크한 리뷰를 가져오는 쿼리
+    @Query(value="SELECT r FROM Review r WHERE r.bookmark = 1 AND (r.member_data.id = :id OR r.review_seq IN (SELECT rb.review_seq FROM Review rb JOIN rb.member_data rm WHERE rm.id = :id))\n"
+    		+ "")
+    List<Review> findBookmarkedReviewsById(@Param("id") String id);
 
 }

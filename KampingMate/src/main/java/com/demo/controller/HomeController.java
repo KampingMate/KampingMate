@@ -51,13 +51,17 @@ public class HomeController {
         String result = runningProcess(mappedDoNm, selectedData.getFaclt(), selectedData.getLct(), selectedData.getInduty(), selectedData.getBottom(), selectedData.getSbrs(), userId);
 
         // 결과 확인
-        System.out.println("분석 결과=" + result);
+        System.out.println(result);
 
         // 결과 파싱
         List<Integer> recommendations = new ArrayList<>();
         String[] tmpArr = result.split("\n");
         for (String line : tmpArr) {
-            recommendations.add(Integer.parseInt(line.trim()));
+            try {
+                recommendations.add(Integer.parseInt(line.trim()));
+            } catch (NumberFormatException e) {
+                // 예외 발생 시 무시하고 진행
+            }
         }
 
         System.out.println("추천 데이터 =>" + recommendations);

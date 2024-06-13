@@ -289,7 +289,7 @@ function drawTemperatureGraph(temperature, w_time) {
 	});
 }
 
-// 기본 날짜와 시간을 얻는 함수
+/*// 기본 날짜와 시간을 얻는 함수
 function getBaseDate() {
 	var date = new Date();
 	return date.toISOString().slice(0, 10).replace(/-/g, '');
@@ -315,4 +315,57 @@ function getBaseTime() {
 		return "2300";
 	}
 	return ("0" + (Math.floor((hours - 1) / 3) * 3 + 2)).slice(-2) + "00";
+}*/
+
+
+
+
+// 한국 시간(KST)으로 현재 날짜를 얻는 함수
+function getKSTDate(date) {
+    // UTC 시간 기준으로 변환
+    var utcDate = date.getTime() + (date.getTimezoneOffset() * 60000);
+    // UTC+9 시간으로 변환
+    var koreaTimeOffset = 9 * 60 * 60 * 1000;
+    var koreaDate = new Date(utcDate + koreaTimeOffset);
+    return koreaDate;
+}
+
+// 기본 날짜 (한국 시간 기준)를 얻는 함수
+function getBaseDate() {
+    var date = getKSTDate(new Date());
+    var year = date.getFullYear();
+    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+    var day = ('0' + date.getDate()).slice(-2);
+    return year + month + day;
+}
+
+// 내일 날짜 (한국 시간 기준)를 얻는 함수
+function getTomorrowDate() {
+    var date = getKSTDate(new Date());
+    date.setDate(date.getDate() + 1);
+    var year = date.getFullYear();
+    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+    var day = ('0' + date.getDate()).slice(-2);
+    return year + month + day;
+}
+
+// 모레 날짜 (한국 시간 기준)를 얻는 함수
+function getDayAfterTomorrowDate() {
+    var date = getKSTDate(new Date());
+    date.setDate(date.getDate() + 2);
+    var year = date.getFullYear();
+    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+    var day = ('0' + date.getDate()).slice(-2);
+    return year + month + day;
+}
+
+// 기본 시간 (한국 시간 기준)를 얻는 함수
+function getBaseTime() {
+    var date = getKSTDate(new Date());
+    var hours = date.getHours();
+    if (hours < 2) {
+        date.setDate(date.getDate() - 1);
+        return "2300";
+    }
+    return ("0" + (Math.floor((hours - 1) / 3) * 3 + 2)).slice(-2) + "00";
 }

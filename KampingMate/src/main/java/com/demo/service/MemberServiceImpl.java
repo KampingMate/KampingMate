@@ -1,12 +1,19 @@
 package com.demo.service;
 
+import java.awt.print.Pageable;
 import java.util.List;
+import java.util.Optional;
 
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import com.demo.domain.MemberData;
+import com.demo.domain.Review;
 import com.demo.persistence.MemberRepository;
+import com.demo.persistence.ReviewRepository;
 
 
 
@@ -15,6 +22,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Autowired
     private MemberRepository memberRepo;
+    
+    @Autowired
+    private ReviewRepository reviewRepository; // 리뷰 Repository
 
     @Override
     public void insertMember(MemberData member) {
@@ -120,5 +130,45 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void deleteMemberById(String id) {
+        memberRepo.deleteById(id);
+    }
+
+	@Override
+	public void deleteMember(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void withdrawMember(String id) {
+		 // 회원을 찾습니다.
+	    Optional<MemberData> optionalMember = Optional.ofNullable(memberRepo.findByLoginId(id));
+	    
+	    // 회원이 존재하면 삭제합니다.
+	    optionalMember.ifPresent(member -> memberRepo.delete(member));
+		
+	}
+
+	@Override
+	public MemberData findById(String id) {
+	    // 데이터베이스에서 사용자 ID를 기반으로 사용자를 조회하는 로직을 구현
+	    // 여기서는 가상의 데이터를 사용하므로 간단한 예시를 제공합니다.
+	    
+	    // 예시: 사용자 ID가 id와 일치하는 MemberData 객체를 찾는다고 가정
+	    // 실제로는 데이터베이스 쿼리 등을 사용하여 사용자를 조회해야 합니다.
+	    MemberData memberData = memberRepo.findByLoginId(id);
+	    
+	    return memberData;
+	}
+
+
+	
+	
+
+
+
+
 
 }

@@ -18,8 +18,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.demo.domain.AdminQnaBoard;
 import com.demo.domain.MemberData;
+import com.demo.domain.Notice;
 import com.demo.domain.askBoard;
 import com.demo.service.AdminService;
+import com.demo.service.MemberService;
+import com.demo.service.NoticeService;
+
+import jakarta.persistence.EntityManager;
 
 @Controller
 @SessionAttributes("loginUser")
@@ -27,6 +32,13 @@ public class AdminController {
 
     @Autowired
     AdminService adminService;
+    @Autowired
+    NoticeService noticeService;
+    @Autowired
+    MemberService memberService;
+    
+    @Autowired
+    private EntityManager entityManager;
 
     @GetMapping("/admin")
     public String mainView() {
@@ -102,6 +114,7 @@ public class AdminController {
             return "redirect:/admin";
         }
     }
+    
 
     @GetMapping("/qnaRegister.do")
     public String qnaRegiView(@ModelAttribute("loginUser") MemberData loginUser) {
@@ -245,4 +258,27 @@ public class AdminController {
         return "redirect:/admin_ask.do";
     }
 
+    @GetMapping("/noticeRegister.do")
+    public String Notice(@ModelAttribute("loginUser") MemberData loginUser) {
+        if (loginUser != null && loginUser.getId() != null) {
+            adminService.adminCheck(loginUser);
+            return "admin/boardForm/noticeForm";
+        } else {
+            return "redirect:/admin";
+        }
+    }
+
+    @GetMapping("/noticeReg.do")
+    public String noticeRegister(@ModelAttribute("loginUser") MemberData loginUser, Model model, Pageable pageable) {
+        if (loginUser != null && loginUser.getId() != null) {
+            adminService.adminCheck(loginUser);
+            
+            Page<Notice> noticePage = adminService.getAllNoticeList(PageRequest.of(pageable.getPageNumber(), 10));
+            model.addAttribute("noticePage", noticePage);
+            
+            return "admin/boardPage/admin_noticelist";
+        } else {
+            return "redirect:/admin";
+        }
+    }
 }

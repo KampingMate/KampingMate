@@ -67,18 +67,5 @@
         </li>
     </ul>
 
-    <div th:if="${totalPages > 0}" id="pagination" class="pagination">
-        <span th:if="${currentPage > 1}">
-            <a th:href="@{/getSearchList(doNm=${param.doNm}, gungu=${param.gungu}, faclt=${param.faclt}, lct=${param.lct}, induty=${param.induty}, bottom=${param.bottom}, sbrs=${param.sbrs}, page=1)}">&laquo; 처음</a>
-            <a th:href="@{/getSearchList(doNm=${param.doNm}, gungu=${param.gungu}, faclt=${param.faclt}, lct=${param.lct}, induty=${param.induty}, bottom=${param.bottom}, sbrs=${param.sbrs}, page=${currentPage - 1})}">&lt; 이전</a>
-        </span>
-        <span th:each="i : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage < totalPages - 2 ? currentPage + 2 : totalPages)}">
-            <a th:href="@{/getSearchList(doNm=${param.doNm}, gungu=${param.gungu}, faclt=${param.faclt}, lct=${param.lct}, induty=${param.induty}, bottom=${param.bottom}, sbrs=${param.sbrs}, page=${i})}" th:text="${i}" th:class="${i == currentPage ? 'active' : ''}">1</a>
-        </span>
-        <span th:if="${currentPage < totalPages}">
-            <a th:href="@{/getSearchList(doNm=${param.doNm}, gungu=${param.gungu}, faclt=${param.faclt}, lct=${param.lct}, induty=${param.induty}, bottom=${param.bottom}, sbrs=${param.sbrs}, page=${currentPage + 1})}">다음 &gt;</a>
-            <a th:href="@{/getSearchList(doNm=${param.doNm}, gungu=${param.gungu}, faclt=${param.faclt}, lct=${param.lct}, induty=${param.induty}, bottom=${param.bottom}, sbrs=${param.sbrs}, page=${totalPages})}">마지막 &raquo;</a>
-        </span>
-    </div>
 </body>
 </html>

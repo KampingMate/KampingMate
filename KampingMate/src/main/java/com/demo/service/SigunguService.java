@@ -20,7 +20,7 @@ public class SigunguService {
         Map<String, List<String>> sigunguMap = new HashMap<>();
 
         try {
-            File file = new File("C:/Users/tiger/OneDrive/바탕 화면/팀프로젝트 - 복사본/sigungu_data.xml");
+            File file = new File("C:/Users/tiger/Kamp/sigungu_data.xml");
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(file);

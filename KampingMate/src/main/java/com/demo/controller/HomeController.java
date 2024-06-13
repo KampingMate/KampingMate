@@ -42,32 +42,39 @@ public class HomeController {
         System.out.println("Selected Bottom: " + selectedData.getBottom());
         System.out.println("Selected Sbrs: " + selectedData.getSbrs());
 
-        MemberData loginUser = (MemberData) session.getAttribute("loginUser");
+        Long loginUser = (Long) session.getAttribute("loginUserNumberData");
 
-        long userId = loginUser.getNo_data();  // loginUser 객체에서 userId를 가져옵니다.
-        System.out.println("userId: " + userId);
-
-        // 파이썬 스크립트 실행
-        String result = runningProcess(mappedDoNm, selectedData.getFaclt(), selectedData.getLct(), selectedData.getInduty(), selectedData.getBottom(), selectedData.getSbrs(), userId);
-
-        // 결과 확인
-        System.out.println(result);
-
-        // 결과 파싱
-        List<Integer> recommendations = new ArrayList<>();
-        String[] tmpArr = result.split("\n");
-        for (String line : tmpArr) {
-            try {
-                recommendations.add(Integer.parseInt(line.trim()));
-            } catch (NumberFormatException e) {
-                // 예외 발생 시 무시하고 진행
-            }
-        }
-
-        System.out.println("추천 데이터 =>" + recommendations);
-        session.setAttribute("recommendations", recommendations);
         
-        List<String> encodedDoNm = mappedDoNm.stream()
+        List<String> encodedDoNm = null;
+
+        if (loginUser != null && !loginUser.toString().isEmpty()) {
+        	long userId = loginUser;  // loginUser 객체에서 userId를 가져옵니다.
+            System.out.println("userId: " + userId);
+        	
+            // 파이썬 스크립트 실행
+            String result = runningProcess(mappedDoNm, selectedData.getFaclt(), selectedData.getLct(), selectedData.getInduty(), selectedData.getBottom(), selectedData.getSbrs(), userId);
+
+            // 결과 확인
+            System.out.println(result);
+
+            // 결과 파싱
+            List<Integer> recommendations = new ArrayList<>();
+            String[] tmpArr = result.split("\n");
+            for (String line : tmpArr) {
+                try {
+                    recommendations.add(Integer.parseInt(line.trim()));
+                } catch (NumberFormatException e) {
+                    // 예외 발생 시 무시하고 진행
+                }
+            }
+
+            System.out.println("추천 데이터 =>" + recommendations);
+            session.setAttribute("recommendations", recommendations);
+
+            
+        }
+        
+        encodedDoNm = mappedDoNm.stream()
                 .map(doNm -> {
                     try {
                         return URLEncoder.encode(doNm, StandardCharsets.UTF_8.toString());
@@ -79,14 +86,14 @@ public class HomeController {
                 .collect(Collectors.toList());
 
         String url = "/getSearchList?"
-                + "doNm=" + String.join(",", encodedDoNm)
+                + "doNm=" + (encodedDoNm != null ? String.join(",", encodedDoNm) : "")
                 + "&gungu=" + String.join(",", selectedData.getGungu())
                 + "&faclt=" + String.join(",", selectedData.getFaclt())
                 + "&lct=" + String.join(",", selectedData.getLct())
                 + "&induty=" + String.join(",", selectedData.getInduty())
                 + "&bottom=" + String.join(",", selectedData.getBottom())
                 + "&sbrs=" + String.join(",", selectedData.getSbrs())
-                + "&page=" + selectedData.getPage();
+                + "&page=" + 1;
 
         Map<String, String> response = new HashMap<>();
         response.put("redirectUrl", url);

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.demo.domain.AdminQnaBoard;
+import com.demo.domain.Book;
 import com.demo.domain.MemberData;
 import com.demo.domain.Notice;
 import com.demo.domain.askBoard;
@@ -28,8 +29,12 @@ public interface AdminService {
 	public List<askBoard> getAllAskBoardListMain();
 	
 	// 관리자인 경우 모든 공지사항게시판 정보조회 
-		public Page<Notice> getAllNoticeList(Pageable pageable);
-		public List<Notice> getAllNoticeListMain();
+	public List<Notice> getAllList(String string);
+
+		public List<Notice> getAllListMain();
+		public List<Notice> getAllNotices();
+
+		public List<Notice> getAllEvents();
 	
 	// 게시글 저장
 	
@@ -58,6 +63,18 @@ public interface AdminService {
 	MemberData validateLogin(String id, String password);
 
 	void withdrawMember(String id);
+
+	List<Book> getAllBookings();
+
+	void updateBookingCondition(int bookseq, int condition);
+
+	Notice getBySeq(int noticeSeq);
+
+	void saveNotice(Notice notice);
+
+	
+
+	
 
 	
 

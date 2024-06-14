@@ -13,7 +13,10 @@ function go_register() {
 
 function go_del(button) {
     const qnaBoard = button.parentNode.querySelector(".qnaBoard").value;
-    document.getElementById('deleteModal').querySelector('.confirm-delete').onclick = function() {
+    const modal = document.getElementById('deleteModal');
+
+    // 삭제 버튼을 눌렀을 때만 모달을 보이도록 설정합니다.
+    modal.querySelector('.confirm-delete').onclick = function() {
         fetch(`qnaDelete.do?qnaSelect=${qnaBoard}`, {
             method: 'post'
         }).then(response => {
@@ -24,7 +27,14 @@ function go_del(button) {
             }
         });
     };
-    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+
+    // 모달을 보이도록 설정합니다.
+    modal.style.display = "block";
+}
+
+function closeModal(button) {
+    const modal = button.closest('.modal');
+    modal.style.display = "none";
 }
 
 function go_edit(button) {
@@ -34,8 +44,6 @@ function go_edit(button) {
     form.submit();
 }
 </script>
-
-</style>
 </head>
 <body id="admin-body">
 	<nav class="admin-nav">
@@ -43,15 +51,17 @@ function go_edit(button) {
             <a class="admin-a" th:href="@{/admin_main}">관리자 메인</a>
         </div>
         <div class="admin-side">
-            <h4>회원정보</h4>
+                    <h4>회원관리</h4>
             <a class="admin-a" th:href="@{/memberList.do}">
-                <i class="fas fa-tachometer-alt"></i>&nbsp;회원관리
+                <i class="fas fa-tachometer-alt"></i>&nbsp;회원 목록
             </a><br>
-            <a class="admin-a" th:href="@{/admin_QnA.do}">Q&A 게시판</a><br>
-            <a class="admin-a" th:href="@{/admin_ask.do}">1:1 문의 게시판</a><br>
-            <a class="admin-a" th:href="@{/noticeReg.do}">공지사항 게시판</a>
-        </div>
-        <div class="admin-side">
+            <a class="nav-link" href="admin_QnA.do">Q&A 게시판</a><br>
+			<a class="nav-link" href="admin_ask.do">1:1 문의 게시판</a><br>
+			<a class="nav-link" href="admin_noticelist.do">공지사항 게시판</a><br>
+			<a class="nav-link" href="admin_eventlist.do">이벤트 게시판</a><br>
+			<a class="nav-link" href="admin_bookinglist.do">예약 목록</a>
+                    </div>
+                    <div class="admin-side">
             <h4>관리자 계정 : [[${loginUser.id}]]</h4>
             <a class="admin-a" th:href="@{/admin_logout}">로그아웃</a>
         </div>

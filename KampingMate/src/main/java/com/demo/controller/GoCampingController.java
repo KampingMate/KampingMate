@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,75 +121,102 @@ public class GoCampingController {
                                       @RequestParam(name = "induty", required = false) String indutyStr,
                                       @RequestParam(name = "bottom", required = false) String bottom,
                                       @RequestParam(name = "sbrs", required = false) String sbrsStr,
-                                      @RequestParam(defaultValue = "0") int page,
-                                      Model model) {
+                                      @RequestParam(defaultValue = "1") int page,
+                                      @RequestParam(defaultValue = "10") int size,
+                                      @RequestParam(defaultValue = "facltNm") String sortField,
+                                      @RequestParam(defaultValue = "asc") String sortDirection,
+                                      HttpSession session, Model model) {
 
-        List<GoCamping> combinedResults = new ArrayList<>();
+        Set<GoCamping> resultSet = null;
+
+        // Helper method to handle empty string checks and apply repository method
+        BiFunction<String, Function<String, List<GoCamping>>, Set<GoCamping>> handleCondition =
+            (str, func) -> {
+                if (str != null && !str.trim().isEmpty()) {
+                    Set<GoCamping> tempSet = new HashSet<>();
+                    List<String> list = Arrays.asList(str.split(","));
+                    for (String item : list) {
+                        tempSet.addAll(func.apply("%" + item.trim() + "%")); // LIKE 연산자를 위한 와일드카드 추가
+                    }
+                    return tempSet;
+                } else {
+                    // str이 null이거나 공백일 경우 전체 목록 반환
+                    return new HashSet<>(gocampingRepo.findAll());
+                }
+            };
 
         // 각 조건에 대해 개별 쿼리를 실행하고 결과를 합침
-        if (doNmStr != null) {
-            List<String> doNmList = Arrays.asList(doNmStr.split(","));
-            for (String doNm : doNmList) {
-                combinedResults.addAll(gocampingRepo.findByDoNm(doNm));
+        resultSet = combineResults(resultSet, handleCondition.apply(doNmStr, gocampingRepo::findByDoNmLike));
+        resultSet = combineResults(resultSet, handleCondition.apply(gunguStr, gocampingRepo::findBySigunguNmLike));
+        resultSet = combineResults(resultSet, handleCondition.apply(facltStr, gocampingRepo::findByFacltLike));
+        resultSet = combineResults(resultSet, handleCondition.apply(lctStr, gocampingRepo::findByLctClLike));
+        resultSet = combineResults(resultSet, handleCondition.apply(indutyStr, gocampingRepo::findByIndutyLike));
+        resultSet = combineResults(resultSet, handleCondition.apply(sbrsStr, gocampingRepo::findBySbrsClLike));
+        if (bottom != null && !bottom.trim().isEmpty()) {
+            Set<GoCamping> bottomResults = new HashSet<>();
+            List<String> bottomList = Arrays.asList(bottom.split(","));
+            for (String b : bottomList) {
+                bottomResults.addAll(gocampingRepo.findByBottomLike("%" + b.trim() + "%"));
             }
+            resultSet = combineResults(resultSet, bottomResults);
+        } else {
+            // bottom이 null이거나 공백일 경우 전체 목록 반환
+            resultSet = combineResults(resultSet, new HashSet<>(gocampingRepo.findAll()));
         }
 
-        if (gunguStr != null) {
-            List<String> gunguList = Arrays.asList(gunguStr.split(","));
-            for (String gungu : gunguList) {
-                combinedResults.addAll(gocampingRepo.findBySigunguNm(gungu));
-            }
+        if (resultSet == null) {
+            resultSet = new HashSet<>(gocampingRepo.findAll()); // 모든 결과를 조회합니다
         }
 
-        if (facltStr != null) {
-            List<String> facltList = Arrays.asList(facltStr.split(","));
-            for (String faclt : facltList) {
-                combinedResults.addAll(gocampingRepo.findByFaclt(faclt));
-            }
-        }
-
-        if (lctStr != null) {
-            List<String> lctList = Arrays.asList(lctStr.split(","));
-            for (String lct : lctList) {
-                combinedResults.addAll(gocampingRepo.findByLctCl(lct));
-            }
-        }
-
-        if (indutyStr != null) {
-            List<String> indutyList = Arrays.asList(indutyStr.split(","));
-            for (String induty : indutyList) {
-                combinedResults.addAll(gocampingRepo.findByInduty(induty));
-            }
-        }
-
-        if (sbrsStr != null) {
-            List<String> sbrsList = Arrays.asList(sbrsStr.split(","));
-            for (String sbrs : sbrsList) {
-                combinedResults.addAll(gocampingRepo.findBySbrsCl(sbrs));
-            }
-        }
-
-        if (bottom != null && !bottom.isEmpty()) {
-            combinedResults.addAll(gocampingRepo.findByBottom(bottom));
-        }
-
-        // 중복 제거
-        Set<GoCamping> resultSet = new HashSet<>(combinedResults);
-
-        // 페이지네이션
+        // Convert Set to List and sort by content_id
         List<GoCamping> goCampingList = new ArrayList<>(resultSet);
-        int start = Math.min(page * 10, goCampingList.size());
-        int end = Math.min((page + 1) * 10, goCampingList.size());
+        goCampingList.sort((a, b) -> {
+            if ("asc".equals(sortDirection)) {
+                return Integer.compare(a.getContentId(), b.getContentId());
+            } else {
+                return Integer.compare(b.getContentId(), a.getContentId());
+            }
+        });
+
+        // Adjust page to be 0-based for subList
+        int totalItems = goCampingList.size();
+        int totalPages = (int) Math.ceil((double) totalItems / size);
+        page = Math.max(1, page) - 1; // Ensure page is at least 1 and then adjust for 0-based index
+        int start = Math.min(page * size, totalItems);
+        int end = Math.min(start + size, totalItems);
 
         List<GoCamping> paginatedList = goCampingList.subList(start, end);
-        int totalPages = (int) Math.ceil((double) goCampingList.size() / 10);
 
         // 조회된 캠핑장 리스트를 모델에 추가합니다.
         model.addAttribute("goCampingList", paginatedList);
-        model.addAttribute("currentPage", page);
+        model.addAttribute("currentPage", page + 1); // Adjust back to 1-based index
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDirection", sortDirection);
+        
+        List<Integer> recommendations = (List<Integer>) session.getAttribute("recommendations");
+        
+        model.addAttribute("recommendations", recommendations);
+        if(recommendations != null) {
+            List<GoCamping> recommendedCamps = gocampingRepo.findAllById(recommendations);
+           
+            model.addAttribute("recommend_list", recommendedCamps);
+            } else {
+               model.addAttribute("recommend_list", null);}
+        return "searchView"; // 뷰 페이지 이름을 반환합니다
+    }
 
-        return "searchView"; // 뷰 페이지 이름을 반환합니다.
+
+    private Set<GoCamping> combineResults(Set<GoCamping> mainSet, Set<GoCamping> newSet) {
+        if (newSet != null) {
+            if (mainSet == null) {
+                return newSet;
+            } else {
+                mainSet.retainAll(newSet);
+            }
+        }
+        return mainSet;
     }
     
     @GetMapping("/get_sigungu")
@@ -205,44 +234,39 @@ public class GoCampingController {
     }
     
     @GetMapping("/detailView")
-    public String goDetailView(@RequestParam("contentId") int contentId, Model model) {
+    public String goDetailView(@RequestParam("contentId") int contentId, Model model) throws Exception {
         // contentId를 이용해 캠핑장 정보를 조회
         GoCamping campDetail = gocampingRepo.findById(contentId).orElse(null);
-
+        List<String> ImageUrlList = goCampingAPI.getImageList(contentId);
         // 캠핑장 정보를 모델에 추가
         model.addAttribute("campDetail", campDetail);
+        model.addAttribute("imageList", ImageUrlList);
+        
+     // sbrsCl 필드를 쉼표로 분리하여 리스트로 변환
+        if (campDetail != null && campDetail.getSbrsCl() != null) {
+            List<String> facilities = Arrays.asList(campDetail.getSbrsCl().split(","));
+            model.addAttribute("facilities", facilities);
+        }
+        
+     // sbrsCl 필드를 쉼표로 분리하여 리스트로 변환
+        if (campDetail != null && campDetail.getEqpmnLendCl() != null) {
+            List<String> rentList = Arrays.asList(campDetail.getEqpmnLendCl().split(","));
+            model.addAttribute("rentList", rentList);
+        }
 
         return "detailView"; // detailView 템플릿을 반환
     }
     
     @PostMapping("/getRecommendList")
-    public String getRecommendListView(HttpSession session, 
-                                       @RequestParam(defaultValue = "0") int page,
-                                       Model model) {
+    public String getRecommendListView(HttpSession session, Model model) {
         // 세션에서 recommendations를 불러옴
         List<Integer> recommendations = (List<Integer>) session.getAttribute("recommendations");
-
-        if (recommendations == null || recommendations.isEmpty()) {
-            model.addAttribute("goCampingList", new ArrayList<>());
-            model.addAttribute("currentPage", 0);
-            model.addAttribute("totalPages", 0);
-            return "searchView";
-        }
 
         // 추천 캠핑장 목록 조회
         List<GoCamping> recommendedCamps = gocampingRepo.findAllById(recommendations);
 
-        // 페이지네이션
-        int start = Math.min(page * 10, recommendedCamps.size());
-        int end = Math.min((page + 1) * 10, recommendedCamps.size());
-
-        List<GoCamping> paginatedList = recommendedCamps.subList(start, end);
-        int totalPages = (int) Math.ceil((double) recommendedCamps.size() / 10);
-
         // 조회된 캠핑장 리스트를 모델에 추가
-        model.addAttribute("goCampingList", paginatedList);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("goCampingList", recommendedCamps);
 
         return "searchViewRecommend";
     }

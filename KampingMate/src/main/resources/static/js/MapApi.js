@@ -463,17 +463,42 @@ function itemClickEvent(marker, itemEl) {
 
     var content = '<form name="frm" id="frm" method="get">' +
         '<input type="hidden" name="kakao_id" value="' + itemEl.dataset.id + '"/>' +
+        '<input type="hidden" name="kakao_name" value="' + itemEl.dataset.placeName + '"/>' +
         '<h5>' + itemEl.dataset.placeName + '</h5>' + 
-        '<a href="#" th:attr="data-seq=${kakao_id}" onclick="camping_plus(this)">마음에드는 캠핑장</a><br>' +
         '<a href="' + itemEl.dataset.placeUrl + '" target="_blank">카카오맵에서 보기</a><br>' +
         '<span>전화번호: ' + itemEl.dataset.phone + '</span><br>' +
         '<span>주소: ' + itemEl.dataset.address + '</span><br>' +
         '<button type="button" onclick="go_reviewpage(\'' + itemEl.dataset.id + '\')">리뷰페이지로</button><br>' +
+        '<button type="button" onclick="go_book(\'' + itemEl.dataset.id + '\', \'' + itemEl.dataset.placeName + '\')">예약하러가기</button><br>' +
         '</form>';
     
     infowindow.setContent(content);
     infowindow.open(map, marker);
 }
+
+
+// 예약페이지로 이동
+function go_book(kakao_id, kakao_name) {
+    var theForm = document.createElement('form');
+    theForm.method = "get";
+    theForm.action = "/book";
+
+    var idField = document.createElement('input');
+    idField.type = "hidden";
+    idField.name = "campingid";
+    idField.value = kakao_id;
+
+    var nameField = document.createElement('input');
+    nameField.type = "hidden";
+    nameField.name = "campingname";
+    nameField.value = kakao_name;
+
+    theForm.appendChild(idField);
+    theForm.appendChild(nameField);
+    document.body.appendChild(theForm);
+    theForm.submit();
+}
+
 
 
 // 리뷰페이지로 이동

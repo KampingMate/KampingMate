@@ -6,6 +6,35 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" th:src="@{js/Book.js}"></script>
 <link rel="stylesheet" th:href="@{/css/book.css}">
+<style>
+
+.star_rating {
+    width: 100%; 
+    box-sizing: border-box; 
+    display: inline-flex; 
+    float: left;
+    flex-direction: row; 
+    justify-content: flex-start;
+}
+.star_rating .star {
+    width: 25px; 
+    height: 25px; 
+    margin-right: 10px;
+    display: inline-block; 
+    background: url('images/nostar.png') no-repeat; 
+    background-size: 100%; 
+    box-sizing: border-box; 
+}
+.star_rating .star.on {
+    width: 25px; 
+    height: 25px;
+    margin-right: 10px;
+    display: inline-block; 
+    background: url('images/star.png') no-repeat;
+    background-size: 100%; 
+    box-sizing: border-box; 
+}
+</style>
 <title>예약페이지</title>
 </head>
 <body>
@@ -53,4 +82,18 @@
         </form>
     </div>
 </body>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var campingid = urlParams.get('campingid');
+    var campingname = urlParams.get('campingname');
+
+    if (campingid) {
+        document.getElementById('campingid').value = campingid;
+    }
+    if (campingname) {
+        document.getElementById('campingname').value = campingname;
+    }
+});
+</script>
 </html>

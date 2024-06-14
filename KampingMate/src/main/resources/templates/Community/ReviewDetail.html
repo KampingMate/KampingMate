@@ -6,6 +6,34 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" th:src="@{js/ReviewDetail.js}"></script>
 <link rel="stylesheet" th:href="@{/css/review.css}">
+<style>
+
+.star_rating {
+    width: 100%; 
+    box-sizing: border-box; 
+    float: left;
+    flex-direction: row; 
+    justify-content: flex-start;
+}
+.star_rating .star {
+    width: 25px; 
+    height: 25px; 
+    margin-right: 10px;
+    display: inline-block; 
+    background: url('images/nostar.png') no-repeat; 
+    background-size: 100%; 
+    box-sizing: border-box; 
+}
+.star_rating .star.on {
+    width: 25px; 
+    height: 25px;
+    margin-right: 10px;
+    display: inline-block; 
+    background: url('images/star.png') no-repeat;
+    background-size: 100%; 
+    box-sizing: border-box; 
+}
+</style>
 <title>리뷰 글</title>
 </head>
 <body id="replyjs">
@@ -44,12 +72,21 @@
             <h2>제목 :[[${reviewVO.title}]]</h2>
             <h3>
             캠핑장 : [[${reviewVO.kakao_name}]]<br>
+            
+            <div class="star_rating">
+                <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                    <span class="star" th:classappend="${i <= reviewVO.reviewrate} ? 'on'"></span>
+                </th:block>
+            </div>
+            
 			등록일 : [[${#dates.format(reviewVO.write_date, "yyyy-MM-dd")}]]<br>
 			작성자 : [[${reviewVO.member_data.id}]]<br>
 			조회수 : [[${reviewVO.cnt}]]<br>
 			리뷰내용
             
-            <div class="review-box" th:utext="${reviewVO.content}"></div>
+            <div class="review-box">
+            	<span th:text="${reviewVO.content}"></span>
+            </div>
             </h3>
         </div>
     </form>

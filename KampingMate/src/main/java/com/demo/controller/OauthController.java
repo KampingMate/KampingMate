@@ -146,6 +146,8 @@ public class OauthController {
         if (user != null) {
             String id = user.getId();
             MemberData loginUser = memberService.getMember(id);
+            Long loginUserNoData = (Long)loginUser.getNo_data();
+            session.setAttribute("loginUserNumberData", loginUserNoData);
             session.setAttribute("loginUser", loginUser);
         }
         return "main";

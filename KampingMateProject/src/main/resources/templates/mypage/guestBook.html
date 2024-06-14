@@ -1,0 +1,33 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Reviews</title>
+</head>
+<body>
+    <h2>내가 작성한 리뷰</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성일</th>
+                <!-- 필요한 다른 열들을 여기에 추가 -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 반복문을 사용하여 리뷰 목록을 테이블에 추가 -->
+            <tr th:each="review, rowStat : ${myReviews}">
+                <td th:text="${rowStat.index + 1}"></td>
+                <td>
+                    <a th:href="@{/review/{reviewId}(reviewId=${review.review_seq})}" th:text="${review.title}"></a>
+                </td>
+                <td th:text="${#dates.format(review.write_date, 'yyyy-MM-dd HH:mm')}"></td>
+                <!-- 필요한 다른 열들을 여기에 추가 -->
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

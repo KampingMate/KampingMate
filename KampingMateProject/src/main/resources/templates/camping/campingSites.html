@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Camping Sites</title>
+    <style>
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination li a {
+            text-decoration: none;
+            padding: 8px 16px;
+            color: #007bff;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        .pagination li a.current {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .pagination li a:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+        .item {
+            margin-bottom: 20px;
+        }
+        .item img {
+            max-width: 200px;
+            height: auto;
+        }
+        .download-buttons {
+            margin: 20px 0;
+        }
+        .download-buttons a {
+            margin-right: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .download-buttons a:hover {
+            background-color: #0056b3;
+        }
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .calendar-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 40px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Camping Sites</h1>
+
+    <div th:if="${error}" th:text="${error}"></div>
+
+    <div th:unless="${error}">
+        <p>Total Count: <span th:text="${totalCount}"></span></p>
+        <div class="download-buttons">
+            <a th:href="@{/api/campingSites/csv}" download="campingSites.csv">Download CSV(저장데이터 엑셀오류, 한셀로 열어야함)</a>
+            <a th:href="@{/api/campingSites/xml}" download="campingSites.xml">Download XML</a>
+        </div>
+        <div th:each="item : ${items}" class="item">
+            <h2 th:text="${item.facltNm}">야영장명</h2>
+            <img th:if="${item.firstImageUrl != 'N/A'}" th:src="${item.firstImageUrl}" alt="대표이미지">
+        </div>
+
+        <div>
+            <ul class="pagination">
+                <li th:if="${hasPrev}">
+                    <a th:href="@{/campingSites(page=${startPage - 1})}">이전</a>
+                </li>
+                <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+                    <a th:href="@{/campingSites(page=${pageNum})}" th:text="${pageNum}" th:class="${pageNum == currentPage ? 'current' : ''}"></a>
+                </li>
+                <li th:if="${hasNext}">
+                    <a th:href="@{/campingSites(page=${endPage + 1})}">다음</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="calendar-icon" onclick="openCalendarWindow()">
+        <i class="fas fa-calendar-alt"></i>
+    </div>
+    <script th:inline="javascript">
+        // 사용자 ID를 서버에서 전달된 값으로 설정합니다.
+        const user_id = /*[[${loginUserNumberData}]]*/ 'test';
+
+        // 사용자 ID가 null인 경우 'test'로 설정합니다.
+        if (user_id === 'null' || user_id === null) {
+            user_id = 'test';
+        }
+
+        function openCalendarWindow() {
+            window.open(`callender.html?user_id=${encodeURIComponent(user_id)}`, '_blank', 'width=460,height=700');
+        }
+    </script>
+</body>
+</html>

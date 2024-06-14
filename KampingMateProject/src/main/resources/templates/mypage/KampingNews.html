@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/mypage.css}">
+    <title>네이버 뉴스 검색 결과</title>
+</head>
+<body>
+<!-- 헤더 -->
+<th:block th:insert="~{include/header}"></th:block>
+
+<!-- 메뉴 -->
+<th:block th:insert="~{mypage/menu}"></th:block>
+	
+	<div class="news-container">
+		<h1>네이버 뉴스 검색 결과</h1>
+		<div th:utext="${responseBody}"></div>
+	</div>
+
+<!-- 푸터 -->
+<th:block th:insert="~{include/footer}"></th:block>
+</body>
+</html>

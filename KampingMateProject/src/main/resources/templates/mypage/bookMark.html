@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmarked Reviews</title>
+    <!-- 이곳에 필요한 스타일시트 링크를 추가하세요 -->
+</head>
+<body>
+    <h1>Bookmarked Reviews</h1>
+    <ul>
+        <!-- 여기에 북마크된 리뷰를 표시할 목록을 생성하세요 -->
+        <!-- 예를 들어, Thymeleaf를 사용한다면 다음과 같이 작성할 수 있습니다. -->
+        <li th:each="review : ${bookmarkedReviews}">
+            <a th:href="@{/review/{reviewId}(reviewId=${review.review_seq})}" th:text="${review.title}"></a>
+        </li>
+    </ul>
+    <!-- 이곳에 필요한 스크립트를 추가하세요 -->
+</body>
+</html>

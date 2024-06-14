@@ -22,7 +22,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.demo.domain.MemberData;
-import com.demo.model.GoogleUser;
+import com.demo.dto.GoogleUser;
 import com.demo.service.MemberService;
 import com.demo.service.OauthService;
 import com.demo.service.PasswordGenerator;
@@ -144,14 +144,17 @@ public class OauthController {
     }
 
     @GetMapping("/autoLogin")
-    public String autoLogin(HttpSession session) {
+    public String autoLogin(HttpSession session, Model model) {
         GoogleUser user = (GoogleUser) session.getAttribute("user");
         if (user != null) {
             String id = user.getId();
             MemberData loginUser = memberService.getMember(id);
+            Long loginUserNoData = (Long)loginUser.getNo_data();
             session.setAttribute("loginUser", loginUser);
+            session.setAttribute("loginUserNumberData", loginUserNoData);
+            model.addAttribute("loginUserNumberData", session.getAttribute("loginUserNumberData"));
         }
-        return "redirect:/";
+        return "redirect:/main";
     }
 
     private ResponseEntity<String> getGoogleUserInfo() {

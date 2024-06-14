@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script th:src="@{/js/mypage.js}" defer></script>
+    <link rel="stylesheet" th:href="@{/css/mypage.css}">
+    <script type="text/javascript">
+function openInPopup(url) {
+        window.open(url, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+    }
+</script>  
+</head>
+<body>
+<a id="chatbot-icon" href="javascript:void(0);" onclick="openInPopup('/chat')"><i class="fas fa-robot"></i></a><br>
+<a id="calorie-icon" href="javascript:void(0);" onclick="openInPopup('/cal')"><i class="fas fa-calculator"></i></a>
+    <!-- 헤더 -->
+    <th:block th:insert="~{include/header}"></th:block>
+    
+	<!-- 메뉴 -->
+    <th:block th:insert="~{mypage/menu}"></th:block>
+    
+    <!-- 메인 -->
+    <div class="container1">
+    </div>
+
+    <!-- 푸터 -->
+    <th:block th:insert="~{include/footer}"></th:block>
+</body>
+</html>

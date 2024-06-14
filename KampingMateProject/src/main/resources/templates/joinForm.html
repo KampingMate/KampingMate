@@ -119,6 +119,14 @@ function validateForm() {
         alert("이메일 인증을 완료해주세요.");
         return false;
     }
+    const birthYearEl = document.querySelector('#birth-year');
+    const birthMonthEl = document.querySelector('#birth-month');
+    const birthDayEl = document.querySelector('#birth-day');
+    
+    if (!birthYearEl.value || !birthMonthEl.value || !birthDayEl.value) {
+        alert("생년월일을 선택해주세요");
+        return false;
+    }
     return true;
 }
 </script>

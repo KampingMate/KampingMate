@@ -3,10 +3,12 @@ package com.demo.service;
 import java.io.IOException;
 import java.util.Map;
 
-import com.demo.model.GoogleUser;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.demo.dto.GoogleUser;
+
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 

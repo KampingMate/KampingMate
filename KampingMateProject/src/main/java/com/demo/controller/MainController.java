@@ -56,6 +56,7 @@ public class MainController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.removeAttribute("loginUser");
+        session.removeAttribute("loginUserNumberData");
         return "main"; // 로그아웃 후 로그인 화면으로 리다이렉트
     }
 	

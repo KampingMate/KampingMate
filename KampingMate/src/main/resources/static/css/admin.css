@@ -83,6 +83,9 @@
     background-size: cover;
     background-position: center 50%;
 }
+#admin-main h1 {
+    text-align: center;
+}
 /* 네비게이션 바 */
 .admin-nav {
     display: flex;
@@ -91,12 +94,16 @@
     background-color: #333;
     color: #fff;
     padding: 20px 10px;
-    height: 100vh; /* 전체 높이 */
+   height: 100vh;
     min-width: 200px; /* 최소 너비 */
 }
 .admin-nav a {
     text-decoration: none;
     color: #fff;
+}
+.admin-nav a:hover {
+	text-decoration: none;
+    color: gold;
 }
 .admin-side {
     border: 1px solid gold;
@@ -121,7 +128,8 @@
 .content-box h4 {
     margin-top: 0;
 }
-.content-box a {
+.content-box a,
+.content-body a {
     text-decoration: none;
 
 }
@@ -136,13 +144,15 @@ table {
 th, td {
     border: 1px solid black;
     padding: 8px;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 th {
-    background-color: #f2f2f2;
     text-align: center;
 }
-
+tr:hover {
+    background-color: rgba(135, 206, 250, 0.6); /* 호버 시 배경색 변경 */
+}
 /* 전체 폼 스타일 */
 .form-1 {
     max-width: 600px;
@@ -150,7 +160,7 @@ th {
     padding: 20px;
     border: 1px solid black;
     border-radius: 5px;
-    background-color: #f9f9f9;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 /* 입력 필드 스타일 */
@@ -226,7 +236,6 @@ hr {
     border: 0;
     height: 1px;
     background-color: #ccc;
-    margin-bottom: 20px;
 }
 
 

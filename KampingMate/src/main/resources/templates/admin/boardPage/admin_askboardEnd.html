@@ -40,45 +40,6 @@ function openInquiryDetail(askNum) {
 }
 
 </script>
-<style>
-    .btn-custom {
-        margin-right: 5px;
-    }
-    .sb-sidenav-menu-heading {
-        font-size: 1.1em;
-        font-weight: bold;
-    }
-    .navbar-brand {
-        font-size: 1.5em;
-    }
-    .card-header {
-        background-color: #343a40;
-        color: white;
-    }
-    .table th, .table td {
-        text-align: center;
-    }
-    .table th {
-        background-color: #343a40;
-        color: white;
-    }
-    .pagination .active {
-        font-weight: bold;
-        background-color: #007bff;
-        color: white;
-    }
-    .pagination a {
-        margin: 0 2px;
-        padding: 5px 10px;
-        border: 1px solid #007bff;
-        border-radius: 3px;
-        color: #007bff;
-    }
-    .pagination a:hover {
-        background-color: #007bff;
-        color: white;
-    }
-</style>
 </head>
 <body id="admin-body">
 	<nav class="admin-nav">
@@ -86,17 +47,17 @@ function openInquiryDetail(askNum) {
             <a class="admin-a" th:href="@{/admin_main}">관리자 메인</a>
         </div>
         <div class="admin-side">
-                        <h4>회원관리</h4>
             <a class="admin-a" th:href="@{/memberList.do}">
                 <i class="fas fa-tachometer-alt"></i>&nbsp;회원 목록
-            </a><br>
-            <a class="nav-link" href="admin_QnA.do">Q&A 게시판</a><br>
-			<a class="nav-link" href="admin_ask.do">1:1 문의 게시판</a><br>
-			<a class="nav-link" href="admin_noticelist.do">공지사항 게시판</a><br>
-			<a class="nav-link" href="admin_eventlist.do">이벤트 게시판</a><br>
-			<a class="nav-link" href="admin_bookinglist.do">예약 목록</a>
-                        </div>
-                         <div class="admin-side">
+            </a>
+            <hr>
+            <a class="admin-a" href="admin_QnA.do">Q&A 게시판</a><br>
+			<a class="admin-a" href="admin_ask.do">1:1 문의 게시판</a><br>
+			<a class="admin-a" href="admin_noticelist.do">공지사항 게시판</a><br>
+			<a class="admin-a" href="admin_eventlist.do">이벤트 게시판</a><br>
+			<a class="admin-a" href="admin_bookinglist.do">예약 목록</a>
+        </div>
+        <div class="admin-side">
             <h4>관리자 계정 : [[${loginUser.id}]]</h4>
             <a class="admin-a" th:href="@{/admin_logout}">로그아웃</a>
         </div>

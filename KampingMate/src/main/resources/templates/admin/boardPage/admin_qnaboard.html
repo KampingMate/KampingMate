@@ -51,17 +51,17 @@ function go_edit(button) {
             <a class="admin-a" th:href="@{/admin_main}">관리자 메인</a>
         </div>
         <div class="admin-side">
-                    <h4>회원관리</h4>
             <a class="admin-a" th:href="@{/memberList.do}">
                 <i class="fas fa-tachometer-alt"></i>&nbsp;회원 목록
-            </a><br>
-            <a class="nav-link" href="admin_QnA.do">Q&A 게시판</a><br>
-			<a class="nav-link" href="admin_ask.do">1:1 문의 게시판</a><br>
-			<a class="nav-link" href="admin_noticelist.do">공지사항 게시판</a><br>
-			<a class="nav-link" href="admin_eventlist.do">이벤트 게시판</a><br>
-			<a class="nav-link" href="admin_bookinglist.do">예약 목록</a>
-                    </div>
-                    <div class="admin-side">
+            </a>
+            <hr>
+            <a class="admin-a" href="admin_QnA.do">Q&A 게시판</a><br>
+			<a class="admin-a" href="admin_ask.do">1:1 문의 게시판</a><br>
+			<a class="admin-a" href="admin_noticelist.do">공지사항 게시판</a><br>
+			<a class="admin-a" href="admin_eventlist.do">이벤트 게시판</a><br>
+			<a class="admin-a" href="admin_bookinglist.do">예약 목록</a>
+        </div>
+        <div class="admin-side">
             <h4>관리자 계정 : [[${loginUser.id}]]</h4>
             <a class="admin-a" th:href="@{/admin_logout}">로그아웃</a>
         </div>
@@ -111,7 +111,7 @@ function go_edit(button) {
                     </ul>
                 </div>
             </div>
-            <div class="text-end">
+            <div class="text-end" style="text-align:center; margin-top:10px;">
                 <button type="button" onclick="go_register()">
                     <i class="fas fa-plus"></i> 게시물 등록
                 </button>

@@ -281,7 +281,7 @@ input[type="button"]:hover,
     border-radius: 10px; /* 테두리 둥글게 설정 */
     background-color: rgba(255, 255, 255, 0.7); /* 배경을 거의 투명하지 않은 흰색으로 설정 */
     margin-bottom: 20px;
-    width: 840px;
+    width: 100%;
 }
 .review-box {
     border: 1px solid rgba(0, 0, 0, 0.2);

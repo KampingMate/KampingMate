@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>리뷰수정</title>
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script type="text/javascript" th:src="@{js/ReviewW_U.js}"></script>
-    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-    <style>
-   .star_rating {
-  width: 100%; 
-  box-sizing: border-box; 
-  display: inline-flex; 
-  float: left;
-  flex-direction: row; 
-  justify-content: flex-start;
+<meta charset="UTF-8">
+<title>리뷰수정</title>
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" th:src="@{js/ReviewW_U.js}"></script>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<style>
+
+.star_rating {
+    width: 100%; 
+    box-sizing: border-box; 
+    float: left;
+    flex-direction: row; 
+    justify-content: flex-start;
 }
 .star_rating .star {
-  width: 25px; 
-  height: 25px; 
-  margin-right: 10px;
-  display: inline-block; 
-  background: url('images/nostar.png') no-repeat; 
-  background-size: 100%; 
-  box-sizing: border-box; 
+    width: 25px; 
+    height: 25px; 
+    margin-right: 10px;
+    display: inline-block; 
+    background: url('images/nostar.png') no-repeat; 
+    background-size: 100%; 
+    box-sizing: border-box; 
 }
 .star_rating .star.on {
-  width: 25px; 
-  height: 25px;
-  margin-right: 10px;
-  display: inline-block; 
-  background: url('images/star.png') no-repeat;
-  background-size: 100%; 
-  box-sizing: border-box; 
+    width: 25px; 
+    height: 25px;
+    margin-right: 10px;
+    display: inline-block; 
+    background: url('images/star.png') no-repeat;
+    background-size: 100%; 
+    box-sizing: border-box; 
 }
-    </style>
+</style>
 </head>
 
 <body>

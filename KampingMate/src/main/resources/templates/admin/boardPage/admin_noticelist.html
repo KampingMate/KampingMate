@@ -57,8 +57,8 @@
                             <tr th:each="notice, stat : ${notices}">
                                 <td th:text="${stat.index + 1}"></td>
                                 <td>
-            <a th:href="@{/admin_noticeDetail(notice_seq=${notice.notice_seq})}" th:text="${notice.notice_title}"></a>
-        </td>
+						            <a th:href="@{/admin_noticeDetail(notice_seq=${notice.notice_seq})}" th:text="${notice.notice_title}"></a>
+						        </td>
                                 <td th:text="${notice.member_data.name}"></td>
                                 <td th:text="${#dates.format(notice.notice_date, 'yyyy-MM-dd')}"></td>
                             </tr>

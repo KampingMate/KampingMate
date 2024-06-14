@@ -311,7 +311,7 @@ public class ReviewController {
 		MemberData loginUser = (MemberData) session.getAttribute("loginUser");
 		Review reviewVO = reviewsv.getReview(review.getReview_seq());
 		
-		reviewVO.setContent(uploads);
+		reviewVO.setContent(review.getContent());
 		reviewVO.setImages(review.getImages());
 		reviewVO.setKakao_name(review.getKakao_name());
 		reviewVO.setKakao_id(review.getKakao_id());

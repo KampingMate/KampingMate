@@ -11,7 +11,6 @@
 .star_rating {
     width: 100%; 
     box-sizing: border-box; 
-    display: inline-flex; 
     float: left;
     flex-direction: row; 
     justify-content: flex-start;
@@ -75,7 +74,7 @@
 				<tr>
 					<th>No.</th>
 					<th>캠핑장소</th>
-					<th style="width:20%; text-align: center;" colspan="2">내용</th>
+					<th style="width:25%; text-align: center;" colspan="2">내용</th>
 					<th>별점</th>
 					<th>작성자</th>
 					<th>조회수</th>
@@ -88,7 +87,7 @@
 					<tr>
 						<td>[[${startNumber - iterStat.index}]]</td>
 						<td>[[${reviewVO.kakao_name}]]</td>
-						<td style="width:20%; text-align: center;" colspan="2">
+						<td style="width:25%; text-align: center;" colspan="2">
 							<a href="javascript:void(0);" th:onclick="'go_view(' + ${reviewVO.review_seq} + ');'" th:text="${reviewVO.title}" class="truncate">[[${reviewVO.title}]]</a>
 						</td>
 						<td>

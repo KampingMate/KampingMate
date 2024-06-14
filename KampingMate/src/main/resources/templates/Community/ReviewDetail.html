@@ -11,7 +11,6 @@
 .star_rating {
     width: 100%; 
     box-sizing: border-box; 
-    display: inline-flex; 
     float: left;
     flex-direction: row; 
     justify-content: flex-start;
@@ -73,19 +72,21 @@
             <h2>제목 :[[${reviewVO.title}]]</h2>
             <h3>
             캠핑장 : [[${reviewVO.kakao_name}]]<br>
-            </h3>
+            
             <div class="star_rating">
-				                <th:block th:each="i : ${#numbers.sequence(1, 5)}">
-				                    <span class="star" th:classappend="${i <= reviewVO.reviewrate} ? 'on'"></span>
-				                </th:block>
-				            </div>
-            <h3>
+                <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                    <span class="star" th:classappend="${i <= reviewVO.reviewrate} ? 'on'"></span>
+                </th:block>
+            </div>
+            
 			등록일 : [[${#dates.format(reviewVO.write_date, "yyyy-MM-dd")}]]<br>
 			작성자 : [[${reviewVO.member_data.id}]]<br>
 			조회수 : [[${reviewVO.cnt}]]<br>
 			리뷰내용
             
-            <div class="review-box" th:utext="${reviewVO.content}"></div>
+            <div class="review-box">
+            	<span th:text="${reviewVO.content}"></span>
+            </div>
             </h3>
         </div>
     </form>

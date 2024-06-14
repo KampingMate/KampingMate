@@ -42,7 +42,7 @@
 <div class="review-detail">
 	<h1>리뷰 상세페이지</h1>
     
-    <form name="frm" method="post">
+    <form name="frm" method="post" class="form-re">
         <input type="hidden" name="review_seq" id="review_seq" th:value="${reviewVO.review_seq}">
         <input type="hidden" name="login" id="login" th:value="${session.loginUser != null}">
         <div class="review-content">
@@ -85,7 +85,7 @@
 			리뷰내용
             
             <div class="review-box">
-            	<span th:text="${reviewVO.content}"></span>
+            	<span th:utext="${reviewVO.content}"></span>
             </div>
             </h3>
         </div>

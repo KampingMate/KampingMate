@@ -8,24 +8,28 @@
 <link rel="stylesheet" th:href="@{/css/review.css}">
 <title>공지사항/이벤트</title>
 </head>
-<body>
+<body id="replyjs">
 <!-- 헤더 -->
 <th:block th:insert="~{include/header}"></th:block>
 <div class="notice-detail">
-	<h3>공지사항/ 이벤트</h3>
-	<form name="frm" method="post">
-		<input type="hidden" name="notice_seq" id="notice_seq" th:value="${noticeVO.notice_seq}">
-		<h2>[[${noticeVO.notice_cate}]]</h2>
-		<a href="#" onclick="copyboard()"> 공유하기</a>
-		<h2>제목 :[[${noticeVO.notice_title}]]</h2>
-		<h3>등록일 : [[${#dates.format(noticeVO.notice_date, "yyyy-MM-dd")}]]</h3>
-		<h3>조회수 : [[${noticeVO.notice_cnt}]]</h3>
-		<h3>내용 :</h3>
-		<div th:utext="${noticeVO.notice_content}"></div>
-	</form>
+	<h1>공지사항 / 이벤트</h1>
+        <form name="frm" method="post"class="nd-content">
+            <input type="hidden" name="notice_seq" id="notice_seq" th:value="${noticeVO.notice_seq}">
 
+                <h2>[[${noticeVO.notice_cate}]]</h2>
+                <a href="#" onclick="copyboard()"> 공유하기</a>
+                <hr>
+                <h2>제목 :[[${noticeVO.notice_title}]]</h2>
+                <h3>등록일 : [[${#dates.format(noticeVO.notice_date, "yyyy-MM-dd")}]]</h3>
+                <h3>조회수 : [[${noticeVO.notice_cnt}]]</h3>
+                <h3>내용 </h3>
+                <div class="nd-box">
+                    <span th:utext="${noticeVO.notice_content}"></span>
+                </div>
 
-	<input type="button" value="목록" onClick="go_list()">
+        </form>
+
+	<input type="button" value="목록" onClick="go_list()" style="margin-top: 10px;">
 </div>
 </body>
 </html>

@@ -83,5 +83,12 @@ body, html {
 
 .tex {
     font-weight: bold;
-    color: #fbe091;
+    color: #5565f7;
+}
+
+.welcome-text {
+	border-radius: 10px;
+	padding: 20px;
+	color: black;
+	background-color: rgba(255, 255, 255, 0.5);
 }

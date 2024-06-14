@@ -29,20 +29,31 @@
 	</div>
 	
 	<!-- 리뷰 게시글 리스트 -->
-	<div class="notice-main">
+	<div class="notice-list">
 		<form name="frm" method="get">
-			<table>
-				<th:block th:each="noticeVO, iterStat : ${NoticeList}">
+			<table style="width: 100%">
+				<thead>
 					<tr>
-						<td>[[${startNumber - iterStat.index}]]</td>
-						<td>[[${noticeVO.notice_cate}]]</td>
-						<td style="width: 60%; text-align: center;">
-							<a href="javascript:void(0);" th:onclick="'go_view(' + ${noticeVO.notice_seq} + ');'" th:text="${noticeVO.notice_title}" class="truncate">[[${noticeVO.notice_title}]]</a>
-						</td>
-						<td>날짜 : [[${#dates.format(noticeVO.notice_date, 'yyyy-MM-dd')}]]</td>
-						<td>조회수 : [[${noticeVO.notice_cnt}]]</td>
+						<th>No.</th>
+						<th>카테고리</th>
+						<th>제목</th>
+						<th>날짜</th>
+						<th>조회수</th>
 					</tr>
-				</th:block>
+				</thead>
+				<tbody>
+					<th:block th:each="noticeVO, iterStat : ${NoticeList}">
+						<tr>
+							<td>[[${startNumber - iterStat.index}]]</td>
+							<td>[[${noticeVO.notice_cate}]]</td>
+							<td>
+								<a href="javascript:void(0);" th:onclick="'go_view(' + ${noticeVO.notice_seq} + ');'" th:text="${noticeVO.notice_title}" class="truncate">[[${noticeVO.notice_title}]]</a>
+							</td>
+							<td>[[${#dates.format(noticeVO.notice_date, 'yyyy-MM-dd')}]]</td>
+							<td>[[${noticeVO.notice_cnt}]]</td>
+						</tr>
+					</th:block>
+					</tbody>
 			</table>
 		</form>
 	</div>

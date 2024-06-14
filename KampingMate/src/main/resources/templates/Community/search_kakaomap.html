@@ -28,6 +28,7 @@
         var map = new kakao.maps.Map(mapContainer, mapOption);
         var ps = new kakao.maps.services.Places();
         var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+        var geocoder = new kakao.maps.services.Geocoder(); // 좌표로 행정구역정보 받기 서비스 객체 생성
         var markers = [];
 
         function searchPlaces() {
@@ -66,19 +67,27 @@
                     itemEl = getListItem(i, places[i]);
 
                 bounds.extend(placePosition);
-                (function(marker, title, lat, lng) {
+                (function(marker, title, lat, lng, id) {
                     itemEl.onclick = function() {
                         infowindow.setContent('<div style="padding:5px;font-size:12px;">' + title + '</div>');
                         infowindow.open(map, marker);
-                        window.opener.postMessage({
-                            type: 'selectedCampsite',
-                            name: title,
-                            lat: lat,
-                            lng: lng
-                        }, '*');
-                        window.close();
+
+                        // 좌표로 행정구역정보 받기
+                        geocoder.coord2RegionCode(lng, lat, function(result, status) {
+                            if (status === kakao.maps.services.Status.OK) {
+                                var regionId = result[0].code; // 행정구역 코드 사용
+                                window.opener.postMessage({
+                                    type: 'selectedCampsite',
+                                    name: title,
+                                    id: regionId, // 행정구역 코드로 설정
+                                    lat: lat,
+                                    lng: lng
+                                }, '*');
+                                window.close();
+                            }
+                        });
                     };
-                })(marker, places[i].place_name, places[i].y, places[i].x);
+                })(marker, places[i].place_name, places[i].y, places[i].x, places[i].id); // id 값 추가
 
                 fragment.appendChild(itemEl);
             }
@@ -105,8 +114,6 @@
 
             el.innerHTML = itemStr;
             el.className = 'item';
-            var kakao_name = places.place_name;
-            var kakao_id = places.id;
 
             return el;
         }

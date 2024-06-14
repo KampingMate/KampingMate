@@ -137,7 +137,7 @@ public class OauthController {
 
         memberRepo.save(member);
 
-        return "redirect:/";
+        return "main";
     }
 
     @GetMapping("/autoLogin")
@@ -146,9 +146,11 @@ public class OauthController {
         if (user != null) {
             String id = user.getId();
             MemberData loginUser = memberService.getMember(id);
+            Long loginUserNoData = (Long)loginUser.getNo_data();
+            session.setAttribute("loginUserNumberData", loginUserNoData);
             session.setAttribute("loginUser", loginUser);
         }
-        return "redirect:/";
+        return "main";
     }
 
     private ResponseEntity<String> getGoogleUserInfo() {

@@ -38,7 +38,7 @@ public class Review {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reviewseq")
-    @SequenceGenerator(name = "reviewseq", sequenceName = "reviewseq", allocationSize = 1)
+    @SequenceGenerator(name = "reviewseq", sequenceName = "reviewseq", allocationSize = 1)	
 	int review_seq; //글번호 고유
 	
 	private String kakao_id; //(카카오맵에서 가져오기)
@@ -60,6 +60,7 @@ public class Review {
 	private int cnt; //조회수
 	private int goodpoint; // 추천수
 	private int bookmark; // 북마크수
+	private int reviewrate; //별점
 	
 	@ElementCollection
     private List<String> images;

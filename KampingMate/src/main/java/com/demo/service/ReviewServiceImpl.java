@@ -1,6 +1,7 @@
 package com.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -113,4 +114,20 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewRepo.findReviewByKakao_idOrderByKakao_id(kakao_id, review_seq, pageable);
 	}
 
+	// 사용자 ID를 기반으로 리뷰 가져오기
+    @Override
+    public List<Review> getReviewsById(String id) {
+        return reviewRepo.getReviewsById(id);
+    }
+
+    @Override
+    public Review getReviewById(int reviewId) {
+        Optional<Review> optionalReview = reviewRepo.findById(reviewId);
+        return optionalReview.orElse(null);
+    }
+
+	@Override
+	public List<Review> getBookmarkedReviews(String id) {
+		return reviewRepo.findBookmarkedReviewsById(id);
+	}
 }

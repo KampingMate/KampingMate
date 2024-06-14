@@ -1,60 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
 <meta charset="utf-8">
 <title>Main</title>
 <link rel="stylesheet" th:href="@{/css/main.css}">
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a77e619adb52e6d650de29bcd7ef2670"></script>
-<script>
-    window.onload = function() {
-        // 위치 정보 가져오기
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                var lat = position.coords.latitude;
-                var lng = position.coords.longitude;
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-scrollbars/1.1.0/chartjs-plugin-scrollbars.min.js"></script>
 
-                // 카카오맵 API를 로드하는 스크립트
-                kakao.maps.load(function () {
-                    // 지도를 표시할 div 요소 선택
-                    var container = document.getElementById('map');
-
-                    // 지도를 생성하는데 필요한 옵션
-                    var options = {
-                        center: new kakao.maps.LatLng(lat, lng), // 현재 위치로 설정
-                        level: 5 // 지도 확대 레벨
-                    };
-
-                    // 지도를 생성
-                    var map = new kakao.maps.Map(container, options);
-                });
-            });
-        } else {
-            alert("Geolocation이 지원되지 않습니다.");
-        }
-    };
-</script>
+<!-- <script src="jquery.ajax-cross-origin.min.js"></script> -->
+<!-- 크로스도메인 해결 플러그인 -->
+<script th:src="@{/js/main.js}"></script>
 </head>
-<!-- 헤더 -->
-<th:block th:insert="~{include/header}"></th:block>
 <body>
-<div class="container">
-    <!-- 지도 test -->
-    <div id="map" style="width:500px; height:450px;"></div>
-    <!-- 고캠핑 test -->
-    <div id="go-camping">
-        <label>아이콘 + 주변 캠핑장 목록</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <span>
-            <select name="distance" id="distance">
-                <option value="10km">5km</option>
-                <option value="20km">10km</option>
-                <option value="30km">20km</option>
-                <option value="40km">30km</option>
-            </select>
-        </span>
-    </div>
-</div>
+	<!-- 헤더 -->
+	<th:block th:insert="~{include/header}"></th:block>
+	<div class="w-container">
+		<!-- 날씨 왼쪽 -->
+		<div id="weatherInfo">
+			<p><span id="currentWeather"></span></p>
+			<p><span id="maxTemperature"></span> / <span id="minTemperature"></span></p>
+			<p>하늘 상태 : <span id="skyStatus"></span></p>
+		</div>
+		<div id="weatherChart" style="width: 400px; height: 200px;">
+			<h3 style="display: inline;">날씨 그래프</h3>
+			&nbsp;&nbsp;&nbsp; <span class="clickable" id="today"> 오늘 </span> <span
+				class="clickable" id="tomorrow"> 내일 </span> <span class="clickable"
+				id="dayAfterTomorrow"> 모레 </span>
+			<canvas id="temperatureChartCanvas"></canvas>
+		</div>
+		<div>일출 / 일몰 자리</div>
+	    
+	</div>
+	<!-- 푸터 -->
+	<th:block th:insert="~{include/footer}"></th:block>
 </body>
-<!-- 푸터 -->
-<th:block th:insert="~{include/footer}"></th:block>
 </html>

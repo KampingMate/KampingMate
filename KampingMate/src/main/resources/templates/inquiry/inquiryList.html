@@ -6,16 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1:1 문의</title>
     <!-- Font Awesome CSS -->
+    <link rel="stylesheet" th:href="@{/css/customer.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
 <body>
-<!-- 챗봇 아이콘과 칼로리 계산기 아이콘 -->
-    <a id="chatbot-icon" href="javascript:void(0);" onclick="openInPopup('/chat')"><i class="fas fa-robot"></i></a><br>
-<a id="calorie-icon" href="javascript:void(0);" onclick="openInPopup('/cal')"><i class="fas fa-calculator"></i></a>
-
 <!-- 헤더 파일 삽입 -->
-    <th:block th:insert="~{include/header.html}"></th:block>
+<th:block th:insert="~{include/header.html}"></th:block>
 
     <div class="inquirylist">
     <!-- 1:1 문의 제목 -->
@@ -62,10 +59,11 @@
                 </tbody>
             </table>
         </div>
+        <!-- 페이지네이션 -->
+		<div id="pagination" class="pagination"></div>
     </div>
 
-<!-- 페이지네이션 -->
-    <div id="pagination" class="pagination"></div>
+
 <!-- 푸터 파일 삽입 -->
     <th:block th:insert="~{include/footer.html}"></th:block>
 

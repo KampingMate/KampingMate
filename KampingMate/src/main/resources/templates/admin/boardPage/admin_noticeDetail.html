@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항 상세 정보</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>공지사항 & 이벤트 상세 정보</h2>
+        <hr>
+        
+        <!-- Display notice details -->
+        <div>
+            <h4 th:text="${notice.notice_title}"></h4>
+            <p>작성자: <span th:text="${notice.member_data.name}"></span></p>
+            <p>작성일: <span th:text="${#dates.format(notice.notice_date, 'yyyy-MM-dd')}"></span></p>
+            <p>내용: <span th:text="${notice.notice_content}"></span></p>
+            
+            
+            <!-- You can add more fields as needed -->
+        </div>
+        
+        <hr>
+        
+        <!-- Update form -->
+        <form action="/admin_updateNotice" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="notice_seq" th:value="${notice.notice_seq}">
+            <input type="hidden" name="notice_cate" th:value="${notice.notice_cate}">
+            <div class="form-group">
+                <label for="noticeTitle">제목</label>
+                <input type="text" class="form-control" id="noticeTitle" name="notice_title" th:value="${notice.notice_title}">
+            </div>
+            <div class="form-group">
+                <label for="noticeContent">내용</label>
+                <textarea class="form-control" id="noticeContent" name="notice_content" rows="5" th:text="${notice.notice_content}"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="file">첨부 파일</label>
+                <input type="file" id="file" name="file">
+            </div>
+            <button type="submit" class="btn btn-primary">저장</button>
+            <a href="/admin_noticelist.do" class="btn btn-secondary ml-2">취소</a>
+        </form>
+        
+        <hr>
+        
+        <!-- Back button -->
+        <div>
+            <a th:href="${notice.notice_cate == 'event' ? '/admin_eventlist.do' : '/admin_noticelist.do'}" class="btn btn-primary">목록으로 돌아가기</a>
+        </div>
+    </div>
+</body>
+</html>

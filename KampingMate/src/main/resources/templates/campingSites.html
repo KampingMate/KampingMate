@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Camping Sites</title>
+<link rel="stylesheet" th:href="@{/css/campingSites.css}">
+</head>
+<body>
+<!-- 헤더 -->
+<th:block th:insert="~{include/header}"></th:block>
+    <div id="camp-container">
+        <!-- 제목 -->
+        <h1>Camping Sites</h1>
+        <!-- 에러 메시지 표시 -->
+        <div th:if="${error}" th:text="${error}"></div>
+        <!-- 에러가 없을 경우 캠핑 사이트 목록 표시 -->
+        <div th:unless="${error}">
+            <!-- 총 개수 표시 -->
+            <p>Total Count: <span th:text="${totalCount}"></span></p>
+            <div class="download-buttons">
+	           <a th:href="@{/api/campingSites/csv}" download="campingSites.csv">Download CSV(저장데이터 엑셀오류, 한셀로 열어야함)</a>
+	           <a th:href="@{/api/campingSites/xml}" download="campingSites.xml">Download XML</a>
+	       </div>
+            <!-- 각 캠핑 사이트 아이템 -->
+            <div class="items-container">
+                <div th:each="item : ${items}" class="item">
+                    <div>
+                        <!-- 이미지 및 링크 -->
+                        <a th:if="${item.firstImageUrl != 'N/A'}" th:href="${item.homepage}">
+                            <img th:src="${item.firstImageUrl}" alt="대표이미지">
+                        </a>
+                        <a th:unless="${item.firstImageUrl != 'N/A'}" th:href="${item.homepage}">
+                        	<img th:src="@{/images/no_img.jpg}" alt="이미지 준비중">
+                        </a>
+                        <!-- 야영장명 -->
+                        <h2 th:text="${item.facltNm}">야영장명</h2>
+                        <p><strong>번호:</strong> <span th:text="${item.tel}"></span></p>
+                        <p><strong>주소:</strong> <span th:text="${item.addr1}">주소</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- 페이지네이션 -->
+            <div id="camp-page">
+                <ul class="pagination">
+                    <li th:if="${hasPrev}">
+                        <a th:href="@{/campingSites(page=${startPage - 1})}">이전</a>
+                    </li>
+                    <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+                        <a th:href="@{/campingSites(page=${pageNum})}" th:text="${pageNum}" th:class="${pageNum == currentPage ? 'current' : ''}"></a>
+                    </li>
+                    <li th:if="${hasNext}">
+                        <a th:href="@{/campingSites(page=${endPage + 1})}">다음</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+<!-- 푸터 -->
+<th:block th:insert="~{include/footer}"></th:block>
+</body>
+</html>

@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,9 +32,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.demo.domain.GoCamping;
 import com.demo.domain.MemberData;
 import com.demo.domain.Review;
 import com.demo.domain.ReviewReply;
+import com.demo.persistence.GoCampingRepository;
 import com.demo.service.ReviewReplyService;
 import com.demo.service.ReviewService;
 
@@ -49,6 +54,9 @@ public class ReviewController {
     @Autowired
     ReviewReplyService replysv;
     
+    @Autowired
+    GoCampingRepository gocampingRepo;
+    
     @PersistenceContext
     private EntityManager entityManager;
     
@@ -60,10 +68,16 @@ public class ReviewController {
         return "Mapsearch/regionMapApi";
     }
     
-    // 리뷰작성시 캠핑장찾기
+    // 리뷰작성시 지도로 찾기
     @GetMapping("/kakao-map")
     public String kakaoMap() {
         return "Community/search_kakaomap";
+    }
+    
+    //리뷰작성시 이름으로찾기
+    @GetMapping("/gocampreview")
+    public String gocamping_serch() {
+        return "Community/search_gocamp";
     }
     
     //리뷰 리스트
@@ -110,6 +124,30 @@ public class ReviewController {
         return "Community/ReviewList";
     }
     
+  //추천통해서 리뷰페이지로
+    @GetMapping("/gocamping_review_detail")
+    public String getgocampingReviewDetail(@RequestParam(value = "campid") String kakao_id,
+                                  Model model,
+                                  @RequestParam(value = "review_seq", defaultValue = "1") int review_seq,
+                                  @RequestParam(value = "page", defaultValue = "1") int page,
+                                  @RequestParam(value = "size", defaultValue = "6") int size) {
+    	
+
+
+        List<Review> reviewList = reviewsv.getReviewsByKakaoId(kakao_id);
+        Page<Review> pageList = reviewsv.getReviewBykakao_id(review_seq, page, size, kakao_id);
+        reviewList.sort(Comparator.comparingInt(Review::getReview_seq));
+        long totalElements = pageList.getTotalElements();
+        long startNumber = totalElements - (page - 1) * size;
+       
+
+        model.addAttribute("reviewList", reviewList);
+        model.addAttribute("totalPages", pageList.getTotalPages());
+        model.addAttribute("pageNumber", page);
+        model.addAttribute("startNumber", startNumber);
+        
+        return "Community/ReviewList";
+    }
     
     
 	// 게시글 상세정보 조회
@@ -159,8 +197,6 @@ public class ReviewController {
         review.setMember_data(loginUser);
         reviewsv.insertReview(review);
         
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create("/Community/ReviewList"));
         return new ResponseEntity<>("Review submitted successfully", HttpStatus.OK);
     }
     
@@ -225,6 +261,29 @@ public class ReviewController {
 	}
 	
 	
+	// 고캠핑 캠핑장찾기
+	@GetMapping("/campingname_search")
+	public String getGocampingSearch(@RequestParam(value = "content_id", defaultValue = "1") int content_id,
+			@RequestParam("searchKeyword") String keyword,
+			@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "size", defaultValue = "10") int size, Model model) {
+		
+		Pageable pageable = PageRequest.of(page - 1, size, Direction.ASC, "content_id");
+		Page<GoCamping> pageList = gocampingRepo.searchreview_List(keyword, content_id, pageable);
+
+	    List<GoCamping> searchResult = pageList.getContent();
+	    long totalElements = pageList.getTotalElements();
+	    long startNumber = totalElements - (page - 1) * size;
+
+	    model.addAttribute("reviewList", searchResult);
+	    model.addAttribute("totalPages", pageList.getTotalPages());
+	    model.addAttribute("pageNumber", page);
+	    model.addAttribute("startNumber", startNumber);
+
+		return "Community/search_gocamp";
+	}
+	
+	
 	// 글수정 페이지로 이동
 	@GetMapping("/review_update")
 	public String getReviewUpdate(HttpSession session, Model model, @RequestParam("review_seq") int review_seq) {
@@ -250,13 +309,16 @@ public class ReviewController {
 	@PostMapping("/reviewupdatesubmit")
 	public ResponseEntity<String> updateReview(HttpSession session, @RequestBody Review review) {
 		MemberData loginUser = (MemberData) session.getAttribute("loginUser");
+		Review reviewVO = reviewsv.getReview(review.getReview_seq());
 		
-		loginUser = entityManager.merge(loginUser);
-        review.setMember_data(loginUser);
-        reviewsv.updateReview(review);
+		reviewVO.setContent(review.getContent());
+		reviewVO.setImages(review.getImages());
+		reviewVO.setKakao_name(review.getKakao_name());
+		reviewVO.setKakao_id(review.getKakao_id());
+		reviewVO.setTitle(review.getTitle());
+		reviewVO.setReviewrate(review.getReviewrate());
+        reviewsv.updateReview(reviewVO);
         
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create("/review_detail?review_seq=" + review.getReview_seq()));
         return new ResponseEntity<>("Review submitted successfully", HttpStatus.OK);
         
 	}
@@ -494,50 +556,5 @@ public class ReviewController {
 		    return response;
 		}
 		
-		
-		//네이버 블로그 api
-//		
-//	    @GetMapping("/blogsearch")
-//	    public String list(@RequestParam("text") String text, Model model) {
-//	        URI uri = UriComponentsBuilder
-//	            .fromUriString("https://openapi.naver.com")
-//	            .path("/v1/search/blog.json")
-//	            .queryParam("query", text)
-//	            .queryParam("display", 10)
-//	            .queryParam("start", 1)
-//	            .queryParam("sort", "sim")
-//	            .encode()
-//	            .build()
-//	            .toUri();
-//
-//	        RequestEntity<Void> req = RequestEntity
-//	            .get(uri)
-//	            .header("X-Naver-Client-Id", clientId)
-//	            .header("X-Naver-Client-Secret", clientSecret)
-//	            .build();
-//
-//	        RestTemplate restTemplate = new RestTemplate();
-//	        ResponseEntity<String> resp = restTemplate.exchange(req, String.class);
-//
-//	        ObjectMapper om = new ObjectMapper();
-//	        NaverBlogApi resultVO = null;
-//
-//	        try {
-//	            resultVO = om.readValue(resp.getBody(), NaverBlogApi.class);
-//	        } catch (JsonMappingException e) {
-//	            e.printStackTrace();
-//	        } catch (JsonProcessingException e) {
-//	            e.printStackTrace();
-//	        }
-//
-//	        List<BlogFood> food = resultVO.getItems();
-//	        model.addAttribute("foods", food);
-//	        model.addAttribute("text", text);
-//
-//	        return "comboard/NBlogResult :: #similar-recipes";
-//	    }
-//		
-//		
-
 
 }

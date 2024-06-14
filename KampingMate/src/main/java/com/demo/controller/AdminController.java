@@ -1,5 +1,6 @@
 package com.demo.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.demo.domain.AdminQnaBoard;
+import com.demo.domain.Book;
 import com.demo.domain.MemberData;
+import com.demo.domain.Notice;
 import com.demo.domain.askBoard;
 import com.demo.service.AdminService;
+import com.demo.service.MemberService;
+import com.demo.service.NoticeService;
+
+import jakarta.persistence.EntityManager;
+
 
 @Controller
 @SessionAttributes("loginUser")
@@ -27,6 +36,14 @@ public class AdminController {
 
     @Autowired
     AdminService adminService;
+    @Autowired
+    NoticeService noticeService;
+    @Autowired
+    MemberService memberService;
+    
+    @Autowired
+    private EntityManager entityManager;
+    
 
     @GetMapping("/admin")
     public String mainView() {
@@ -39,10 +56,10 @@ public class AdminController {
                         Model model) {
         // 실제 로그인 검증 로직을 사용하여 데이터베이스에서 사용자 정보를 확인합니다.
         MemberData loginUser = adminService.validateLogin(id, password);
-        if (loginUser != null && loginUser.getUsercode() == 1) {
+        if (loginUser != null && loginUser.getUsercode() == 0) {
             model.addAttribute("error", "You are not authorized to login.");
             return "admin/admin_login";
-        } else if (loginUser != null) {
+        } else if (loginUser != null && loginUser.getUsercode() == 1) {
             model.addAttribute("loginUser", loginUser);
             return "redirect:/admin_main";
         } else {
@@ -220,6 +237,7 @@ public class AdminController {
         if (loginUser != null && loginUser.getId() != null) {
             adminService.adminCheck(loginUser);
             askBoard ask = adminService.getByAskBoardnum(askNum);
+            
             model.addAttribute("ask", ask);
             return "admin/boardForm/askEditForm";
         } else {
@@ -228,21 +246,163 @@ public class AdminController {
     }
 
     @PostMapping("/askUpdate.do")
-    public String askUpdate(@ModelAttribute("loginUser") MemberData loginUser, @RequestParam("askNum") Long boardnum, 
-        askBoard vo) {
-        askBoard ask = adminService.getByAskBoardnum(boardnum);
-        vo.setRegdate(ask.getRegdate());
-        vo.setInquiry_id(boardnum);
-        vo.setEmail(ask.getEmail());
-        vo.setName(ask.getName());
-        vo.setStatus("답변 완료");
-        vo.setMember_data(loginUser);
-        
-        adminService.adminCheck(loginUser);
-        adminService.updateAdminInquiry(vo);
-        
-        // askUpdate.html 템플릿으로 리다이렉트합니다.
-        return "redirect:/admin_ask.do";
+    public String askUpdate(@ModelAttribute("loginUser") MemberData loginUser, 
+                            @ModelAttribute askBoard vo, 
+                            @RequestParam("askNum") Long boardnum) {
+        if (loginUser != null && loginUser.getId() != null) {
+            adminService.adminCheck(loginUser);
+
+            askBoard ask = adminService.getByAskBoardnum(boardnum);
+            if (ask != null) {
+                vo.setRegdate(ask.getRegdate());
+                vo.setInquiry_id(boardnum);
+                vo.setEmail(ask.getEmail());
+                vo.setName(ask.getName());
+                vo.setStatus("답변 완료");
+                vo.setMember_data(loginUser);
+
+                adminService.updateAdminInquiry(vo);
+                return "redirect:/admin_ask.do";
+            }
+        }
+        return "redirect:/admin";
     }
+
+    
+    @GetMapping("/admin_notice.do")
+    public String noticeForm(@ModelAttribute("loginUser") MemberData loginUser, Model model) {
+        if (loginUser != null && loginUser.getId() != null) {
+            adminService.adminCheck(loginUser);
+            return "admin/boardForm/noticeForm"; // 공지사항 작성 폼 페이지
+        } else {
+            return "redirect:/admin";
+        }
+    }
+
+    @PostMapping("/noticeReg.do")
+    public String noticeRegister(@ModelAttribute("loginUser") MemberData loginUser,
+                                 Notice notice,
+                                 RedirectAttributes redirectAttributes) throws IOException {
+        if (loginUser != null && loginUser.getId() != null) {
+            adminService.adminCheck(loginUser);
+
+            // 사용자 ID를 사용하여 MemberData 객체를 데이터베이스에서 조회
+            MemberData memberData = memberService.findById(loginUser.getId());
+            if (memberData != null) {
+                // Notice 엔티티에 조회된 MemberData 객체를 설정
+                notice.setMember_data(memberData);
+
+                // 파일 이름 리스트를 생성하여 Notice 객체에 추가
+               
+
+                // 공지 종류가 이벤트인 경우
+                if ("event".equals(notice.getNotice_cate())) {
+                    // 이벤트로 처리
+                    adminService.insertNotice(notice);
+                    return "redirect:/admin_eventlist.do"; // 이벤트 목록 페이지로 리디렉션
+                } else {
+                    // 공지로 처리
+                    adminService.insertNotice(notice);
+                    return "redirect:/admin_noticelist.do"; // 공지사항 목록 페이지로 리디렉션
+                }
+            } else {
+                // MemberData가 조회되지 않은 경우 처리
+                return "redirect:/admin";
+            }
+        } else {
+            return "redirect:/admin";
+        }
+    }
+
+    
+    @GetMapping("/admin_noticelist.do")
+    public String noticeList(@ModelAttribute("loginUser") MemberData loginUser, Model model) {
+        if (loginUser != null && loginUser.getId() != null) {
+            adminService.adminCheck(loginUser);
+
+            // 공지사항 목록을 가져오기
+            List<Notice> noticeList = adminService.getAllNotices();
+
+            model.addAttribute("notices", noticeList);
+            return "admin/boardPage/admin_noticelist"; // 공지사항 목록 페이지
+        } else {
+            return "redirect:/admin";
+        }
+    }
+    
+    @GetMapping("/admin_noticeDetail")
+    public String adminNoticeDetail(@RequestParam("notice_seq") int noticeSeq, Model model) {
+        Notice notice = adminService.getBySeq(noticeSeq);
+        model.addAttribute("notice", notice);
+        return "admin/boardPage/admin_noticeDetail";
+    }
+    
+    @PostMapping("/admin_updateNotice")
+    public String adminUpdateNotice(@ModelAttribute("notice") Notice notice,
+                                    RedirectAttributes redirectAttributes) {
+        adminService.updateAdminNotice(notice);
+
+        // Determine redirect path based on notice_cate
+        if ("event".equals(notice.getNotice_cate())) {
+            return "redirect:/admin_eventlist.do";
+        } else if ("notice".equals(notice.getNotice_cate())) {
+            return "redirect:/admin_noticelist.do";
+        } else {
+            // Handle other cases or defaults
+            return "redirect:/admin_dashboard.do";
+        }
+    }
+
+
+
+    @GetMapping("/admin_eventlist.do")
+    public String eventList(@ModelAttribute("loginUser") MemberData loginUser, Model model) {
+        if (loginUser != null && loginUser.getId() != null) {
+            adminService.adminCheck(loginUser);
+
+            // 이벤트 목록을 가져오기
+            List<Notice> eventList = adminService.getAllEvents();
+
+            model.addAttribute("events", eventList);
+            return "admin/boardPage/admin_eventlist"; // 이벤트 목록 페이지
+        } else {
+            return "redirect:/admin";
+        }
+    }
+
+    @GetMapping("/admin_bookinglist.do")
+    public String bookingList(@ModelAttribute("loginUser") MemberData loginUser, Model model) {
+        if (loginUser != null && loginUser.getId() != null) {
+            adminService.adminCheck(loginUser);
+
+            List<Book> bookingList = adminService.getAllBookings();
+            model.addAttribute("bookings", bookingList);
+            return "admin/boardPage/admin_bookinglist"; // 예약 목록 페이지
+        } else {
+            return "redirect:/admin";
+        }
+    }
+
+    @PostMapping("/updateBookingCondition.do")
+    public String updateBookingCondition(@ModelAttribute("loginUser") MemberData loginUser,
+                                         @RequestParam("bookseq") int bookseq,
+                                         @RequestParam("condition") int condition) {
+        if (loginUser != null && loginUser.getId() != null) {
+            adminService.adminCheck(loginUser);
+
+            adminService.updateBookingCondition(bookseq, condition);
+            return "redirect:/admin_bookinglist.do"; // 예약 목록 페이지로 리디렉션
+        } else {
+            return "redirect:/admin";
+        }
+    }
+
+
+
+
+
+
+
+
 
 }

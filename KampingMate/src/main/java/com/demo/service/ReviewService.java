@@ -37,4 +37,9 @@ public interface ReviewService {
 	
 	public Page<Review> getReviewByBookmark(int review_seq, int page, int size); //북마크순 정렬
 
+	public List<Review> getReviewsById(String id);
+
+	public Review getReviewById(int reviewId);
+
+	public List<Review> getBookmarkedReviews(String id);
 }

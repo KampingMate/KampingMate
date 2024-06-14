@@ -101,16 +101,17 @@ function reply_list() {
 	
 	//북마크
 	function bookmark_plus(button) {
+		var login = document.getElementById("login").value;
+		
+		if (login != 'true'){
+			alert("로그인후 이용해주시길 바랍니다");
+			return false;
+		}else{
 		var theForm = document.frm;
 		theForm.method = "post";
 		theForm.action = "bookmark";
 		theForm.submit();
-		
-		 if (element.classList.contains('red')) {
-            element.classList.remove('red');
-        } else {
-            element.classList.add('red');
-        }
+	}
 	}
 
 	

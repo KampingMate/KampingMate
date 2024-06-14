@@ -10,11 +10,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.demo.domain.AdminQnaBoard;
+import com.demo.domain.Book;
 import com.demo.domain.MemberData;
+import com.demo.domain.Notice;
 import com.demo.domain.askBoard;
 import com.demo.persistence.AdminAskBoardRepository;
+import com.demo.persistence.AdminBookRepository;
+import com.demo.persistence.AdminNoticeRepository;
 import com.demo.persistence.AdminQnaBoardRepository;
 import com.demo.persistence.MemberRepository;
 
@@ -39,6 +44,12 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Autowired
 	private MemberRepository memberRepo;
+	
+	@Autowired
+	private AdminNoticeRepository adminNoticeRepo;
+	
+	@Autowired
+	private AdminBookRepository adminBookRepo;
 
 	@Override
 	public int adminCheck(MemberData vo) {
@@ -69,7 +80,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<MemberData> getAllMemberList() {
 		// TODO Auto-generated method stub
-		return memberRepo.getAllMember();
+		return memberRepo.findAllByUsercodeIsZero();
 	}
 	
 	
@@ -172,6 +183,79 @@ public class AdminServiceImpl implements AdminService {
 	public MemberData validateLogin(String id, String password) {
 		return memberRepo.findByIdAndPassword(id, password);
 	}
+
+	@Override
+	public void withdrawMember(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	
+	@Override
+	public List<Notice> getAllListMain() {
+		// TODO Auto-generated method stub
+		return adminNoticeRepo.getAllListMain();
+	}
+
+	@Override
+	public void updateAdminNotice(Notice vo) {
+		vo.setNotice_date(new Date());
+        adminNoticeRepo.save(vo);
+		
+	}
+
+	@Override
+	public void deleteAdminNotice(int boardnum2) {
+		adminNoticeRepo.deleteById(boardnum2);
+		
+	}
+
+	@Override
+	public Notice getByNoticeBoardnum(int boardnum) {
+		return adminNoticeRepo.findById(boardnum).orElse(null);
+	}
+
+	@Override
+	public void insertNotice(Notice vo) {
+		adminNoticeRepo.save(vo);
+		
+	}
+
+	@Override
+	public List<Notice> getAllList(String string) {
+		return adminNoticeRepo.findAll();
+	}
+
+	@Override
+	public List<Notice> getAllNotices() {
+	    return adminNoticeRepo.getAllNotices();
+	}
+
+	@Override
+	public List<Notice> getAllEvents() {
+	    return adminNoticeRepo.getAllEvents();
+	}
+
+	public List<Book> getAllBookings() {
+        return adminBookRepo.findAll();
+    }
+
+    @Transactional
+    public void updateBookingCondition(int bookseq, int condition) {
+    	adminBookRepo.updateBookCondition(bookseq, condition);
+    }
+
+    @Override
+    public Notice getBySeq(int noticeSeq) {
+        return adminNoticeRepo.findBySeq(noticeSeq);
+    }
+
+    @Override
+    public void saveNotice(Notice notice) {
+    	adminNoticeRepo.save(notice);
+    }
+
 
 	
 

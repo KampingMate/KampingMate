@@ -1,57 +1,128 @@
 package com.demo.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.domain.MemberData;
+import com.demo.dto.SelectedData;
+import com.demo.service.RegionMapping;
 
 import jakarta.servlet.http.HttpSession;
 
-@Controller
+@RestController
 public class HomeController {
 
-    @GetMapping("/")
-    public String index() {
-        return "index"; // index.html 파일을 반환합니다.
-    }
+    private static final String STD_IN = "stdin";
+    private static final String STD_ERR = "stderr";
 
-    @GetMapping("/main")
-    public String main(Model model, HttpSession session) {
-        // 세션에서 loginUser를 가져옵니다.
-        MemberData loginUser = (MemberData) session.getAttribute("loginUser");
+    @PostMapping("/processKeywords")
+    public ResponseEntity<Map<String, String>> processKeywords(@RequestBody SelectedData selectedData, HttpSession session) {
+        List<String> mappedDoNm = selectedData.getDoNm().stream()
+                .map(RegionMapping::mapDoName)
+                .collect(Collectors.toList());
+
+        System.out.println("Selected Do: " + mappedDoNm);
+        System.out.println("Selected Gu: " + selectedData.getGungu());
+        System.out.println("Selected Faclt: " + selectedData.getFaclt());
+        System.out.println("Selected Lct: " + selectedData.getLct());
+        System.out.println("Selected Induty: " + selectedData.getInduty());
+        System.out.println("Selected Bottom: " + selectedData.getBottom());
+        System.out.println("Selected Sbrs: " + selectedData.getSbrs());
+
+        Long loginUser = (Long) session.getAttribute("loginUserNumberData");
+
         
-        // 로그인되지 않은 경우 로그인 페이지로 리다이렉트합니다.
-        if (loginUser == null) {
-            return "main";
+        List<String> encodedDoNm = null;
+
+        if (loginUser != null && !loginUser.toString().isEmpty()) {
+        	long userId = loginUser;  // loginUser 객체에서 userId를 가져옵니다.
+            System.out.println("userId: " + userId);
+        	
+            // 파이썬 스크립트 실행
+            String result = runningProcess(mappedDoNm, selectedData.getFaclt(), selectedData.getLct(), selectedData.getInduty(), selectedData.getBottom(), selectedData.getSbrs(), userId);
+
+            // 결과 확인
+            System.out.println(result);
+
+            // 결과 파싱
+            List<Integer> recommendations = new ArrayList<>();
+            String[] tmpArr = result.split("\n");
+            for (String line : tmpArr) {
+                try {
+                    recommendations.add(Integer.parseInt(line.trim()));
+                } catch (NumberFormatException e) {
+                    // 예외 발생 시 무시하고 진행
+                }
+            }
+
+            System.out.println("추천 데이터 =>" + recommendations);
+            session.setAttribute("recommendations", recommendations);
+
+            
         }
         
-        // 로그인된 사용자의 이름을 모델에 추가합니다.
-        model.addAttribute("name", loginUser.getName());
+        encodedDoNm = mappedDoNm.stream()
+                .map(doNm -> {
+                    try {
+                        return URLEncoder.encode(doNm, StandardCharsets.UTF_8.toString());
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                        return doNm;
+                    }
+                })
+                .collect(Collectors.toList());
 
-        // API를 호출하여 데이터를 가져옵니다.
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:8090/api/data", String.class);
-        String data = response.getBody();
-        
-        // 가져온 데이터를 모델에 추가합니다.
-        model.addAttribute("data", data);
-        
-        return "main"; // main.html 파일을 반환합니다.
+        String url = "/getSearchList?"
+                + "doNm=" + (encodedDoNm != null ? String.join(",", encodedDoNm) : "")
+                + "&gungu=" + String.join(",", selectedData.getGungu())
+                + "&faclt=" + String.join(",", selectedData.getFaclt())
+                + "&lct=" + String.join(",", selectedData.getLct())
+                + "&induty=" + String.join(",", selectedData.getInduty())
+                + "&bottom=" + String.join(",", selectedData.getBottom())
+                + "&sbrs=" + String.join(",", selectedData.getSbrs())
+                + "&page=" + 1;
+
+        Map<String, String> response = new HashMap<>();
+        response.put("redirectUrl", url);
+        return ResponseEntity.ok(response);
     }
-    
-    @GetMapping("/login")
-    public String login() {
-        return "loginForm"; // loginForm.html을 렌더링합니다.
-    }
-    
- // 로그아웃 처리
-    @GetMapping("/logout")
-    public String logout(SessionStatus status) {
-        status.setComplete(); // 세션 완료 상태로 설정
-        return "main"; // 로그아웃 후 로그인 화면으로 리다이렉트
+
+    private static String runningProcess(List<String> doNm, List<String> faclt, List<String> lct, List<String> induty, List<String> bottom, List<String> sbrs, long userId) {
+        Process process = null;
+        File workingDirectory = new File("E:/학생방/새 폴더");
+        String cmd = "python E:/학생방/새 폴더/recommend_Camp.py \"" + String.join(",", doNm) + "\" \"" + String.join(",", faclt) + "\" \"" + String.join(",", lct) + "\" \"" + String.join(",", induty) + "\" \"" + String.join(",", bottom) + "\" \"" + String.join(",", sbrs) + "\" \"" + userId + "\"";
+        ProcessStream processInStream = null;
+        ProcessStream processErrStream = null;
+        String result = "";
+
+        try {
+            process = Runtime.getRuntime().exec(cmd, null, workingDirectory);
+            processInStream = new ProcessStream(STD_IN, process.getInputStream());
+            processErrStream = new ProcessStream(STD_ERR, process.getErrorStream());
+
+            result = processInStream.start();
+            processErrStream.start();
+            process.getOutputStream().close();
+
+            process.waitFor();
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return processInStream.getResult();
     }
 }

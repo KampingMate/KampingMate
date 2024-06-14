@@ -1,0 +1,159 @@
+/* main recommend */
+.reco-container {
+	margin: 0 auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width: 80%;
+    border: 2px solid #007bff;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    text-align: center;
+}
+#campSearchForm01 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn,
+.btnSearch_black01 {
+    background-color: #a3d5ff;
+    border: 1.5px solid #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn:hover,
+.btnSearch_black01:hover {
+    background-color: #007bff;
+    border-color: #0056b3;
+}
+.search_box {
+    width: 80%;
+    border: 1px solid #007bff;
+    padding: 20px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+
+.search_box_form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.form1_2 {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tt {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.fieldset {
+    border-radius: 10px;
+    border: 1px solid #007bff;
+    padding: 20px;
+    width: 80%;
+    margin-bottom: 10px;
+}
+
+select {
+    width: calc(50% - 10px);
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+}
+
+
+
+
+
+/* 페이지네이션 스타일 */
+.pagination {
+	display: flex;
+	list-style: none;
+	padding: 0;
+}
+
+.pagination li {
+	margin: 0 5px;
+}
+
+.pagination li a {
+	text-decoration: none;
+	padding: 8px 16px;
+	color: #007bff;
+	border: 1px solid #dee2e6;
+	border-radius: 4px;
+}
+
+.pagination li a.current {
+	background-color: #007bff;
+	color: white;
+	border-color: #007bff;
+}
+
+.pagination li a:hover {
+	background-color: #0056b3;
+	color: white;
+}
+/* 캠핑 사이트 아이템 스타일 */
+.item {
+	flex: 1 1 calc(25% - 20px); /* 아이템 너비 조정 및 간격 설정 */
+	max-width: 400px; /* 최대 너비 설정 */
+	margin: 10px; /* 간격 설정 */
+	padding: 10px; /* 패딩 조정 */
+	border: 1px solid #dee2e6;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	transition: transform 0.3s ease;
+}
+
+.item:hover {
+	transform: scale(1.05);
+}
+
+.item img {
+	max-width: 200px;
+	height: auto;
+	border-radius: 5px;
+}
+/* 캠프 컨테이너 스타일 */
+#camp-container {
+	width: 80%;
+	max-width: 1200px;
+	padding: 20px;
+	border: 1px solid #dee2e6;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	margin: 0 auto; /* 중앙 정렬 */
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+/* 캠핑 사이트 목록 스타일 */
+.items-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center; /* 가운데 정렬 */
+	margin-top: 20px;
+}
+/* 페이지네이션 컨테이너 스타일 */
+#camp-page {
+	display: flex;
+	justify-content: center; /* 페이지네이션 가운데 정렬 */
+	margin-top: 20px;
+}

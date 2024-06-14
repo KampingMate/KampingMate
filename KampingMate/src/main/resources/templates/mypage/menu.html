@@ -4,17 +4,42 @@
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <script th:src="@{/js/mypage.js}" defer></script>
+    <script>
+        $(document).ready(function() {
+            // 회원 탈퇴 버튼 클릭 시 이벤트 처리
+            $('#withdrawalBtn').click(function() {
+                // 확인 대화상자 표시
+                if (confirm("정말로 회원 탈퇴를 하시겠습니까?")) {
+                    // 확인을 누르면 회원 탈퇴 요청을 서버로 보냄
+                    $.ajax({
+                        type: "POST",
+                        url: "/withdrawal",
+                        success: function(response) {
+                            // 회원 탈퇴에 성공하면 메시지 표시 및 로그인 페이지로 이동
+                            alert("회원 탈퇴가 완료되었습니다.");
+                            window.location.href = "/login"; // 회원 탈퇴 후 로그인 페이지로 이동
+                        },
+                        error: function(xhr, status, error) {
+                            // 회원 탈퇴에 실패하면 오류 메시지 표시
+                            alert("회원 탈퇴 중 오류가 발생하였습니다.");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <link rel="stylesheet" th:href="@{/css/mypage.css}">
 </head>
 <body>
 <nav id="my_menu">
     <ul>
 		<li><a th:href="@{/infoView}"><i class="fas fa-user"></i>&nbsp;내 정보</a></li>
-		<li><a th:href="@{/infoUpdate}"><i class="fas fa-pen"></i>&nbsp;내 정보 수정</a></li>
 		<li><a th:href="@{/bookMark}"><i class="bookMark"></i>&nbsp;내 북마크</a></li>
 		<li><a th:href="@{/recommend}"><i class="recommend"></i>&nbsp;내 추천 목록</a></li>
 		<li><a th:href="@{/guestBook}"><i class="guestBook"></i>&nbsp;내 방명록</a></li>
 		<li><a th:href="@{/KampingNews}"><i class="KampingNews"></i>&nbsp;캠핑 뉴스</a></li>
 		<li><a th:href="@{/Outdoor}"><i class="Outdoor"></i>&nbsp;아웃도어</a></li>
+		<li><button id="withdrawalBtn"><i class="Withdrawal"></i>&nbsp;회원 탈퇴</button></li>
     </ul>
 </nav>
 </body>

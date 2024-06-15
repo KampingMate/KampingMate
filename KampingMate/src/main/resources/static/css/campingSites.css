@@ -82,6 +82,9 @@ select {
 	display: flex;
 	list-style: none;
 	padding: 0;
+	margin: 0 auto;
+	align-items: center;
+	justify-content: center;
 }
 
 .pagination li {
@@ -94,6 +97,7 @@ select {
 	color: #007bff;
 	border: 1px solid #dee2e6;
 	border-radius: 4px;
+	cursor: pointer;
 }
 
 .pagination li a.current {
@@ -106,6 +110,32 @@ select {
 	background-color: #0056b3;
 	color: white;
 }
+
+.pagination span {
+	margin: 0 5px;
+}
+
+.pagination a {
+	text-decoration: none;
+	padding: 8px 16px;
+	color: #007bff;
+	border: 1px solid #dee2e6;
+	border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination a.current {
+	background-color: #007bff;
+	color: white;
+	border-color: #007bff;
+}
+
+.pagination a:hover {
+	background-color: #0056b3;
+	color: white;
+}
+
+
 /* 캠핑 사이트 아이템 스타일 */
 .item {
 	flex: 1 1 calc(25% - 20px); /* 아이템 너비 조정 및 간격 설정 */
@@ -238,8 +268,6 @@ select {
 .checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
     transform: translate(-50%, -50%) scale(1);
 }
-#searchForm {
-}
 
 h1 {
 	text-align: center;
@@ -249,9 +277,33 @@ h1 {
     margin: 0 auto;
 }
 
-
-
-
+/* searchView */
+.search-list {
+	width: 80%;
+	max-width: 1200px;
+	padding: 20px;
+	border: 1px solid #dee2e6;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	margin: 0 auto; /* 중앙 정렬 */
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background-image: url('/images/camp7.jpg');
+	    background-position: center;
+}
+.c_list update {
+	width: 50%
+}
+.li-list {
+	width:90%;
+	border: 1px solid #ADD8E6;
+	border-radius: 5px;
+	margin: 20px auto;
+	padding: 10px;
+	text-align: center;
+	background-color: rgba(255, 255, 255, 0.7); /* 반투명 흰색 배경 */
+}
 
 
 

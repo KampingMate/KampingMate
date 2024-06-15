@@ -15,7 +15,8 @@
 </head>
 <body>
     <div>
-        <img th:src="@{${campDetail.firstImageUrl}}" alt="캠핑장 이미지" style="width:400px;height:auto;">
+        <img th:if="${campDetail.firstImageUrl != null}" th:src="@{${campDetail.firstImageUrl}}" alt="캠핑장 이미지" style="width:400px;height:auto;">
+         <img th:if="${campDetail.firstImageUrl == null}" src="https://www.gocamping.or.kr/img/2018/layout/noimg.jpg" alt="캠핑장 이미지" style="width:400px;height:auto;">
     </div>
     
     <div>

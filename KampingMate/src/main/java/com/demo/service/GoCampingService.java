@@ -11,6 +11,8 @@ import com.demo.domain.GoCamping;
 import com.demo.dto.CampingItem;
 import com.demo.persistence.GoCampingRepository;
 
+import jakarta.annotation.PostConstruct;
+
 @Service
 public class GoCampingService {
 
@@ -19,6 +21,12 @@ public class GoCampingService {
 
     @Autowired
     private GoCampingAPI goCampingAPI;
+    
+//    최초 1회 적용
+//    @PostConstruct
+//    public void insertInitial() {
+//    	importDataFromAPI();
+//    }
 
     public void importDataFromAPI() {
         try {

@@ -142,7 +142,6 @@ public class GoCampingAPI {
         return allItems;
     }
 
- // New method to fetch image list by contentId
     public List<String> getImageList(int contentId) throws Exception {
         String urlStr = "http://apis.data.go.kr/B551011/GoCamping/imageList" +
                 "?serviceKey=" + SERVICE_KEY +
@@ -160,7 +159,7 @@ public class GoCampingAPI {
         if (responseCode == HttpURLConnection.HTTP_OK) { // 200
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
             String inputLine;
-            StringBuffer response = new StringBuffer();
+            StringBuilder response = new StringBuilder();
 
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
@@ -169,11 +168,13 @@ public class GoCampingAPI {
 
             // Parse JSON response
             JSONObject jsonObj = new JSONObject(response.toString());
+            
             JSONObject responseBody = jsonObj.getJSONObject("response").getJSONObject("body");
 
             // items에서 필요한 정보 추출
             List<String> imageUrls = new ArrayList<>();
-            JSONArray jsonItems = responseBody.getJSONObject("items").getJSONArray("item");
+            JSONObject itemsObject = responseBody.getJSONObject("items"); // JSONObject로 변경
+            JSONArray jsonItems = itemsObject.getJSONArray("item");
             for (int i = 0; i < jsonItems.length(); i++) {
                 JSONObject item = jsonItems.getJSONObject(i);
                 imageUrls.add(item.optString("imageUrl", "N/A"));
@@ -183,5 +184,5 @@ public class GoCampingAPI {
         } else {
             throw new RuntimeException("API request failed with response code: " + responseCode);
         }
-    }
 }
+    }

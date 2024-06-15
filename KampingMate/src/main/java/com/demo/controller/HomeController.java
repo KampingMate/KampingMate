@@ -93,7 +93,8 @@ public class HomeController {
                 + "&induty=" + String.join(",", selectedData.getInduty())
                 + "&bottom=" + String.join(",", selectedData.getBottom())
                 + "&sbrs=" + String.join(",", selectedData.getSbrs())
-                + "&page=" + 1;
+                + "&page=" + 1
+                + "&keyword=" + selectedData.getKeyword();
 
         Map<String, String> response = new HashMap<>();
         response.put("redirectUrl", url);

@@ -5,6 +5,7 @@
     <title>검색 결과</title>
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" th:href="@{/css/campingSites.css}">
 <script>
 	function getRecommendList(){
 		 var form = document.createElement('form');
@@ -70,7 +71,8 @@
                 lct: getCheckedValues('searchLctCl'),
                 induty: getCheckedValues('induty'),
                 bottom: getCheckedValues('siteBottom'),
-                sbrs: getCheckedValues('sbrsCl')
+                sbrs: getCheckedValues('sbrsCl'),
+                keyword: $('#keyword').val() || ''  // 빈 문자열로 설정
             };
 
             $.ajax({
@@ -139,10 +141,22 @@ function go_review(){
  }
 
 </script>
+<script>
+        function detail_popup(){
+            const url = "/go_detail";
+            const width = 600;
+            const height = 800;
+            const left = (window.screen.width / 2) - (width / 2);
+            const top = (window.screen.height / 2) - (height / 2);
+            window.open(url, '_blank', `width=${width}, height=${height}, left=${left}, top=${top}`);
+        }
+    </script>
+
 <body>
-	<div class="search_box">
-        <form id="campSearchForm01" action="go_search" method="get">
-            <button type="button" class="btn_dsearch" onclick="detail_popup()">상세검색</button>
+<div class="reco-container">
+    <div class="search_box">
+        <form id="campSearchForm01" method="get">
+            <button type="button" class="btn" onclick="detail_popup()">상세검색</button>
             <div class="search_box_form">
                 <div class="form1_2">
                     <p class="tt">지역별</p>
@@ -186,11 +200,14 @@ function go_review(){
                         <option value="호수">호수</option>
                         <option value="도심">도심</option>
                     </select>
+                    <br>
+                    <input type="text" value="" id="keyword" size="15" placeholder="검색어를 입력하세요." style="margin-bottom:5px;">
                     <button type="submit" class="btnSearch_black01">검색</button>
                 </div>
             </div>
         </form>
     </div>
+</div>
 	<hr>
 
     <h1>캠핑장 리스트</h1>
@@ -211,10 +228,10 @@ function go_review(){
 	</div>
     <ul>
         <li th:each="camp : ${goCampingList}">
-        	<input type="hidden" id="campid" name="campid" th:value="${camp.contentId}"/>
-		   <input type="hidden" id="campname" name="campname" th:value="${camp.facltNm}"/>
-		   <button type="button" onclick="go_review()">리뷰페이지로</button>
-		   <button type="button" th:data-campid="${camp.contentId}" th:data-campname="${camp.facltNm}" onclick="go_book(this)">예약하러가기</button>
+         <input type="hidden" id="campid" name="campid" th:value="${camp.contentId}"/>
+   		<input type="hidden" id="campname" name="campname" th:value="${camp.facltNm}"/>
+   		<button type="button" onclick="go_review()">리뷰페이지로</button>
+   		<button type="button" th:data-campid="${camp.contentId}" th:data-campname="${camp.facltNm}" onclick="go_book(this)">예약하러가기</button>
         
         	<h2>[[${camp.facltNm}]]</h2>
             <div class="c_list update">

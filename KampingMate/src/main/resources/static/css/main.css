@@ -318,7 +318,46 @@ span.clickable:hover {
 .controls button:hover {
     background-color: #45a049;
 }
+/*유튜브*/
+#video-container {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    text-align: center;
+}
 
+#video-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#video-container ul li {
+    display: inline-block;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    width: 100px; /* 비디오 카드 너비 */
+    vertical-align: top;
+    overflow: hidden;
+}
+
+#video-container ul li img {
+    width: 100%;
+    height: auto;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#video-container ul li p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 8px;
+    margin: 0;
+}
 
 
 

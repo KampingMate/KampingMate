@@ -91,7 +91,18 @@ public class MainController {
     	session.removeAttribute("loginUser");
         return "main"; // 로그아웃 후 로그인 화면으로 리다이렉트
     }
-	
+    @GetMapping("/test")
+	public String test() {
+		return "NewFile";
+	}
+    @GetMapping("/test2")
+	public String test2() {
+		return "NewFile2";
+	}
+    @GetMapping("/test3")
+	public String test3() {
+		return "NewFile3";
+	}
 	
 	
 }

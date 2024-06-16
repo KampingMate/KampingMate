@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>단기예보 + 초단기예보</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-scrollbars/1.1.0/chartjs-plugin-scrollbars.min.js"></script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
 	// 위치정보
 	function getLocation() {
@@ -361,3 +371,22 @@ function getBaseTime2() {
 
     return baseTime;
 }
+</script>
+</head>
+<body>
+    <h1>현재 날씨</h1>
+    <p>현재 기온: <span id="currentWeather">정보 없음</span></p>
+    <p>하늘 상태: <span id="skyStatus">정보 없음</span></p>
+
+    <h1>단기 예보</h1>
+    <p>최고 기온: <span id="maxTemperature">정보 없음</span></p>
+    <p>최저 기온: <span id="minTemperature">정보 없음</span></p>
+    <div id="weatherChart">
+	    <h3 style="display: inline;">날씨 그래프</h3>
+	    &nbsp;&nbsp;&nbsp; <span class="clickable" id="today"> 오늘 </span> <span
+	        class="clickable" id="tomorrow"> 내일 </span> <span class="clickable"
+	        id="dayAfterTomorrow"> 모레 </span>
+	    <canvas id="temperatureChartCanvas"></canvas>
+	</div>
+</body>
+</html>

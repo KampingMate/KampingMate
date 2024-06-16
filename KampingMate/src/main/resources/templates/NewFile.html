@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>유튜브 테스트</title>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var api_key = "AIzaSyB9UyJogO_joBE7rl6iEajW5lY-fWn7WbM";
+    var channel_id = "UCs1omgoHHPENxs4b-fwMpPQ";
+    var max_result = 10;
+    var url = `https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId=${channel_id}&maxResults=${max_result}&key=${api_key}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            var videoList = data.items;
+            var output = '<ul>';
+
+            videoList.forEach(video => {
+                var videoId = video.id.videoId;
+                var title = video.snippet.title;
+                var thumbnail = video.snippet.thumbnails.default.url;
+                
+                output += `
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">
+                            <img src="${thumbnail}" alt="${title}">
+                            <p>${title}</p>
+                        </a>
+                    </li>
+                `;
+            });
+
+            output += '</ul>';
+            document.getElementById('video-container').innerHTML = output;
+        })
+        .catch(error => console.error('Error fetching data:', error));
+});
+</script>
+</head>
+<body>
+<div id="video-container">
+    <!-- 유튜브 비디오 목록이 여기 표시됩니다 -->
+</div>
+</body>
+</html>

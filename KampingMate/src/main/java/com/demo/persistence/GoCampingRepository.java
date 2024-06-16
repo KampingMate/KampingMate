@@ -47,7 +47,31 @@ public interface GoCampingRepository extends JpaRepository<GoCamping, Integer> {
 
     @Query(value = "SELECT * FROM go_camping g WHERE (:sbrsCl IS NULL OR :sbrsCl = '' OR g.sbrs_cl LIKE :sbrsCl)", nativeQuery = true)
     List<GoCamping> findBySbrsClLike(@Param("sbrsCl") String sbrsCl);
+    
+    @Query(value = "SELECT * FROM go_camping g " +
+            "WHERE (:keyword IS NULL OR :keyword = '' " +
+            "OR g.faclt_nm LIKE %:keyword% " +
+            "OR g.manage_sttus LIKE %:keyword% " +
+            "OR g.induty LIKE %:keyword% " +
+            "OR g.lct_cl LIKE %:keyword% " +
+            "OR g.do_nm LIKE %:keyword% " +
+            "OR g.sigungu_nm LIKE %:keyword% " +
+            "OR g.oper_pd_cl LIKE %:keyword% " +
+            "OR g.sbrs_cl LIKE %:keyword% " +
+            "OR g.faclt_div_nm LIKE %:keyword% " +
+            "OR g.addr1 LIKE %:keyword% " +
+            "OR g.tel LIKE %:keyword% " +
+            "OR g.homepage LIKE %:keyword% " +
+            "OR g.resve_url LIKE %:keyword% " +
+            "OR g.resve_cl LIKE %:keyword% " +
+            "OR g.thema_envrn_cl LIKE %:keyword% " +
+            "OR g.eqpmn_lend_cl LIKE %:keyword% )", nativeQuery = true)
+List<GoCamping> findByKeywordInAllColumns(@Param("keyword") String keyword);
 
+    @Query(value = "SELECT * FROM go_camping WHERE FACLT_NM LIKE %?1% " , nativeQuery = true)
+    Page<GoCamping> searchreview_List(String FACLT_NM, int content_id, Pageable pageable);
+
+    
     @Query(value = "SELECT * FROM go_camping g WHERE (:bottom IS NULL OR :bottom = '' " +
             "OR ('잔디' LIKE :bottom AND g.site_bottom_cl1 > 0) " +
             "OR ('파쇄석' LIKE :bottom AND g.site_bottom_cl2 > 0) " +
@@ -56,8 +80,5 @@ public interface GoCampingRepository extends JpaRepository<GoCamping, Integer> {
             "OR ('맨흙' LIKE :bottom AND g.site_bottom_cl5 > 0))", nativeQuery = true)
     List<GoCamping> findByBottomLike(@Param("bottom") String bottom);
     
-    @Query(value = "SELECT * FROM go_camping WHERE FACLT_NM LIKE %?1% " , nativeQuery = true)
-    Page<GoCamping> searchreview_List(String FACLT_NM, int content_id, Pageable pageable);
-
     
 }

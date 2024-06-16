@@ -20,4 +20,5 @@ public class SelectedData {
     private List<String> bottom;
     private List<String> sbrs;
     private int page;
+    private String keyword;
 }

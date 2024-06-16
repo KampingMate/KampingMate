@@ -41,25 +41,15 @@ public class GoCampingController {
     private GoCampingRepository gocampingRepo;
 
     @GetMapping("/campingSites")
-    public String getCampingSites(@RequestParam(defaultValue = "1") int page, Model model) {
+    public String getCampingSites(@RequestParam(defaultValue = "1") int page, Model model, HttpSession session) {
         try {
-            GoCampingAPI.CampingApiResponse response = goCampingAPI.getCampingSites(page, 10);
+            GoCampingAPI.CampingApiResponse response = goCampingAPI.getCampingSites(page, 100);
             List<CampingItem> campingItems = response.getItems();
-            int totalCount = response.getTotalCount();
-
-            int itemsPerPage = 10;
-            int startIndex = (page - 1) * itemsPerPage;
-            int endIndex = Math.min(startIndex + itemsPerPage, totalCount);
-
-            model.addAttribute("totalCount", totalCount);
+            
             model.addAttribute("items", campingItems);
-            model.addAttribute("currentPage", page);
-            model.addAttribute("hasPrev", page > 1);
-            model.addAttribute("hasNext", endIndex < totalCount);
-            model.addAttribute("startPage", Math.max(1, page - 5));
-            model.addAttribute("endPage", Math.min((totalCount + itemsPerPage - 1) / itemsPerPage, page + 5));
-
-            return "campingSites";
+            model.addAttribute("loginUserNumberData", session.getAttribute("loginUserNumberData"));
+            
+            return "camping/campingSites";
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Failed to load camping sites.");
@@ -110,7 +100,7 @@ public class GoCampingController {
         model.addAttribute("site_bottom_list", uniqueBottomClList);
         model.addAttribute("sbrs_cl_list", uniqueSbrsClList);
         
-        return "detail_select";
+        return "camping/detail_select";
     }
     
     @GetMapping("/getSearchList")
@@ -121,6 +111,7 @@ public class GoCampingController {
                                       @RequestParam(name = "induty", required = false) String indutyStr,
                                       @RequestParam(name = "bottom", required = false) String bottom,
                                       @RequestParam(name = "sbrs", required = false) String sbrsStr,
+                                      @RequestParam(name = "keyword", required = false) String keyword,
                                       @RequestParam(defaultValue = "1") int page,
                                       @RequestParam(defaultValue = "10") int size,
                                       @RequestParam(defaultValue = "facltNm") String sortField,
@@ -152,6 +143,13 @@ public class GoCampingController {
         resultSet = combineResults(resultSet, handleCondition.apply(lctStr, gocampingRepo::findByLctClLike));
         resultSet = combineResults(resultSet, handleCondition.apply(indutyStr, gocampingRepo::findByIndutyLike));
         resultSet = combineResults(resultSet, handleCondition.apply(sbrsStr, gocampingRepo::findBySbrsClLike));
+        
+        // Keyword 검색을 추가합니다.
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            Set<GoCamping> keywordResults = new HashSet<>(gocampingRepo.findByKeywordInAllColumns("%" + keyword.trim() + "%"));
+            resultSet = combineResults(resultSet, keywordResults);
+        }
+        
         if (bottom != null && !bottom.trim().isEmpty()) {
             Set<GoCamping> bottomResults = new HashSet<>();
             List<String> bottomList = Arrays.asList(bottom.split(","));
@@ -196,15 +194,17 @@ public class GoCampingController {
         model.addAttribute("sortDirection", sortDirection);
         
         List<Integer> recommendations = (List<Integer>) session.getAttribute("recommendations");
-        
         model.addAttribute("recommendations", recommendations);
+        
         if(recommendations != null) {
             List<GoCamping> recommendedCamps = gocampingRepo.findAllById(recommendations);
            
             model.addAttribute("recommend_list", recommendedCamps);
             } else {
-               model.addAttribute("recommend_list", null);}
-        return "searchView"; // 뷰 페이지 이름을 반환합니다
+               model.addAttribute("recommend_list", null);
+            }
+
+        return "camping/searchView"; // 뷰 페이지 이름을 반환합니다
     }
 
 
@@ -237,10 +237,16 @@ public class GoCampingController {
     public String goDetailView(@RequestParam("contentId") int contentId, Model model) throws Exception {
         // contentId를 이용해 캠핑장 정보를 조회
         GoCamping campDetail = gocampingRepo.findById(contentId).orElse(null);
-        List<String> ImageUrlList = goCampingAPI.getImageList(contentId);
+        List<String> ImageUrlList = null;
+        try {
+        	ImageUrlList = goCampingAPI.getImageList(contentId);
+        } catch (Exception e) {
+            
+        }
+        
         // 캠핑장 정보를 모델에 추가
         model.addAttribute("campDetail", campDetail);
-        model.addAttribute("imageList", ImageUrlList);
+        model.addAttribute("imageList", ImageUrlList != null ? ImageUrlList : new ArrayList<>());
         
      // sbrsCl 필드를 쉼표로 분리하여 리스트로 변환
         if (campDetail != null && campDetail.getSbrsCl() != null) {
@@ -254,7 +260,7 @@ public class GoCampingController {
             model.addAttribute("rentList", rentList);
         }
 
-        return "detailView"; // detailView 템플릿을 반환
+        return "camping/detailView"; // detailView 템플릿을 반환
     }
     
     @PostMapping("/getRecommendList")
@@ -268,7 +274,7 @@ public class GoCampingController {
         // 조회된 캠핑장 리스트를 모델에 추가
         model.addAttribute("goCampingList", recommendedCamps);
 
-        return "searchViewRecommend";
+        return "camping/searchViewRecommend";
     }
     
 }

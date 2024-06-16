@@ -1,5 +1,15 @@
 @charset "EUC-KR";
 
+
+.calendar-icon {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	font-size: 40px;
+	cursor: pointer;
+}
+
+
 body {
 	margin: 0;
 }
@@ -168,20 +178,64 @@ ul, li {
 
 
 /* main */
-.w-container {
-	width: 80%;
-	max-width: 800px;
-	padding: 20px;
-	border: 1px solid #dee2e6;
-	border-radius: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	text-align: center;
-	margin: 0 auto; /* 중앙 정렬 */
-	margin-top: 20px;
-	margin-bottom: 20px;
+#main-container {
+    width: 90%;
+    border: 2px solid #ADD8E6; /* 파스텔톤의 하늘색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자효과 */
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+.main-top {
+    width: 90%;
+    border: 1px solid #ADD8E6; /* 파스텔톤의 하늘색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자효과 */
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column; /* 내부 요소들을 세로로 정렬 */
+    justify-content: center; /* 요소들 중앙정렬 배치 */
+    align-items: center; /* 수직 중앙정렬 */
+    background-image: url('/images/camp12.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.main-mid {
+    width: 100%;
+    display: flex; /* Flexbox 사용 */
+    justify-content: space-around; /* 각 요소를 균등하게 배치 */
+    margin-top: 20px;
+}
+.mid-weather {
+    width: 40%;
+    border: 1px solid #ADD8E6; /* 파스텔톤의 하늘색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자효과 */
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column; /* 내부 요소들을 세로로 정렬 */
+    justify-content: center; /* 요소들 중앙정렬 배치 */
+    align-items: center; /* 수직 중앙정렬 */
+}
+.mid-news {
+    width: 50%;
+    border: 1px solid #ADD8E6; /* 파스텔톤의 하늘색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자효과 */
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column; /* 내부 요소들을 세로로 정렬 */
+    justify-content: center; /* 요소들 중앙정렬 배치 */
+    align-items: center; /* 수직 중앙정렬 */
 }
 /* 내부 div 스타일 */
-#weatherInfo, #weatherChart {
+#weatherInfo, #weatherChart, #weatherYoutube {
+	width: 90%;
 	border: 1px solid #dee2e6;
 	border-radius: 10px;
 	padding: 10px;
@@ -202,6 +256,108 @@ span.clickable:hover {
 	background-color: #f0f0f0;
 }
 
+/* 캠핑사이트 */
+.item {
+	flex: 1 1 calc(25% - 20px); /* 아이템 너비 조정 및 간격 설정 */
+	max-width: 400px; /* 최대 너비 설정 */
+	margin: 10px; /* 간격 설정 */
+	padding: 10px; /* 패딩 조정 */
+	border: 1px solid #dee2e6;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	transition: transform 0.3s ease;
+}
+
+.item:hover {
+	transform: scale(1.05);
+}
+
+.item img {
+	max-width: 200px;
+	height: auto;
+	border-radius: 5px;
+}
+
+/* 캠핑 사이트 목록 스타일 */
+.items-container {
+	display: flex;
+	justify-content: center; /* 가운데 정렬 */
+}
+
+.scrolling {
+    display: inline-block;
+    animation: scroll 1000s linear infinite;
+    height: 100%; /* .items-container에 맞게 높이 설정 */
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+.controls {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.controls button {
+    background-color: #4CAF50; /* 녹색 */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.controls button:hover {
+    background-color: #45a049;
+}
+/*유튜브*/
+#video-container {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    text-align: center;
+}
+
+#video-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#video-container ul li {
+    display: inline-block;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    width: 100px; /* 비디오 카드 너비 */
+    vertical-align: top;
+    overflow: hidden;
+}
+
+#video-container ul li img {
+    width: 100%;
+    height: auto;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#video-container ul li p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 8px;
+    margin: 0;
+}
 
 
 

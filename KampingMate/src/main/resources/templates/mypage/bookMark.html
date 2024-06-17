@@ -1,20 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bookmarked Reviews</title>
-    <!-- 이곳에 필요한 스타일시트 링크를 추가하세요 -->
+    <link rel="stylesheet" th:href="@{/css/mypage.css}">
+    <script th:src="@{/js/mypage.js}" defer></script>
 </head>
-<body>
-    <h1>Bookmarked Reviews</h1>
-    <ul>
-        <!-- 여기에 북마크된 리뷰를 표시할 목록을 생성하세요 -->
-        <!-- 예를 들어, Thymeleaf를 사용한다면 다음과 같이 작성할 수 있습니다. -->
-        <li th:each="review : ${bookmarkedReviews}">
-            <a th:href="@{/review/{reviewId}(reviewId=${review.review_seq})}" th:text="${review.title}"></a>
-        </li>
-    </ul>
-    <!-- 이곳에 필요한 스크립트를 추가하세요 -->
+<body id="bookMark">
+    <!-- 헤더 -->
+    <th:block th:insert="~{include/header}"></th:block>
+
+    <!-- 메뉴 -->
+    <th:block th:insert="~{mypage/menu}"></th:block>
+
+    <div class="container">
+        <h2>내가 북마크한 리뷰</h2>
+        <table id="bookmarked_reviews_table">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>캠핑장</th>
+                    <th>작성자</th>
+                    <th>제목</th>
+                    <th>작성일</th>
+                    <!-- 추가적인 열들을 필요에 따라 여기에 추가 -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Thymeleaf를 사용하여 반복적으로 리뷰를 테이블에 추가 -->
+                <tr th:each="review, rowStat : ${bookmarkedReviews}">
+                    <td th:text="${rowStat.index + 1}"></td>
+                    <td th:text="${review.kakao_name}"></td>
+                    <td th:text="(${#strings.length(review.member_data.name) > 1} ? ${#strings.substring(review.member_data.name, 0, 1)} + '**' : ${#strings.substring(review.member_data.name, 0, 1)} + '*')"></td>
+                    <td>
+                        <a th:href="@{/review/{reviewId}(reviewId=${review.review_seq})}" th:text="${review.title}"></a>
+                    </td>
+                    <td th:text="${#dates.format(review.write_date, 'yyyy-MM-dd HH:mm')}"></td>
+                    <!-- 추가적인 열들을 필요에 따라 여기에 추가 -->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 푸터 -->
+    <th:block th:insert="~{include/footer}"></th:block>
 </body>
 </html>

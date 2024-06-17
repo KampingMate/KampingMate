@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			alert("현재 위치를 가져올 수 없습니다...");
 		}
 	}
-	fetchYouTubeVideos();
 
 	// 위치정보 가져오는 중 에러 처리
 	function showError(error) {
@@ -53,6 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 위치 정보 가져오기 함수 호출
     getLocation();
+    // 유튜브 함수 호출
+    fetchYouTubeVideos();
 });
 
 // 격자 좌표 구하기
@@ -108,43 +109,66 @@ function dfs_xy_conv(code, v1, v2) {
 }
 
 // 유튜브 비디오 목록 가져오기
-    function fetchYouTubeVideos() {
-        var api_key = "AIzaSyB9UyJogO_joBE7rl6iEajW5lY-fWn7WbM";
-        var channel_id = "UCs1omgoHHPENxs4b-fwMpPQ";
-        var max_result = 10;
-        var url = `https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId=${channel_id}&maxResults=${max_result}&key=${api_key}`;
+function fetchYouTubeVideos() {
+    var api_key = "AIzaSyB9UyJogO_joBE7rl6iEajW5lY-fWn7WbM";
+    var channel_id = "UCs1omgoHHPENxs4b-fwMpPQ";
+    var max_result = 10;
+    var url = `https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId=${channel_id}&maxResults=${max_result}&key=${api_key}`;
+    var cacheKey = 'youtubeVideos';
+    var cacheExpiryKey = 'youtubeVideosExpiry';
+    var cacheExpiryTime = 14400000; // 4시간
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                var videoList = data.items;
-                var output = '<ul>';
+    var cachedVideos = localStorage.getItem(cacheKey);
+    var cacheExpiry = localStorage.getItem(cacheExpiryKey);
 
-                videoList.forEach(video => {
-                    var videoId = video.id.videoId;
-                    var title = video.snippet.title;
-                    var thumbnail = video.snippet.thumbnails.default.url;
-                    
-                    output += `
-                        <li>
-                            <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">
-                                <img src="${thumbnail}" alt="${title}">
-                                <p>${truncateText(title, 30)}</p>
-                            </a>
-                        </li>
-                    `;
-                });
-
-                output += '</ul>';
-                document.getElementById('video-container').innerHTML = output;
-            })
-            .catch(error => console.error('Error fetching data:', error));
+    // 현재 시간과 캐시 만료 시간을 비교하여 캐시가 유효한지 확인
+    if (cachedVideos && cacheExpiry && new Date().getTime() < cacheExpiry) {
+        console.log('Using cached data');
+        displayVideos(JSON.parse(cachedVideos));
+        return;
     }
 
-    // 긴 제목을 일정 길이로 자르고 "..."을 추가하는 함수
-    function truncateText(text, maxLength) {
-        return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
-    }
+    // API 요청 보내기
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            var videoList = data.items;
+
+            // 데이터 캐싱
+            localStorage.setItem(cacheKey, JSON.stringify(videoList));
+            localStorage.setItem(cacheExpiryKey, new Date().getTime() + cacheExpiryTime);
+
+            displayVideos(videoList);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+function displayVideos(videoList) {
+    var output = '<ul>';
+
+    videoList.forEach(video => {
+        var videoId = video.id.videoId;
+        var title = video.snippet.title;
+        var thumbnail = video.snippet.thumbnails.default.url;
+
+        output += `
+            <li>
+                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">
+                    <img src="${thumbnail}" alt="${title}">
+                    <p>${truncateText(title, 30)}</p>
+                </a>
+            </li>
+        `;
+    });
+
+    output += '</ul>';
+    document.getElementById('video-container').innerHTML = output;
+}
+
+// 긴 제목을 일정 길이로 자르고 "..."을 추가하는 함수
+function truncateText(text, maxLength) {
+    return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+}
 //날씨 함수
 function weatherData(nx, ny) {
     var api_key = "WuMkHTh0aSvlWEtIHd7EkY%2B02m%2BOyVb6UcNDRYXc2kRCohnhAvj%2Ft11Zbjb8KuDwusQlhukBJWddx%2FsBexnBeQ%3D%3D";
@@ -181,7 +205,9 @@ function weatherData(nx, ny) {
                         skyStatusText = "알 수 없음";
                     }
                     document.getElementById("skyStatus").innerText = skyStatusText;
-                }
+                } else if(item.category == "REH") {
+					document.getElementById("humidity").innerText = item.fcstValue + "%";
+				}
             }
         })
         .catch(error => {

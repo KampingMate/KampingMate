@@ -292,8 +292,7 @@ public class AdminController {
                 // Notice 엔티티에 조회된 MemberData 객체를 설정
                 notice.setMember_data(memberData);
 
-                // 파일 이름 리스트를 생성하여 Notice 객체에 추가
-               
+                
 
                 // 공지 종류가 이벤트인 경우
                 if ("event".equals(notice.getNotice_cate())) {

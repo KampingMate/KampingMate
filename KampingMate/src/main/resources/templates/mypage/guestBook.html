@@ -1,19 +1,24 @@
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>My Reviews</title>
+    <link rel="stylesheet" th:href="@{/css/mypage.css}">
+    <script th:src="@{/js/mypage.js}" defer></script>
 </head>
-<body>
+<body id="guestBook">
+<!-- 헤더 -->
+    <th:block th:insert="~{include/header}"></th:block>
+
+    <!-- 메뉴 -->
+    <th:block th:insert="~{mypage/menu}"></th:block>
     <h2>내가 작성한 리뷰</h2>
-    <table>
+    <table id="my_reviews_table">
         <thead>
             <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성일</th>
+                <th id="review_number">번호</th>
+                <th id="review_title">제목</th>
+                <th id="review_date">작성일</th>
                 <!-- 필요한 다른 열들을 여기에 추가 -->
             </tr>
         </thead>
@@ -29,5 +34,7 @@
             </tr>
         </tbody>
     </table>
+    <!-- 푸터 -->
+    <th:block th:insert="~{include/footer}"></th:block>
 </body>
 </html>

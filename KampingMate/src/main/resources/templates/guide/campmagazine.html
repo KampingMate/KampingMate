@@ -5,6 +5,17 @@
 </head>
 <body>
     <h1>캠핑매거진</h1><br><br>
-
+    <!-- 리스트 형태로 나옴 -->
+    <div id="campingTip"></div>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/cafesearch')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('campingTip').innerHTML = data;
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
 </html>

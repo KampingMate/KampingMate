@@ -33,7 +33,7 @@ def fetch_data_and_save2():
         connection = oracledb.connect(user='kamp', password='kamp', dsn='localhost/XE')
         
         # SQL 쿼리 실행하여 데이터프레임으로 변환
-        query = 'SELECT * FROM member_rating'
+        query = 'SELECT kakao_id, reviewrate, id FROM review'
         df = pd.read_sql(query, connection)
         
         # 데이터프레임을 지정된 경로에 pickle 파일로 저장

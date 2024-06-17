@@ -15,7 +15,7 @@
 </head>
 <body>
     <div>
-        <img th:if="${campDetail.firstImageUrl != null}" th:src="@{${campDetail.firstImageUrl}}" alt="캠핑장 이미지" style="width:400px;height:auto;">
+        <a th:href="${campDetail.firstImageUrl}"><img th:if="${campDetail.firstImageUrl != null}" th:src="@{${campDetail.firstImageUrl}}" alt="캠핑장 이미지" style="width:400px;height:auto;"></a>
          <img th:if="${campDetail.firstImageUrl == null}" src="https://www.gocamping.or.kr/img/2018/layout/noimg.jpg" alt="캠핑장 이미지" style="width:400px;height:auto;">
     </div>
     
@@ -66,11 +66,12 @@
     
     <hr>
     
-    <div>
-        <span th:text="${campDetail.intro}"></span><br>
-    </div>
-    
+    <th:block th:if="${campDetail.intro != null}">
+    	<div>
+        	<span th:text="${campDetail.intro}"></span><br>
+    	</div>
     <hr>
+    </th:block>
     
     <div>
         <div th:if="${facilities != null}">
@@ -92,6 +93,9 @@
                 </th:block>
             </th:block>
         </div>
+        <div th:if="${facilities == null}">
+        	<span>등록된 시설정보가 없습니다.</span>
+        </div>
         
         <div th:if="${rentList != null}">
             <h3>대여가능 품목</h3>
@@ -108,11 +112,14 @@
         </div>
     </div>
     
-    <hr>
+    
     
     <div>
-        <th:block th:each="image : ${imageList}">
-            <a th:href="${image}"><img th:src="${image}" alt="캠핑장 이미지" style="width:200px;height:200px;"></a>
+    	<th:block th:if="${imageList != null}">
+    		<hr>
+        	<th:block th:each="image : ${imageList}">
+            	<a th:href="${image}"><img th:src="${image}" alt="캠핑장 이미지" style="width:200px;height:200px;"></a>
+       		</th:block>
         </th:block>
     </div>
     

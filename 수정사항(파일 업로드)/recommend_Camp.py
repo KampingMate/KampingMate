@@ -29,14 +29,19 @@ def filter_camp_data(camp, selected_faclt, selected_lct, selected_induty, select
         for bottom in bottom_list:
             bottom_mask = None
             if bottom == '잔디':
+                camp['SITE_BOTTOM_CL1'] = pd.to_numeric(camp['SITE_BOTTOM_CL1'], errors='coerce')
                 bottom_mask = camp['SITE_BOTTOM_CL1'].fillna(0) > 0
             elif bottom == '파쇄석':
+                camp['SITE_BOTTOM_CL2'] = pd.to_numeric(camp['SITE_BOTTOM_CL2'], errors='coerce')
                 bottom_mask = camp['SITE_BOTTOM_CL2'].fillna(0) > 0
             elif bottom == '테크':
+                camp['SITE_BOTTOM_CL3'] = pd.to_numeric(camp['SITE_BOTTOM_CL3'], errors='coerce')
                 bottom_mask = camp['SITE_BOTTOM_CL3'].fillna(0) > 0
             elif bottom == '자갈':
+                camp['SITE_BOTTOM_CL4'] = pd.to_numeric(camp['SITE_BOTTOM_CL4'], errors='coerce')
                 bottom_mask = camp['SITE_BOTTOM_CL4'].fillna(0) > 0
             elif bottom == '맨흙':
+                camp['SITE_BOTTOM_CL5'] = pd.to_numeric(camp['SITE_BOTTOM_CL5'], errors='coerce')
                 bottom_mask = camp['SITE_BOTTOM_CL5'].fillna(0) > 0
             if bottom_mask is not None:
                 filtered_data = pd.concat([filtered_data, camp[bottom_mask]])

@@ -58,15 +58,15 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public Page<Notice> getNoticeByNotice_Title(int notice_seq, int page, int size, String notice_title) {
+	public Page<Notice> getNoticeByNotice_Title(int page, int size, String notice_title) {
 		Pageable pageable = PageRequest.of(page - 1, size, Direction.ASC, "notice_seq");
-		return noticeRepo.findNoticeByTitleContainingOrderByNotice_title(notice_title, notice_seq, pageable);
+		return noticeRepo.findNoticeByTitleContainingOrderByNotice_title(notice_title, pageable);
 	}
 
 	@Override
-	public Page<Notice> getNoticeBynotice_cate(int notice_seq, int page, int size, String notice_cate) {
+	public Page<Notice> getNoticeBynotice_cate(int page, int size, String notice_cate) {
 		Pageable pageable = PageRequest.of(page - 1, size, Direction.ASC, "notice_seq");
-		return noticeRepo.findNoticeByNotice_cateContaining(notice_cate, notice_seq, pageable);
+		return noticeRepo.findNoticeByNotice_cateContaining(notice_cate, pageable);
 	}
 }
     

@@ -24,7 +24,7 @@
         <form name="frm" id="frm">
             <input type="hidden" name="bookseq" id="bookseq" th:value="${BookVO.bookseq}" />
             <h3>
-                예약일자 : [[${#dates.format(BookVO.bookdateS, 'yyyy-MM-dd')}]] ~ [[${#dates.format(BookVO.bookdateE, 'yyyy-MM-dd')}]]
+                예약일자 : [[${#dates.format(BookVO.bookdateS, 'yyyy-MM-dd')}]] ~ [[${#dates.format(BookVO.bookdateE, 'yyyy-MM-dd')}]]<br>
                 캠핑장명 : [[${BookVO.campingname}]]<br>
                 인원수 : [[${BookVO.headcount}]] 명<br>
 			    예약자 성함: [[${BookVO.member_data.name}]]<br>
@@ -35,7 +35,7 @@
                     <span th:case="1">예약완료</span>
                     <span th:case="2">예약불가</span>
                 </span>
-                <button type="button" onclick="bookupdatesub(event)">수정 완료</button>
+                <button type="button" onclick="bookupdatesub(event)">수정</button>
                 <button type="button" onclick="bookdelete()">예약 취소</button>
             </h3>
         </form>

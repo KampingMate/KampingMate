@@ -43,7 +43,7 @@ public class BookController {
 		 MemberData loginUser = (MemberData) session.getAttribute("loginUser");
 		 
 		if (loginUser == null) { 
-			return "admin/admin_login"; 
+			return "loginForm"; 
 		}
 		return "Book/Book";
 	}
@@ -159,7 +159,7 @@ public class BookController {
 			Book BookVO = booksv.getBook(bookseq);
 
 				if (loginUser == null) { 
-					return "member/login"; 
+					return "loginForm"; 
 				} else if(!(loginUser.getId()).equals(BookVO.getMember_data().getId())){
 					return "본인이 작성한 글만 수정가능합니다.";
 				}else {	

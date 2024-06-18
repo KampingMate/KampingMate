@@ -51,11 +51,11 @@
 	
 	//정렬
 	function keyClick(event) {
-		var url = '/category';
-		var category = event.target.getAttribute('data-category');		
-		url += '?category=' + encodeURIComponent(category);
-		window.location.href = url;
-	}     
+    var category = event.target.getAttribute('data-category');
+    var url = '/category?notice_seq=1&page=1&size=6&category=' + encodeURIComponent(category);
+    window.location.href = url;
+}
+  
 	
 		//클립보드복사
 	function copyboard() {

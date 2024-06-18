@@ -12,6 +12,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.demo.domain.MemberData;
 import com.demo.dto.CampingItem;
 import com.demo.service.GoCampingAPI;
+import com.demo.service.NApiService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -20,6 +21,8 @@ public class MainController {
 
     @Autowired
     private GoCampingAPI goCampingAPI;
+    @Autowired
+    private NApiService nApiService;
     
 	@GetMapping("/")
     public String index() {
@@ -40,6 +43,8 @@ public class MainController {
                 model.addAttribute("items", campingItems);
                 model.addAttribute("loginUserNumberData", session.getAttribute("loginUserNumberData"));
                 // 로그인된 사용자의 이름을 모델에 추가합니다.
+                String responseBody = nApiService.searchNews("캠핑"); // 뉴스 검색어를 지정합니다.
+                model.addAttribute("responseBody", responseBody);
                 return "main";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -57,6 +62,8 @@ public class MainController {
          
             // 로그인된 사용자의 이름을 모델에 추가합니다.
             model.addAttribute("name", loginUser.getName());
+            String responseBody = nApiService.searchNews("캠핑"); // 뉴스 검색어를 지정합니다.
+            model.addAttribute("responseBody", responseBody);
             // 로그인된 사용자의 이름을 모델에 추가합니다.
             return "main";
         } catch (Exception e) {
@@ -96,7 +103,10 @@ public class MainController {
 		return "NewFile";
 	}
     @GetMapping("/test2")
-	public String test2() {
+	public String test2(Model model) {
+    	String responseBody = nApiService.searchNews("캠핑"); // 뉴스 검색어를 지정합니다.
+        model.addAttribute("responseBody", responseBody);
+        
 		return "NewFile2";
 	}
     @GetMapping("/test3")

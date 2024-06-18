@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.demo.domain.Review;
+import com.demo.persistence.MemberRepository;
 import com.demo.persistence.ReviewRepository;
 
 @Service
@@ -18,6 +19,7 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	@Autowired
 	ReviewRepository reviewRepo;
+	MemberRepository memberRepo;
 
 	//리뷰 작성
 	@Override
@@ -130,4 +132,6 @@ public class ReviewServiceImpl implements ReviewService {
 	public List<Review> getBookmarkedReviews(String id) {
 		return reviewRepo.findBookmarkedReviewsById(id);
 	}
+
+
 }

@@ -1,9 +1,16 @@
 package com.demo.controller;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +50,13 @@ public class AdminController {
     
     @Autowired
     private EntityManager entityManager;
+    
+    @Autowired
+    private Environment env;
+    
+    @Value("${com.demo.upload.path}")
+    private String uploadDirectory;
+    
     
 
     @GetMapping("/admin")
@@ -282,37 +296,52 @@ public class AdminController {
     @PostMapping("/noticeReg.do")
     public String noticeRegister(@ModelAttribute("loginUser") MemberData loginUser,
                                  Notice notice,
+                                 @RequestParam("file") MultipartFile[] files,
                                  RedirectAttributes redirectAttributes) throws IOException {
+
         if (loginUser != null && loginUser.getId() != null) {
             adminService.adminCheck(loginUser);
 
-            // 사용자 ID를 사용하여 MemberData 객체를 데이터베이스에서 조회
             MemberData memberData = memberService.findById(loginUser.getId());
             if (memberData != null) {
-                // Notice 엔티티에 조회된 MemberData 객체를 설정
                 notice.setMember_data(memberData);
 
-                // 파일 이름 리스트를 생성하여 Notice 객체에 추가
-               
+                List<String> fileUrls = new ArrayList<>();
+                for (MultipartFile file : files) {
+                    String fileName = file.getOriginalFilename();
+                    String filePath = uploadDirectory + fileName;
 
-                // 공지 종류가 이벤트인 경우
+                    // 파일 저장 예시: 실제 서버에 파일을 저장하는 로직
+                    try {
+                        byte[] bytes = file.getBytes();
+                        Path path = Paths.get(uploadDirectory + fileName);
+                        Files.write(path, bytes);
+                        fileUrls.add(filePath); // 파일이 정상적으로 저장된 경로를 리스트에 추가
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                notice.setNotice_images(fileUrls); // 공지사항 객체에 파일 경로 설정
+
                 if ("event".equals(notice.getNotice_cate())) {
-                    // 이벤트로 처리
                     adminService.insertNotice(notice);
-                    return "redirect:/admin_eventlist.do"; // 이벤트 목록 페이지로 리디렉션
+                    return "redirect:/admin_eventlist.do";
                 } else {
-                    // 공지로 처리
                     adminService.insertNotice(notice);
-                    return "redirect:/admin_noticelist.do"; // 공지사항 목록 페이지로 리디렉션
+                    return "redirect:/admin_noticelist.do";
                 }
             } else {
-                // MemberData가 조회되지 않은 경우 처리
                 return "redirect:/admin";
             }
         } else {
             return "redirect:/admin";
         }
     }
+
+
+    
+
 
     
     @GetMapping("/admin_noticelist.do")
@@ -337,21 +366,55 @@ public class AdminController {
         return "admin/boardPage/admin_noticeDetail";
     }
     
-    @PostMapping("/admin_updateNotice")
-    public String adminUpdateNotice(@ModelAttribute("notice") Notice notice,
-                                    RedirectAttributes redirectAttributes) {
-        adminService.updateAdminNotice(notice);
+//    @PostMapping("/admin_updateNotice")
+//    public String adminUpdateNotice(@ModelAttribute("notice") Notice notice,
+//                                    @RequestParam("file") MultipartFile file,
+//                                    RedirectAttributes redirectAttributes) {
+//        // 1. 공지의 notice_seq를 사용하여 데이터베이스에서 해당 공지를 다시 조회
+//        Notice existingNotice = adminService.getBySeq(notice.getNotice_seq());
+//        
+//        if (existingNotice != null) {
+//            // 2. 기존 공지의 member_data를 notice에 설정
+//            notice.setMember_data(existingNotice.getMember_data());
+//            
+//            // 파일 업로드 처리
+//            if (!file.isEmpty()) {
+//                try {
+//                    String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+//                    String uploadDir = "notice-photos/" + notice.getNotice_seq();
+//
+//                    // 파일 저장 로직 (예: FileUploadUtil 클래스를 사용한 파일 저장)
+//                    FileUploadUtil.saveFile(uploadDir, fileName, file);
+//
+//                    // 파일 URL 설정
+//                    notice.setFileUrl("/" + uploadDir + "/" + fileName);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    // 파일 업로드 실패 시 처리
+//                    redirectAttributes.addFlashAttribute("message", "파일 업로드 실패: " + e.getMessage());
+//                }
+//            }
+//
+//            // 3. 공지 업데이트 수행
+//            adminService.updateAdminNotice(notice);
+//
+//            // 4. Redirect 경로 결정
+//            if ("event".equals(notice.getNotice_cate())) {
+//                return "redirect:/admin_eventlist.do";
+//            } else if ("notice".equals(notice.getNotice_cate())) {
+//                return "redirect:/admin_noticelist.do";
+//            } else {
+//                // 기타 경우에 대한 처리
+//                return "redirect:/admin_dashboard.do";
+//            }
+//        } else {
+//            // 기존 공지가 없는 경우에 대한 처리
+//            // 예를 들어, 에러 처리 또는 다른 경로로 리다이렉트
+//            return "redirect:/admin_dashboard.do";
+//        }
+//    }
 
-        // Determine redirect path based on notice_cate
-        if ("event".equals(notice.getNotice_cate())) {
-            return "redirect:/admin_eventlist.do";
-        } else if ("notice".equals(notice.getNotice_cate())) {
-            return "redirect:/admin_noticelist.do";
-        } else {
-            // Handle other cases or defaults
-            return "redirect:/admin_dashboard.do";
-        }
-    }
+
 
 
 

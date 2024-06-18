@@ -2,19 +2,19 @@
  * 
  */
 
-     //검색
-    	function submitSearch() {	
-	if ($("#searchKeyword").val() == "") {
-		alert("검색어를 입력하세요");
-		$("#searchKeyword").focus();
-		return false;
-	}  else{
-		var theform = $("#searchForm");
-		theform.attr("method", "get");
-		theform.attr("action", "/Notice_search");
-		theform.submit();
-	}
-		}
+     function submitSearch() {
+    var keyword = $("#searchKeyword").val();
+
+    if (keyword === "") {
+        alert("검색어를 입력하세요");
+        $("#searchKeyword").focus();
+        return false;
+    } else {
+        $("#searchForm").attr("action", "/Notice_search");
+        $("#searchForm").submit();
+    }
+}
+
 	
 	//상세페이지로 이동		
 	 function go_view(notice_seq) {

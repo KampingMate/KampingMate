@@ -10,25 +10,25 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" th:href="@{/css/main.css}">
 <style>
-    .items-container {
-        position: relative;
-        width: 100%;
-        overflow: hidden;
-        white-space: nowrap; /* 아이템을 한 줄로 배치 */
-        height: 30%;
-        line-height: 0; /* 라인 간격 0으로 설정 */
-        
-    }
+.items-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap; /* 아이템을 한 줄로 배치 */
+    height: 30%;
+    line-height: 0; /* 라인 간격 0으로 설정 */
+    
+}
 
-    .item {
-        display: inline-block; /* 아이템을 한 줄로 배치 */
-        width: 33%; /* 각 아이템의 너비 조정 */
-        margin-right: 40px; /* 아이템 간 간격 조정 */
-        margin-bottom: 10px;
-        vertical-align: top; /* 상단 정렬 */
-        background-color: rgba(255, 255, 255, 0.7); /* 반투명 흰색 배경 */
-        padding: 10px;
-    }
+.item {
+    display: inline-block; /* 아이템을 한 줄로 배치 */
+    width: 33%; /* 각 아이템의 너비 조정 */
+    margin-right: 40px; /* 아이템 간 간격 조정 */
+    margin-bottom: 10px;
+    vertical-align: top; /* 상단 정렬 */
+    background-color: rgba(255, 255, 255, 0.7); /* 반투명 흰색 배경 */
+    padding: 10px;
+}
 </style>
 <script th:src="@{/js/main.js}"></script>
 </head>
@@ -39,15 +39,10 @@
         <!--메인페이지에 보여질 내용을 section으로 감쌈-->
         <div class="main-top">
 	        <!-- 제목 -->
-		    <h1>Camping Sites</h1>
 		    <!-- 에러 메시지 표시 -->
 		    <div th:if="${error}" th:text="${error}"></div>
 		    <!-- 에러가 없을 경우 캠핑 사이트 목록 표시 -->
 		    <div th:unless="${error}">
-				<div class="download-buttons">
-					<a th:href="@{/api/campingSites/csv}" download="campingSites.csv">Download CSV(저장데이터 엑셀오류, 한셀로 열어야함)</a>
-					<a th:href="@{/api/campingSites/xml}" download="campingSites.xml">Download XML</a>
-				</div>
 			    <!-- 애니메이션 제어 버튼 -->
 			    <div class="controls">
 			         <button id="pauseBtn">정지</button>
@@ -83,6 +78,7 @@
                     <p><span id="currentWeather"></span></p>
                     <p><span id="maxTemperature"></span> / <span id="minTemperature"></span></p>
                     <p>하늘 상태 : <span id="skyStatus"></span></p>
+                    <p>습도 : <span id="humidity"></span></p>
                 </div>
                 <div id="weatherChart">
                     <h3 style="display: inline;">날씨 그래프</h3>
@@ -96,8 +92,58 @@
                 </div>
             </div>
             <div class="mid-news">
-                뉴스
+               <h1>네이버 뉴스 검색 결과</h1>
+    			<div id="news-list" class="news-list"></div>
+		        <div class="pagination">
+		            <button id="prevBtn" onclick="prevPage()" disabled>Previous</button>
+		            <button id="nextBtn" onclick="nextPage()">Next</button>
+		        </div>
             </div>
+            <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        var newsItems = /*[[${responseBody}]]*/ '[]';
+        newsItems = JSON.parse(newsItems);
+        var currentPage = 0;
+
+        function renderPage(page) {
+            var newsList = document.getElementById('news-list');
+            newsList.innerHTML = '';
+
+            if (page >= 0 && page < newsItems.length) {
+                var item = newsItems[page];
+                var newsItem = `
+                    <div class='news-item'>
+                        <h3>${item.title}</h3>
+                        <p>${item.description}</p>
+                        <a href='${item.link}' target='_blank'>바로가기</a>
+                        <p>${item.pubDate}</p>
+                    </div>
+                `;
+                newsList.innerHTML = newsItem;
+
+                currentPage = page;
+                document.getElementById('prevBtn').disabled = currentPage === 0;
+                document.getElementById('nextBtn').disabled = currentPage === newsItems.length - 1;
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 0) {
+                renderPage(currentPage - 1);
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < newsItems.length - 1) {
+                renderPage(currentPage + 1);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderPage(0);
+        });
+        /*]]>*/
+    </script>
         </div>
     </section>
 	<div class="calendar-icon" onclick="openCalendarWindow()">
@@ -120,60 +166,23 @@
 <th:block th:insert="~{include/footer}"></th:block>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var scrollingDiv = document.querySelector('.scrolling');
-        var pauseBtn = document.getElementById('pauseBtn');
-        var playBtn = document.getElementById('playBtn');
-        var leftBtn = document.getElementById('leftBtn');
-        var rightBtn = document.getElementById('rightBtn');
+document.addEventListener("DOMContentLoaded", function() {
+    var scrollingDiv = document.querySelector('.scrolling');
+    var pauseBtn = document.getElementById('pauseBtn');
+    var playBtn = document.getElementById('playBtn');
 
-        pauseBtn.addEventListener('click', function() {
-            scrollingDiv.style.animationPlayState = 'paused';
-            pauseBtn.style.display = 'none';
-            playBtn.style.display = 'inline-block';
-            enableScrollButtons(false); // 스크롤 버튼 비활성화
-        });
-
-        playBtn.addEventListener('click', function() {
-            scrollingDiv.style.animationPlayState = 'running';
-            playBtn.style.display = 'none';
-            pauseBtn.style.display = 'inline-block';
-            enableScrollButtons(true); // 스크롤 버튼 활성화
-        });
-
-        leftBtn.addEventListener('click', function() {
-            scrollLeft();
-        });
-
-        rightBtn.addEventListener('click', function() {
-            scrollRight();
-        });
-
-        function scrollLeft() {
-            var currentPosition = scrollingDiv.scrollLeft;
-            var itemWidth = scrollingDiv.offsetWidth;
-            var newPosition = currentPosition - itemWidth;
-            scrollingDiv.scrollTo({
-                left: newPosition,
-                behavior: 'smooth'
-            });
-        }
-
-        function scrollRight() {
-            var currentPosition = scrollingDiv.scrollLeft;
-            var itemWidth = scrollingDiv.offsetWidth;
-            var newPosition = currentPosition + itemWidth;
-            scrollingDiv.scrollTo({
-                left: newPosition,
-                behavior: 'smooth'
-            });
-        }
-
-        function enableScrollButtons(enable) {
-            leftBtn.disabled = !enable;
-            rightBtn.disabled = !enable;
-        }
+    pauseBtn.addEventListener('click', function() {
+        scrollingDiv.style.animationPlayState = 'paused';
+        pauseBtn.style.display = 'none';
+        playBtn.style.display = 'inline-block';
     });
+
+    playBtn.addEventListener('click', function() {
+        scrollingDiv.style.animationPlayState = 'running';
+        playBtn.style.display = 'none';
+        pauseBtn.style.display = 'inline-block';
+    });
+});
 </script>
 </body>
 </html>

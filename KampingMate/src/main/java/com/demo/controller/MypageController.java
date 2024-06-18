@@ -1,6 +1,10 @@
 package com.demo.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.demo.domain.MemberData;
 import com.demo.domain.Review;
@@ -31,16 +38,63 @@ public class MypageController {
     @Autowired
     private ReviewService reviewService;
 
-    // 마이페이지 메인화면
+ // 마이페이지 메인화면
     @GetMapping("/mypage")
     public String mypageView(HttpSession session, Model model) {
         MemberData loginUser = (MemberData) session.getAttribute("loginUser");
-        
+
         if (loginUser == null) {
             return "redirect:/login";
         }
+
         return "mypage/mypageMain";
     }
+
+
+    @PostMapping(value = "/uploadProfileImage", consumes = {"multipart/form-data"})
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> uploadProfileImage(HttpSession session, @RequestParam("profileImage") MultipartFile profileImage) {
+        MemberData loginUser = (MemberData) session.getAttribute("loginUser");
+
+        if (loginUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        if (profileImage.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        String fileName = profileImage.getOriginalFilename();
+        String uploadPath = "E:/student/KampingMate-3/uploads"; // 실제 저장할 경로로 수정
+        File uploadDir = new File(uploadPath);
+
+        if (!uploadDir.exists()) {
+            if (!uploadDir.mkdirs()) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+        }
+
+        try {
+            String filePath = uploadPath + "/" + fileName;
+            File dest = new File(filePath);
+            profileImage.transferTo(dest);
+            String imagePath = "/uploads/" + fileName;
+
+            // Save the image path in the session
+            session.setAttribute("profileImagePath", imagePath);
+
+            // 파일 업로드 성공 시 JSON 응답 반환
+            Map<String, Object> response = new HashMap<>();
+            response.put("imagePath", imagePath);
+            response.put("message", "프로필 이미지가 성공적으로 업로드되었습니다.");
+
+            return ResponseEntity.ok().body(response);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
     
     // 내 정보 화면
     @GetMapping("/infoView")

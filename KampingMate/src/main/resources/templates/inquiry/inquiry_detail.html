@@ -3,17 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <th:block th:insert="~{include/header.html}"></th:block>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inquiry Detail</title>
+    <link rel="stylesheet" th:href="@{/css/customer.css}">
     <!-- 수정된 Font Awesome CSS 링크 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
 </head>
 
 <body>
-<a id="chatbot-icon" href="javascript:void(0);" onclick="openInPopup('/chat')"><i class="fas fa-robot"></i></a><br>
-<a id="calorie-icon" href="javascript:void(0);" onclick="openInPopup('/cal')"><i class="fas fa-calculator"></i></a>
+
 
     <div class="inquiry-detail">
         <p class="author-info">작성자 | <span th:text="관리자"></span></p>
@@ -46,5 +45,4 @@
         window.open(url, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
     }</script>
 </body>
-<th:block th:insert="~{include/footer.html}"></th:block>
 </html>

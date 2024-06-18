@@ -27,6 +27,18 @@
     background-color: #87CEEB; /* 호버 시 배경색을 밝은 파란색으로 변경 */
 }
 
+#my_menu li button {
+    display: block;
+    color: #000000; /* 텍스트 색상을 흰색으로 변경하여 파란색 배경과 대비 */
+    text-align: center;
+    padding: 10px 20px; /* 패딩 조정 */
+    text-decoration: none;
+    transition: background-color 0.3s; /* 호버 효과를 위한 전환 효과 추가 */
+}
+#my_menu li button:hover {
+    background-color: #87CEEB; /* 호버 시 배경색을 밝은 파란색으로 변경 */
+}
+
 
 
 /* 뉴스 관련 */
@@ -123,6 +135,20 @@ h1 {
 }
 
 #changeProfileButton:hover {
+    background-color: #0056b3;
+}
+
+#saveProfileButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#saveProfileButton:hover {
     background-color: #0056b3;
 }
 

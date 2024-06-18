@@ -43,7 +43,7 @@ public class BookController {
 		 MemberData loginUser = (MemberData) session.getAttribute("loginUser");
 		 
 		if (loginUser == null) { 
-			return "admin/admin_login"; 
+			return "loginForm"; 
 		}
 		return "Book/Book";
 	}

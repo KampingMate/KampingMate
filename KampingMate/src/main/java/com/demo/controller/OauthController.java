@@ -150,7 +150,7 @@ public class OauthController {
             session.setAttribute("loginUserNumberData", loginUserNoData);
             session.setAttribute("loginUser", loginUser);
         }
-        return "main";
+        return "redirect:/main";
     }
 
     private ResponseEntity<String> getGoogleUserInfo() {

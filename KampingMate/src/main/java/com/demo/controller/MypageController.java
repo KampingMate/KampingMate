@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.demo.domain.GoCamping;
 import com.demo.domain.MemberData;
 import com.demo.domain.Review;
+import com.demo.persistence.SearchHistoryRepository;
 import com.demo.service.MemberService;
 import com.demo.service.ReviewService;
 
@@ -38,6 +40,8 @@ public class MypageController {
     @Autowired
     private ReviewService reviewService;
 
+    @Autowired
+    private SearchHistoryRepository searchHistoryRepo;
  // 마이페이지 메인화면
     @GetMapping("/mypage")
     public String mypageView(HttpSession session, Model model) {
@@ -194,7 +198,24 @@ public class MypageController {
     }
 
 
+    @GetMapping("/myRecommend")
+    public String myRecommend(HttpSession session, Model model) {
+        MemberData loginUser = (MemberData) session.getAttribute("loginUser");
 
+        if (loginUser == null) {
+            return "redirect:/login";
+        }
+
+        // Fetch search history and add to the model
+        List<GoCamping> searchHistoryList = searchHistoryRepo.findAllCampingByMemberNoData(loginUser.getNo_data());
+        model.addAttribute("searchHistoryList", searchHistoryList);
+
+        // Fetch recommendations based on search history
+        List<GoCamping> recommendedCampingList = searchHistoryRepo.findAllCampingByMemberNoData(loginUser.getNo_data());
+        model.addAttribute("recommendedCampingList", recommendedCampingList);
+
+        return "mypage/recommend";
+    }
 
 
 

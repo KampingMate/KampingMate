@@ -7,10 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.support.SessionStatus;
 
 import com.demo.domain.MemberData;
+import com.demo.dto.BannerItem;
 import com.demo.dto.CampingItem;
+import com.demo.service.BannerService;
 import com.demo.service.GoCampingAPI;
 import com.demo.service.NApiService;
 
@@ -25,9 +26,13 @@ public class MainController {
     private NApiService nApiService;
     
 	@GetMapping("/")
-    public String index() {
+    public String index(HttpSession session, Model model) {
+		List<BannerItem> Banneritems = bannerService.getBannerItems();
+   	 	session.setAttribute("Banneritems", Banneritems);
         return "index"; // index.html 파일을 반환합니다.
     }
+	@Autowired
+    private BannerService bannerService;
 	
 	@GetMapping("/main")
     public String main(@RequestParam(defaultValue = "1") int page, Model model, HttpSession session) {
@@ -45,6 +50,7 @@ public class MainController {
                 // 로그인된 사용자의 이름을 모델에 추가합니다.
                 String responseBody = nApiService.searchNews("캠핑"); // 뉴스 검색어를 지정합니다.
                 model.addAttribute("responseBody", responseBody);
+                model.addAttribute("Banneritems", session.getAttribute("Banneritems"));
                 return "main";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -64,6 +70,7 @@ public class MainController {
             model.addAttribute("name", loginUser.getName());
             String responseBody = nApiService.searchNews("캠핑"); // 뉴스 검색어를 지정합니다.
             model.addAttribute("responseBody", responseBody);
+            model.addAttribute("Banneritems", session.getAttribute("Banneritems"));
             // 로그인된 사용자의 이름을 모델에 추가합니다.
             return "main";
         } catch (Exception e) {
@@ -108,10 +115,6 @@ public class MainController {
         model.addAttribute("responseBody", responseBody);
         
 		return "NewFile2";
-	}
-    @GetMapping("/test3")
-	public String test3() {
-		return "NewFile3";
 	}
 	
 	

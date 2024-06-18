@@ -3,16 +3,33 @@
 <head>
 <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="stylesheet" th:href="@{/css/guide.css}">
+<style>
+
+</style>
 <title>캠핑준비 한번에 끝내기</title>
 </head>
 <body>
-<h3>캠핑준비 한번에 끝내봐요!</h3>
-1단계 ! 캠핑장 고르기  <a href="#" onclick="loadContent('/recommend')">캠핑장 추천받기 go!</a> <a href="#" onclick="loadContent('/review')">캠핑장 리뷰보러 go!</a><br>
-2단계 ! 캠핑장 예약하기 <a href="#" onclick="loadContent('/book')">캠핑장 예약하기 go!</a><br>
-3단계 ! 캠핑 물품 준비하기 <a href="#" onclick="loadContent('/shopping')">원하는 캠핑용품 쇼핑하러 go!</a><br>
-4단계 ! 완벽한 캠핑 준비하기 <a href="#" onclick="loadContent('/magazine')">캠핑 공부하러 go!</a>
-<a href="#" onclick="loadContent('/recipes')">요리 준비하러 go!</a>
-<a href="#" onclick="loadContent('/enjoy')">놀거리 준비하러 go!</a>
+<!-- 헤더 -->
+<th:block th:insert="~{include/header}"></th:block>
+<div class="guide-container">
+    <h2>캠핑준비 한번에 끝내봐요!</h2>
+    <div class="guide-step">
+        <h3>1단계 ! 캠핑장 고르기&nbsp;<i class="fas fa-search-location"></i></h3>  <a th:href="@{/recommend}" class="a-btn"><i class="fas fa-walking">&nbsp;</i>캠핑장 추천받기 go!</a> <a th:href="@{/review}" class="a-btn"><i class="fas fa-walking"></i>&nbsp;캠핑장 리뷰보러 go!</a><br>
+    </div>
+    <div class="guide-step">
+        <h3>2단계 ! 캠핑장 예약하기&nbsp;<i class="fas fa-calendar-check"></i></h3> <a th:href="@{/book}" class="a-btn"><i class="fas fa-walking">&nbsp;</i>캠핑장 예약하기 go!</a><br>
+    </div>
+    <div class="guide-step">
+        <h4>3단계 ! 캠핑 물품 준비하기&nbsp;<i class="fas fa-suitcase-rolling"></i></h4> <a href="#" onclick="loadContent('/shopping')" class="a-btn"><i class="fas fa-walking">&nbsp;</i>원하는 캠핑용품 쇼핑하러 go!</a><br>
+    </div>
+    <div class="guide-step">
+        <h4>4단계 ! 완벽한 캠핑 준비하기&nbsp;<i class="fas fa-campground"></i></h4> 
+        <a href="#" onclick="loadContent('/magazine')" class="a-btn"><i class="fas fa-walking"></i>&nbsp;캠핑 공부하러 go!</a>
+        <a href="#" onclick="loadContent('/recipes')" class="a-btn"><i class="fas fa-walking"></i>&nbsp;요리 준비하러 go!</a>
+        <a href="#" onclick="loadContent('/enjoy')" class="a-btn"><i class="fas fa-walking"></i>&nbsp;놀거리 준비하러 go!</a>     
+    </div>
+</div>
 
 <br>
 <div id="content"></div>

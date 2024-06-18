@@ -21,11 +21,11 @@ public interface NoticeRepository extends JpaRepository<Notice, Integer> {
 	
 	//제목으로 검색
 	@Query(value="SELECT * FROM Notice WHERE notice_title LIKE %?1% ", nativeQuery=true)
-	public Page<Notice> findNoticeByTitleContainingOrderByNotice_title(String title, int notice_seq, Pageable pageable);
+	public Page<Notice> findNoticeByTitleContainingOrderByNotice_title(String title, Pageable pageable);
 	
 	//말머리 검색(이벤트, 공지)
 	@Query(value = "SELECT * FROM Notice WHERE notice_cate = ?1", nativeQuery=true)
-	public Page<Notice> findNoticeByNotice_cateContaining(String notice_cate, int notice_seq, Pageable pageable);
+	public Page<Notice> findNoticeByNotice_cateContaining(String notice_cate, Pageable pageable);
 	
 	//전체 공지사항 페이징처리 
 	@Query(value="SELECT * FROM Notice ORDER BY notice_seq DESC ", nativeQuery=true)

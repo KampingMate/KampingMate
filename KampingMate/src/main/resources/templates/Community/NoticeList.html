@@ -12,8 +12,8 @@
 	<!-- 정렬버튼 -->
 	<div class="notice-main">
 		<button type="button" onclick="go_list()">모두 보기</button>
-		<button type="button" data-category="notice" onclick="keyClick(event)">공지사항 보기</button>
-		<button type="button" data-category="event" onclick="keyClick(event)">이벤트만 보기</button>
+		<button type="button" data-category="공지사항" onclick="keyClick(event)">공지사항 보기</button>
+		<button type="button" data-category="이벤트" onclick="keyClick(event)">이벤트만 보기</button>
 	</div>
 	
 	<!-- 검색란 -->
@@ -24,7 +24,7 @@
 			</select> 
 			<input type="text" name="searchKeyword" id="searchKeyword"> 
 			<input type="hidden" name="page" id="page" value="1">
-			<button type="button" onclick="submitSearch()">검색버튼</button>
+			<button type="submit">검색버튼</button>
 		</form>
 	</div>
 	

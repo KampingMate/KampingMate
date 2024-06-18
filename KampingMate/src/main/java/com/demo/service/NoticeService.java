@@ -21,8 +21,8 @@ public interface NoticeService {
 	
 	public Page<Notice> getAllNotice(int notice_seq, int page, int size); //전체 페이징
 	
-	public Page<Notice> getNoticeByNotice_Title(int notice_seq, int page, int size, String notice_title); // 제목으로검색
+	public Page<Notice> getNoticeByNotice_Title(int page, int size, String notice_title); // 제목으로검색
 	
-	public Page<Notice> getNoticeBynotice_cate(int notice_seq, int page, int size, String notice_cate); //말머리(종류)으로 정렬
+	public Page<Notice> getNoticeBynotice_cate(int page, int size, String notice_cate); //말머리(종류)으로 정렬
 	
 }

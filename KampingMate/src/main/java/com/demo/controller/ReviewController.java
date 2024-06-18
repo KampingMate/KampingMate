@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.apache.pdfbox.pdmodel.interactive.viewerpreferences.PDViewerPreferences.PRINT_SCALING;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -181,7 +182,7 @@ public class ReviewController {
     public String getReviewWriteView(HttpSession session) {
     	MemberData loginUser = (MemberData) session.getAttribute("loginUser");
     	if (loginUser == null) {
-    		return "member/login";
+    		return "loginForm";
         }
     
         return "Community/ReviewWrite";
@@ -291,7 +292,7 @@ public class ReviewController {
 		Review reviewVO = reviewsv.getReview(review_seq);
 
 			if (loginUser == null) { 
-				return "member/login"; 
+				return "loginForm"; 
 			} else if(!(loginUser.getId()).equals(reviewVO.getMember_data().getId())){
 				return "본인이 작성한 글만 수정가능합니다.";
 			}else {
@@ -331,7 +332,7 @@ public class ReviewController {
 		Review vo = reviewsv.getReview(review_seq);
 
 		if (loginUser == null) { 
-			return "member/login"; 
+			return "loginForm"; 
 		}else if(!(loginUser.getId()).equals(vo.getMember_data().getId())){
 			return "본인이 작성한 글만 삭제가능합니다.";
 		}else {	
@@ -375,7 +376,7 @@ public class ReviewController {
 	public String bookMark_Action(@RequestParam("review_seq") int review_seq, HttpSession session) {
 		MemberData loginUser = (MemberData) session.getAttribute("loginUser");
 		if (loginUser == null) { 
-			return "member/login"; 
+			return "loginForm"; 
 		}else {
 		Review vo = reviewsv.getReview(review_seq);
 	    HashMap<Integer, String> bookmarkStatusMap = (HashMap<Integer, String>) session.getAttribute("bookmarkStatusMap");
@@ -431,7 +432,7 @@ public class ReviewController {
 	        long totalElements = pageList.getTotalElements();
 	        long startNumber = totalElements - (page - 1) * size;
 
-
+	        
 	        model.addAttribute("reviewList", reviewList);
 	        model.addAttribute("totalPages", pageList.getTotalPages());
 		    model.addAttribute("pageNumber", page);
@@ -484,7 +485,7 @@ public class ReviewController {
 			ReviewReply reply = new ReviewReply();
 			
 			if (loginUser == null) { 
-				return "member/login"; 
+				return "loginForm"; 
 			}else {
 				reply.setReview(review);
 				reply.setMember_data(loginUser);

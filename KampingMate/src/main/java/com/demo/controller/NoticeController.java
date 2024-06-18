@@ -68,16 +68,12 @@ public class NoticeController {
  	
  // 제목으로 검색
  	@GetMapping("/Notice_search")
- 	public String getSearchByType(@RequestParam(value = "notice_seq", defaultValue = "1") int notice_seq,
+ 	public String getSearchByType(
  			@RequestParam("searchKeyword") String keyword,
  			@RequestParam(value = "page", defaultValue = "1") int page,
  			@RequestParam(value = "size", defaultValue = "6") int size, Model model) {
-
- 		Page<Notice> pageList;
-
  		
- 	    pageList = noticesv.getNoticeByNotice_Title(notice_seq, page, size, keyword);
- 	    
+ 		Page<Notice> pageList = noticesv.getNoticeByNotice_Title( page, size, keyword);	    
 
  	    List<Notice> searchResult = pageList.getContent();
  	    long totalElements = pageList.getTotalElements();
@@ -93,11 +89,11 @@ public class NoticeController {
  	
  	//카테고리별 분류
  		@GetMapping("/category")
- 		public String com_BoardKindAction(@RequestParam(value = "notice_seq", defaultValue = "1") int notice_seq,
+ 		public String com_BoardKindAction(
  				@RequestParam(value = "page", defaultValue = "1") int page,
  				@RequestParam(value = "size", defaultValue = "6") int size,
- 				Model model, @RequestParam(value = "", required = false)String category) {
- 			Page<Notice> pageList = noticesv.getNoticeBynotice_cate(notice_seq, page, size, category);
+ 				Model model, @RequestParam("category") String category) {
+ 			Page<Notice> pageList = noticesv.getNoticeBynotice_cate(page, size, category);
  			List<Notice> kindlist = pageList.getContent();
  			
  	 	    long totalElements = pageList.getTotalElements();

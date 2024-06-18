@@ -22,8 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.demo.domain.GoCamping;
 import com.demo.dto.CampingItem;
 import com.demo.persistence.GoCampingRepository;
+import com.demo.persistence.SearchHistoryRepository;
 import com.demo.service.GoCampingAPI;
+import com.demo.service.GoCampingService;
 import com.demo.service.RegionMapping;
+import com.demo.service.SearchHistoryService;
 import com.demo.service.SigunguService;
 
 import jakarta.servlet.http.HttpSession;
@@ -39,6 +42,9 @@ public class GoCampingController {
     
     @Autowired
     private GoCampingRepository gocampingRepo;
+    
+    @Autowired
+    private SearchHistoryService searchHistoryService;
 
     @GetMapping("/campingSites")
     public String getCampingSites(@RequestParam(defaultValue = "1") int page, Model model, HttpSession session) {
@@ -234,9 +240,11 @@ public class GoCampingController {
     }
     
     @GetMapping("/detailView")
-    public String goDetailView(@RequestParam("contentId") int contentId, Model model) throws Exception {
+    public String goDetailView(@RequestParam("contentId") int contentId, Model model, HttpSession session) throws Exception {
         // contentId를 이용해 캠핑장 정보를 조회
         GoCamping campDetail = gocampingRepo.findById(contentId).orElse(null);
+        Long no_data = (Long) session.getAttribute("loginUserNumberData");
+        
         List<String> ImageUrlList = null;
         try {
         	ImageUrlList = goCampingAPI.getImageList(contentId);
@@ -259,7 +267,11 @@ public class GoCampingController {
             List<String> rentList = Arrays.asList(campDetail.getEqpmnLendCl().split(","));
             model.addAttribute("rentList", rentList);
         }
-
+        
+        if (no_data != null) {
+            searchHistoryService.insertHistoryItem(contentId, no_data);
+        }
+        
         return "camping/detailView"; // detailView 템플릿을 반환
     }
     

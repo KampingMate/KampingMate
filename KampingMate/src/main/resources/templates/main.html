@@ -31,6 +31,27 @@
     padding: 10px;
 }
 </style>
+<style>
+        .banner-container {
+            width: 200px;
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .banner-item {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+            text-align: center;
+        }
+
+        .banner-item img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 <script th:src="@{/js/main.js}"></script>
 </head>
 <body>
@@ -100,6 +121,15 @@
 		            <button id="nextBtn" onclick="nextPage()">Next</button>
 		        </div>
             </div>
+            <div class="banner-container">
+        <div th:each="item, iterStat : ${Banneritems}" th:classappend="${iterStat.index == 0} ? 'active'" class="banner-item">
+            <a th:href="${item.link}">
+                <img th:src="${item.image}" alt="Item Image" />
+                <div><span th:utext="${item.title}"></span></div>
+                <div><span th:text="${item.lprice}" class="price"></span>원</div>
+            </a>
+        </div>
+    </div>
             <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         var newsItems = /*[[${responseBody}]]*/ '[]';
@@ -162,6 +192,32 @@
         function openCalendarWindow() {
             window.open(`callender.html?user_id=${encodeURIComponent(user_id)}`, '_blank', 'width=460,height=700');
         }
+    </script>
+    <!-- 배너용 스크립트 -->
+    <script th:inline="javascript">
+    function formatPrice(price) {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var items = document.querySelectorAll('.banner-item');
+        var currentIndex = 0;
+        var prices = document.querySelectorAll('.price');
+
+        prices.forEach(function(priceElement) {
+            var price = priceElement.textContent;
+            priceElement.textContent = formatPrice(price);
+        });
+
+        function showNextItem() {
+            items[currentIndex].style.display = 'none';
+            currentIndex = (currentIndex + 1) % items.length;
+            items[currentIndex].style.display = 'block';
+        }
+
+        items[currentIndex].style.display = 'block';
+        setInterval(showNextItem, 5000);
+    });
     </script>
 <!-- 푸터 -->
 <th:block th:insert="~{include/footer}"></th:block>

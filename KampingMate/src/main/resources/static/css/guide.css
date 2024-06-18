@@ -9,7 +9,7 @@
     background-size: cover;
     background-position: center;
 }
-.guide-container h2 {
+.guide-h1, .guide-h2, .guide-h3 {
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.6);
     border-radius: 5px;
@@ -90,8 +90,20 @@ table {
 	background: url("/images/play.jpg");
     background-size: 50%; /* 배경 이미지 크기를 줄임 */
 }
-.enjoy-container h1, h3 {
-	background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 5px;
-    padding: 10px;
+
+
+
+
+.tip-container {
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    text-align: center;
+    background: url("/images/idea.jpg");
+    background-size: cover; /* 배경 이미지 크기를 줄임 */
+}
+#campingTip {
+	margin: 0 auto;
 }

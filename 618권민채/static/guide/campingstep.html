@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<title>캠핑준비 한번에 끝내기</title>
+</head>
+<body>
+<h3>캠핑준비 한번에 끝내봐요!</h3>
+1단계 ! 캠핑장 고르기  <a href="#" onclick="loadContent('/recommend')">캠핑장 추천받기 go!</a> <a href="#" onclick="loadContent('/review')">캠핑장 리뷰보러 go!</a><br>
+2단계 ! 캠핑장 예약하기 <a href="#" onclick="loadContent('/book')">캠핑장 예약하기 go!</a><br>
+3단계 ! 캠핑 물품 준비하기 <a href="#" onclick="loadContent('/shopping')">원하는 캠핑용품 쇼핑하러 go!</a><br>
+4단계 ! 완벽한 캠핑 준비하기 <a href="#" onclick="loadContent('/magazine')">캠핑 공부하러 go!</a>
+<a href="#" onclick="loadContent('/recipes')">요리 준비하러 go!</a>
+<a href="#" onclick="loadContent('/enjoy')">놀거리 준비하러 go!</a>
+
+<br>
+<div id="content"></div>
+
+<script>
+function loadContent(url) {
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: function(response) {
+            var newWindow = window.open("", "_blank", "width=800,height=600,top=100,left=100");
+            newWindow.document.open();
+            newWindow.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>캠핑 준비</title><script src="https://code.jquery.com/jquery-3.7.1.min.js"></' + 'script><script>' +
+                '$(document).ready(function() {' +
+                    'console.log("New window script loaded");' +
+                    '$(document).on("click", ".cafe-link", function(event) {' +
+                        'event.preventDefault();' +
+                        'console.log("Link clicked");' +
+                        'var link = $(this).attr("data-link");' +
+                        'console.log("Link data-link:", link);' +
+                        '$.ajax({' +
+                            'url: "/cafecontent",' +
+                            'method: "GET",' +
+                            'data: { url: link },' +
+                            'success: function(data) {' +
+                                'console.log("Content loaded:", data);' +
+                                '$("#cafeContent").html(data);' +
+                            '},' +
+                            'error: function(xhr, status, error) {' +
+                                'console.error("Error:", error);' +
+                            '}' +
+                        '});' +
+                    '});' +
+                '});' +
+            '</' + 'script></head><body>' + response + '<div id="cafeContent"></div></body></html>');
+            newWindow.document.close();
+            newWindow.history.pushState({}, "", url);
+            newWindow.focus();
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+</script>
+</body>
+</html>

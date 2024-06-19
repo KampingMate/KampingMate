@@ -79,6 +79,10 @@ public class ShoppingController {
 		return "Shopping/shoppingList";
 	}
     
+    @GetMapping("/api/chat")
+    public String go_chat() {
+        return "Chat";
+    }
     
     @GetMapping("/detailrecipe")
     public String getDetailRecipes(@RequestParam("seq") int seq, Model model) {

@@ -1,0 +1,4 @@
+// 채팅서비스
+    Optional<MemberData> findById(long no_data);
+
+추가

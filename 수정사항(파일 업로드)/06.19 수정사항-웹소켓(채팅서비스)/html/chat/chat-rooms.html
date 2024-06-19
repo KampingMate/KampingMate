@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chat Rooms</title>
+</head>
+<body>
+    <h1>Chat Rooms</h1>
+    <div>
+        <ul>
+            <li th:each="room : ${chatRooms}">
+                <span th:text="${room.title}">Room Title</span>
+                <button th:attr="onclick=|enterRoom('${room.room_seq}')|">Enter</button>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <h2>Joined Rooms</h2>
+        <ul>
+            <li th:each="room : ${joinedRooms}">
+                <span th:text="${room.title}">Title</span>
+                <button th:attr="onclick=|enterRoom('${room.room_seq}', null)|">Re-enter</button>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <form action="/createRoom" method="post">
+            <input type="text" name="title" placeholder="Room Title" required>
+            <button type="submit">Create Room</button>
+        </form>
+    </div>
+    <script>
+        function enterRoom(roomId, nickname) {
+            if (nickname === null) {
+                window.location.href = "/chat/" + roomId + "?nickname=";
+                return;
+            }
+            if (!nickname) {
+                nickname = prompt("Enter your nickname:");
+            }
+            if (!nickname || nickname.trim() === "") {
+                alert("nickname을 입력하세요");
+                return;
+            }
+            window.location.href = "/chat/" + roomId + "?nickname=" + encodeURIComponent(nickname);
+        }
+    </script>
+</body>
+</html>

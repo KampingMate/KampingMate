@@ -44,6 +44,7 @@
     <div>
         <input type="text" id="message" placeholder="Enter message">
         <button onclick="sendMessage()">Send</button>
+        <input type="button" value="나가기" onclick="leaveRoom()">
     </div>
     <div id="chat" class="chat-container">
         <div th:each="msg : ${messages}" th:classappend="${msg.member.no_data} == ${userId} ? 'sent' : 'received'" class="message">
@@ -52,6 +53,7 @@
             </div>
         </div>
     </div>
+    
     <script>
         var ws = null;
         var roomId = "[[${roomId}]]";
@@ -102,6 +104,10 @@
             messageElement.innerHTML = '<div class="content"><span>' + sender + '</span>: <span>' + message + '</span></div>';
             chat.appendChild(messageElement);
             chat.scrollTop = chat.scrollHeight; // 새로운 메시지가 추가될 때 스크롤을 맨 아래로 이동
+        }
+        
+        function leaveRoom() {
+        	 window.location.href = "/chatService";
         }
 
         // Connect automatically when the page loads

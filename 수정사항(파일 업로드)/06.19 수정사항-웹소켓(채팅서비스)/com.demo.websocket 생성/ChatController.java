@@ -3,16 +3,20 @@ package com.demo.websocket;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.demo.domain.ChatRoom;
 import com.demo.domain.Chatting;
 import com.demo.domain.MemberData;
+import com.demo.dto.DeleteRoomRequest;
+import com.demo.dto.LeaveRoomRequest;
 import com.demo.service.ChatRoomService;
 import com.demo.service.ChattingService;
 
@@ -40,6 +44,7 @@ public class ChatController {
 
         model.addAttribute("chatRooms", availableRooms);
         model.addAttribute("joinedRooms", joinedRooms);
+        model.addAttribute("usercode",loginUser.getUsercode());
         
         return "chat/chat-rooms";
     }
@@ -83,5 +88,27 @@ public class ChatController {
         model.addAttribute("userId", loginUser.getNo_data());
 
         return "chat/chat";
+    }
+    
+    @PostMapping("/leaveRoom")
+    public ResponseEntity<Void> leaveRoom(@RequestBody LeaveRoomRequest request, HttpSession session) {
+        MemberData loginUser = (MemberData) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return ResponseEntity.status(403).build(); // Forbidden
+        }
+
+        chattingService.deleteMessagesByRoomAndMember(request.getRoomId(), loginUser.getNo_data());
+        return ResponseEntity.ok().build();
+    }
+    
+    @PostMapping("/deleteRoom")
+    public ResponseEntity<Void> deleteRoom(@RequestBody DeleteRoomRequest request, HttpSession session) {
+        MemberData loginUser = (MemberData) session.getAttribute("loginUser");
+        if (loginUser == null || loginUser.getUsercode() != 1) {
+            return ResponseEntity.status(403).build(); // Forbidden
+        }
+
+        chatRoomService.deleteChatRoom(request.getRoomId());
+        return ResponseEntity.ok().build();
     }
 }

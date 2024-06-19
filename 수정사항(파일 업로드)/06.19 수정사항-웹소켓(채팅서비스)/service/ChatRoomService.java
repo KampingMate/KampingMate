@@ -40,4 +40,11 @@ public class ChatRoomService {
                 .filter(room -> !joinedRooms.contains(room))
                 .collect(Collectors.toList());
     }
+    
+    public void deleteChatRoom(int roomId) {
+        // 먼저 chatting 테이블에서 room_seq가 일치하는 모든 레코드를 삭제합니다.
+        chattingRepository.deleteByChatRoomRoomSeq(roomId);
+        // 그런 다음 chatRoom을 삭제합니다.
+        chatRoomRepository.deleteById(roomId);
+    }
 }

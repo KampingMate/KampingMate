@@ -1,18 +1,24 @@
 package com.demo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.demo.domain.ChatRoom;
 import com.demo.domain.Chatting;
 import com.demo.domain.MemberData;
+import com.demo.persistence.ChatRoomRepository;
 import com.demo.persistence.ChattingRepository;
-import java.util.List;
 
 @Service
 public class ChattingService {
 
     @Autowired
     private ChattingRepository chattingRepository;
+    
+    @Autowired
+    private ChatRoomRepository chatRoomRepository;
 
     public void saveMessage(ChatRoom chatRoom, MemberData member, String nickname, String content) {
         Chatting chatMessage = new Chatting();
@@ -33,5 +39,13 @@ public class ChattingService {
 
     public String getNicknameByRoomSeqAndNoData(int roomSeq, Long noData) {
         return chattingRepository.findNicknameByRoomSeqAndNoData(roomSeq, noData);
+    }
+    
+    public void deleteMessagesByRoomAndMember(int roomSeq, Long noData) {
+        chattingRepository.deleteByChatRoomRoomSeqAndMemberNoData(roomSeq, noData);
+    }
+    
+    public void deleteChatRoom(int roomId) {
+        chatRoomRepository.deleteById(roomId);
     }
 }

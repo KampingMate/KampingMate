@@ -1,0 +1,22 @@
+1.
+application.properties 밑에 추가
+kakao.api.key=6e4e70da885f3d218056541a5b0492ca
+
+
+2.
+kampingMate/pom.xml 에 추가
+        	<!--chat-->
+<dependency>
+    <groupId>org.springframework.retry</groupId>
+    <artifactId>spring-retry</artifactId>
+    <version>2.0.5</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-aop</artifactId>
+</dependency>
+
+
+3. 챗봇 연결은 아직하지않았습니다. 하실경우 
+<a th:href="@{/api/chat}">챗봇아이콘이나 글자 넣어주세요</a>
+이런식으로 넣으면 될거같습니다

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chat Rooms</title>
+</head>
+<body>
+    <h1>Chat Rooms</h1>
+    <div>
+        <ul>
+            <li th:each="room : ${chatRooms}">
+                <span th:text="${room.title}">Room Title</span>
+                <button th:attr="onclick=|enterRoom('${room.room_seq}')|">Enter</button>
+                <span th:if="${usercode == 1}">
+                    <input type="button" value="채팅방 삭제(관리자)" th:attr="onclick=|deleteRoom('${room.room_seq}')|">
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <h2>Joined Rooms</h2>
+        <ul>
+            <li th:each="room : ${joinedRooms}">
+                <span th:text="${room.title}">Title</span>
+                <button th:attr="onclick=|enterRoom('${room.room_seq}', null)|">Re-enter</button>
+            	<button th:attr="onclick=|leaveRoom('${room.room_seq}')|">Out</button>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <form action="/createRoom" method="post">
+            <input type="text" name="title" placeholder="Room Title" required>
+            <button type="submit">Create Room</button>
+        </form>
+    </div>
+    <script>
+        function enterRoom(roomId, nickname) {
+            if (nickname === null) {
+                window.location.href = "/chat/" + roomId + "?nickname=";
+                return;
+            }
+            if (!nickname) {
+                nickname = prompt("Enter your nickname:");
+            }
+            if (!nickname || nickname.trim() === "") {
+                alert("nickname을 입력하세요");
+                return;
+            }
+            window.location.href = "/chat/" + roomId + "?nickname=" + encodeURIComponent(nickname);
+        }
+        
+        function leaveRoom(roomId) {
+            if (confirm("Are you sure you want to leave the room?")) {
+                fetch(`/leaveRoom`, { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ roomId: roomId })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("You have left the room.");
+                        window.location.reload();
+                    } else {
+                        alert("Failed to leave the room.");
+                    }
+                });
+            }
+        }
+        
+        function deleteRoom(roomId) {
+            if (confirm("Are you sure you want to delete this room?")) {
+                fetch(`/deleteRoom`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ roomId: roomId })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("The room has been deleted.");
+                        window.location.reload();
+                    } else {
+                        alert("Failed to delete the room.");
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

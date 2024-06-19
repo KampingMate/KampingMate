@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chat</title>
+    <style>
+        .chat-container {
+            width: 98%;
+            height: 500px;
+            display:inline-block;
+            position:fixed;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .message {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .message .content {
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 60%;
+        }
+        .message.sent {
+            justify-content: flex-end;
+        }
+        .message.sent .content {
+            background-color: #DCF8C6;
+            text-align: right;
+        }
+        .message.received {
+            justify-content: flex-start;
+        }
+        .message.received .content {
+            background-color: #ffa;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1 th:text="${roomTitle}">Chat Room</h1>
+    
+    <div>
+        <input type="text" id="message" placeholder="Enter message">
+        <button onclick="sendMessage()">Send</button>
+        <input type="button" value="나가기" onclick="leaveRoom()">
+    </div>
+    <div id="chat" class="chat-container">
+        <div th:each="msg : ${messages}" th:classappend="${msg.member.no_data} == ${userId} ? 'sent' : 'received'" class="message">
+            <div class="content">
+                <span th:text="${msg.nickname}">[닉네임]</span>: <span th:text="${msg.content}">[메시지]</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var ws = null;
+        var roomId = "[[${roomId}]]";
+        var username = "[[${username}]]";
+        var userId = "[[${userId}]]";
+
+        function connect() {
+            ws = new WebSocket('ws://localhost:8090/ws/chat');
+
+            ws.onopen = function() {
+                console.log('Connected to the chat room');
+                ws.send(roomId + ':' + username + '님이 입장했습니다.');
+            };
+
+            ws.onmessage = function(event) {
+                console.log('Message received:', event.data);
+                var data = event.data.split(':');
+                var receivedRoomId = data[0];
+                var sender = data[1];
+                var message = data.slice(2).join(':');
+                if (receivedRoomId === roomId) {
+                    showMessage(sender, message);
+                }
+            };
+
+            ws.onclose = function() {
+                console.log('Disconnected from the chat room');
+            };
+
+            ws.onerror = function(error) {
+                console.log('WebSocket error:', error);
+            };
+        }
+
+        function sendMessage() {
+            var messageInput = document.getElementById('message');
+            var message = messageInput.value;
+            console.log('Sending message:', message);
+            ws.send(roomId + ':' + username + ':' + message);
+            messageInput.value = '';
+        }
+
+        function showMessage(sender, message) {
+            console.log('Showing message:', sender, message);
+            var chat = document.getElementById('chat');
+            var messageElement = document.createElement('div');
+            messageElement.className = 'message ' + (sender === username ? 'sent' : 'received');
+            messageElement.innerHTML = '<div class="content"><span>' + sender + '</span>: <span>' + message + '</span></div>';
+            chat.appendChild(messageElement);
+            chat.scrollTop = chat.scrollHeight; // 새로운 메시지가 추가될 때 스크롤을 맨 아래로 이동
+        }
+        
+        function leaveRoom() {
+        	 window.location.href = "/chatService";
+        }
+
+        // Connect automatically when the page loads
+        window.onload = connect;
+    </script>
+</body>
+</html>

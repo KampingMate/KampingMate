@@ -35,7 +35,7 @@
                     <span th:case="1">예약완료</span>
                     <span th:case="2">예약불가</span>
                 </span>
-                <button type="button" onclick="bookupdatesub(event)">수정</button>
+                <button type="button" th:onclick="'bookupdate(' + ${BookVO.bookseq} + ', ' + ${BookVO.condition} + ');'">수정</button>
                 <button type="button" onclick="bookdelete()">예약 취소</button>
             </h3>
         </form>

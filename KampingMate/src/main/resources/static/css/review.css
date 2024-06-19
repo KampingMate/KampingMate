@@ -458,8 +458,3 @@ tr:hover {
 #title::placeholder {
     color: #999; /* 플레이스홀더 색상 설정 */
 }
-
-#content img {
-	width: 400px;
-	height: 400px;
-}

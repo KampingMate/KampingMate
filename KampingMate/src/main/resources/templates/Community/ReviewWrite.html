@@ -42,13 +42,14 @@
 
 <div class="review-write">
     <h2>리뷰 작성 페이지입니다</h2>
-    <div class="rw-content">
-        제목 : <input type="text" id="title" placeholder="제목을 입력하세요" /> &nbsp;&nbsp;&nbsp;
+    	제목 : <input type="text" id="title" placeholder="제목을 입력하세요" />&nbsp;&nbsp;&nbsp;
+        캠핑장 : <input type="text" id="kakao_name" onclick="review_campingsearch()" />
+    			<input type="hidden" id="kakao_id" name="kakao_id" /><br>
         캠핑장찾기 : 
         <button type="button" onclick="gocamping_search()" class="btn">이름으로 검색</button>
         <button type="button" onclick="review_campingsearch()" class="btn">지도에서 찾기</button>
     
-        <div class ="star_rating">
+        <div class ="star_rating" style="margin-top:5px; margin-bottom:5px;">
             별점 : 
             <span class="star" data-value="1"> </span>
             <span class="star" data-value="2"> </span>

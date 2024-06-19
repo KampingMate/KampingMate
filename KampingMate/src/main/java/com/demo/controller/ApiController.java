@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +26,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.demo.domain.Book;
 import com.demo.service.BookService;
+import com.demo.service.ChatService;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 
 @RestController
@@ -36,6 +38,10 @@ public class ApiController {
     
     @Autowired
     private BookService booksv;
+    
+    @Autowired
+    private ChatService chatService;
+
     
     private static final Logger logger = Logger.getLogger(ApiController.class.getName());
 
@@ -125,6 +131,12 @@ public class ApiController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(pdfBytes);
+    }
+    
+    
+    @PostMapping("/chat/send")
+    public String sendMessage(@RequestParam String message) {
+        return chatService.getChatbotResponse(message);
     }
 }
 

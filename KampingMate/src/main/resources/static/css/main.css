@@ -93,7 +93,9 @@ ul, li {
 .header-top a:hover,
 .header-mid a:hover,
 .header-bottom a:hover {
-	color: #fbe091; /* 호버 시 색상 변경 */
+	color: rgb(128, 0, 255); /* 호버 시 색상 변경 */
+	background-color: rgba(255, 255, 255, 0.7);
+	border-radius: 5px;
 }
 /* 버튼 스타일 */
 .header-serarch {
@@ -198,9 +200,9 @@ ul, li {
     flex-direction: column; /* 내부 요소들을 세로로 정렬 */
     justify-content: center; /* 요소들 중앙정렬 배치 */
     align-items: center; /* 수직 중앙정렬 */
-    background-image: url('/images/camp12.jpg');
-    background-size: cover;
-    background-position: center;
+    background-image: url('/images/choice.jpg');
+    background-size: 90%;
+    background-position: center 10%; /* 이미지의 수직 위치를 조금 올리기 */
 }
 
 .main-mid {
@@ -220,6 +222,9 @@ ul, li {
     flex-direction: column; /* 내부 요소들을 세로로 정렬 */
     justify-content: center; /* 요소들 중앙정렬 배치 */
     align-items: center; /* 수직 중앙정렬 */
+    background: url("/images/weather.jpg");
+    background-size: cover;
+    background-position: center;
 }
 .mid-news {
     width: 50%;
@@ -232,6 +237,11 @@ ul, li {
     flex-direction: column; /* 내부 요소들을 세로로 정렬 */
     justify-content: center; /* 요소들 중앙정렬 배치 */
     align-items: center; /* 수직 중앙정렬 */
+    background: url("/images/news.jpg");
+    background-size: 100%;
+}
+.news-h1{
+	background-color: rgba(255, 255, 255, 0.8);
 }
 /* 내부 div 스타일 */
 #weatherInfo, #weatherChart, #weatherYoutube {
@@ -241,6 +251,7 @@ ul, li {
 	padding: 10px;
 	margin-bottom: 20px;
 	text-align: center; /* 텍스트 가운데 정렬 */
+	background-color: rgba(255, 255, 255, 0.8);
 }
 /* 클릭 가능한 항목 스타일 */
 span.clickable {
@@ -343,6 +354,9 @@ span.clickable:hover {
     vertical-align: top;
     overflow: hidden;
 }
+#video-container ul li:hover {
+	transform: scale(1.05);
+}
 
 #video-container ul li img {
     width: 100%;
@@ -358,6 +372,10 @@ span.clickable:hover {
     padding: 8px;
     margin: 0;
 }
+.news-list {
+	background-color: rgba(255, 255, 255, 0.8);
+}
+
 .news-container {
     max-width: 800px;
     margin: 0 auto;
@@ -394,6 +412,39 @@ span.clickable:hover {
 .pagination button:disabled {
     background-color: #ddd;
     cursor: not-allowed;
+}
+
+.banner-container {
+    width: 90%;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #ADD8E6;
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 10px;
+    text-align: center;
+    background: url("/images/item.jpg");
+    background-size: 50%;
+}
+.banner-container h3 {
+	background-color: rgba(255, 255, 255, 0.8);
+}
+
+.banner-item {
+	border: 1px solid black;
+	border-radius: 10px;
+	margin:20px auto;
+	padding: 10px;
+    display: none;
+    text-align: center;
+    width: 50%;
+    height: 200px; /* 높이를 고정함 */
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.banner-item img {
+    width: 100px;
+    height: 100px;
 }
 
 

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>회원가입</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" th:href="@{/css/login.css}">
 <script type="text/javascript">
 function sendVerificationCode() {
     var phone = $("input[name='telephone']").val();
@@ -190,55 +191,53 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 </head>
 <body>
-
-    <div>
-        <h1>회원가입</h1>
-        <form onsubmit="return validateForm()" method="post" action="/oauth/joinAction">
-            <input type="hidden" name="id" th:value="${id}">
-            <p>이름</p>
-            <span><input type="text" name="name" th:value="${name}" required></span>
-            <p>생년월일</p>
-            <div class="info" id="info__birth">
-  				<select class="box" id="birth-year">
-    				<option disabled selected>출생 연도</option>
- 				 </select>
-  				<select class="box" id="birth-month">
-    				<option disabled selected>월</option>
-  				</select>
-  				<select class="box" id="birth-day">
-    				<option disabled selected>일</option>
-  				</select>
-			</div>
-			<p>선택한 생년월일 읽기(히든만 남기고 나중에 삭제)</p>
-            <div id="print-date"></div>
-            <input type="hidden" name="age">
-            <p>이메일</p>
-            <span>
-                <input type="email" name="email" th:value="${email != null ? email : ''}" required>
-                <input type="button" name="email_check" value="이메일 인증" onclick="sendEmailVerificationCode()">
-            </span> 
-            <p>이메일 인증 코드</p>
-            <span>
-                <input type="text" name="emailVerificationCode">
-                <input type="button" value="인증번호 확인" onclick="verifyEmailCode()">
-            </span>
-            <p>휴대전화</p>
-            <span>
-                <input type="text" name="telephone" required>
-                <input type="button" name="phone_check" value="휴대전화 인증" onclick="sendVerificationCode()">
-            </span>
-            <p>휴대전화 인증 코드</p>
-            <span>
-                <input type="text" name="verificationCode">
-                <input type="button" value="인증번호 확인" onclick="verifyCode()">
-            </span>
-             <br>
-            <span> 커뮤니티 : 나중에 히든값
-            	<input type="text" name="provider" th:value="${provider}">
-            </span>
-            <br>
-            <input type="submit" value="회원가입하기">
-        </form>
-    </div>
+<div class="join-container">
+	<h1 class="join-h1">회원가입</h1>
+	<form class="join-form" onsubmit="return validateForm()" method="post" action="/oauth/joinAction">
+		<input type="hidden" name="id" th:value="${id}">
+		<h3>이름</h3>
+		<input type="text" name="name" th:value="${name}" required><hr>
+		<h3>생년월일</h3>
+		<div class="info" id="info__birth">
+			<select class="box" id="birth-year">
+				<option disabled selected>출생 연도</option>
+			</select>
+			<select class="box" id="birth-month">
+				<option disabled selected>월</option>
+			</select>
+			<select class="box" id="birth-day">
+					<option disabled selected>일</option>
+			</select>
+		</div>
+		<div id="print-date" style="margin-top:5px;"></div>
+		<hr>
+		<input type="hidden" name="age">
+		<h3>이메일</h3>
+		<span>
+			<input type="email" name="email" th:value="${email != null ? email : ''}" required>
+			<input type="button" name="email_check" value="이메일 인증" onclick="sendEmailVerificationCode()">
+		</span> <hr>
+		<h3>이메일 인증 코드</h3>
+		<span>
+		    <input type="text" name="emailVerificationCode">
+		    <input type="button" value="인증번호 확인" onclick="verifyEmailCode()">
+		</span><hr>
+		<h3>휴대전화</h3>
+		<span>
+		    <input type="text" name="telephone" required>
+		    <input type="button" name="phone_check" value="휴대전화 인증" onclick="sendVerificationCode()">
+		</span><hr>
+		<h3>휴대전화 인증 코드</h3>
+		<span>
+		    <input type="text" name="verificationCode">
+		    <input type="button" value="인증번호 확인" onclick="verifyCode()">
+	    </span><hr>
+	    <span> 커뮤니티 : 나중에 히든값
+   			<input type="text" name="provider" th:value="${provider}">
+   		</span>
+   		<hr>
+    	<input type="submit" value="회원가입하기">
+	</form>
+</div>
 </body>
 </html>

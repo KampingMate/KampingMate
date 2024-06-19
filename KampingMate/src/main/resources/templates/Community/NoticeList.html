@@ -8,12 +8,14 @@
 <title>공지사항 / 이벤트 </title>
 </head>
 <body>
+<!-- 헤더 -->
+<th:block th:insert="~{include/header}"></th:block>
 <div class="notice-container">
 	<!-- 정렬버튼 -->
 	<div class="notice-main">
 		<button type="button" onclick="go_list()">모두 보기</button>
-		<button type="button" data-category="공지사항" onclick="keyClick(event)">공지사항 보기</button>
-		<button type="button" data-category="이벤트" onclick="keyClick(event)">이벤트만 보기</button>
+		<button type="button" data-category="notice" onclick="keyClick(event)">공지사항 보기</button>
+		<button type="button" data-category="event" onclick="keyClick(event)">이벤트만 보기</button>
 	</div>
 	
 	<!-- 검색란 -->
@@ -73,5 +75,7 @@
         </ul>
     </div>
 </div>
+<!-- 푸터 -->
+<th:block th:insert="~{include/footer}"></th:block>
 </body>
 </html>

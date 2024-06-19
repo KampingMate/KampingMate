@@ -75,7 +75,7 @@
 			</div>
 		</div>
         <div class="banner-container">
-        	<h3>캠핑 추천 용품</h3>
+        	<h2>캠핑 추천 용품</h2>
 	        <div th:each="item, iterStat : ${Banneritems}" th:classappend="${iterStat.index == 0} ? 'active'" class="banner-item">
 	            <a th:href="${item.link}" style="text-decoration: none; /* 밑줄 제거 */">
 	                <img th:src="${item.image}" alt="Item Image" />
@@ -109,7 +109,7 @@
                <h1 class="news-h1"><i class="fas fa-newspaper"></i>&nbsp;네이버 뉴스 검색 결과</h1>
     			<div id="news-list" class="news-list"></div>
 		        <div class="pagination">
-		            <button id="prevBtn" onclick="prevPage()" disabled>Previous</button>
+		            <button id="prevBtn" onclick="prevPage()" disabled>Previous</button>&nbsp;&nbsp;
 		            <button id="nextBtn" onclick="nextPage()">Next</button>
 		        </div>
             </div>
@@ -177,6 +177,16 @@
             window.open(`callender.html?user_id=${encodeURIComponent(user_id)}`, '_blank', 'width=460,height=700');
         }
     </script>
+    <!-- gpt 추가 -->
+    <div class="gpt-icon" onclick="openGPTWindow()">
+    	<i class="fas fa-question"></i>
+    </div>
+    <script>
+    function openGPTWindow() {
+    	window.open("/api/chat", "_blank", "width=600,height=400");
+    }
+    </script>
+    
     <!-- 배너용 스크립트 -->
     <script th:inline="javascript">
     function formatPrice(price) {

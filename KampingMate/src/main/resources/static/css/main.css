@@ -8,6 +8,17 @@
 	font-size: 40px;
 	cursor: pointer;
 }
+.gpt-icon {
+	position: fixed;
+	bottom: 80px;
+	right: 20px;
+	font-size: 40px;
+	cursor: pointer;
+	color:black;
+}
+.gpt-icon a:visited {
+	color: black;
+}
 
 
 body {
@@ -426,7 +437,7 @@ span.clickable:hover {
     background: url("/images/item.jpg");
     background-size: 50%;
 }
-.banner-container h3 {
+.banner-container h2 {
 	background-color: rgba(255, 255, 255, 0.8);
 }
 

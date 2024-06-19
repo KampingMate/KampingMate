@@ -101,7 +101,7 @@ table {
     align-items: center;
     margin: 0 auto;
     text-align: center;
-    background: url("/images/idea.jpg");
+    background: url("/images/review.jpg");
     background-size: cover; /* 배경 이미지 크기를 줄임 */
 }
 #campingTip {

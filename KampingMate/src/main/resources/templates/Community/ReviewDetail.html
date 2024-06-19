@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" th:src="@{js/ReviewDetail.js}"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" th:href="@{/css/review.css}">
 <style>
 
@@ -51,7 +52,10 @@
         <input type="hidden" name="login" id="login" th:value="${session.loginUser != null}">
         <div class="review-content">
 			<!-- 버튼들 / 공유, 추천, 북마크 -->
-			<a href="#" onclick="copyboard()"> 공유하기</a>
+			<a href="#" onclick="facebook_share()"> <i class="fab fa-facebook"></i> 페이스북 공유</a>
+         <a href="#" onclick="twitter_share()"> <i class="fab fa-twitter"></i>트위터 공유</a>
+         <a href="#" onclick="naver_share()"><i class="fas fa-share-alt"></i>네이버 공유</a>
+         <a href="#" onclick="copyboard()"> <i class="fas fa-link"></i> URL 복사</a>
 			<th:block
 			    th:if="${session.goodPointStatusMap != null and session.goodPointStatusMap[reviewVO.review_seq] == 'on'}">
 			    <a href="#" th:attr="data-seq=${reviewVO.review_seq}"
@@ -151,5 +155,7 @@
         </form>
 	
 </div>
+<!-- 푸터 -->
+<th:block th:insert="~{include/footer}"></th:block>
 </body>
 </html>

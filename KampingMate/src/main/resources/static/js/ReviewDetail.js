@@ -72,8 +72,28 @@ function reply_list() {
     }
 	});
 
-	//클립보드복사
-	function copyboard() {
+	//공유기능
+  	function facebook_share() {
+            var url = encodeURIComponent(window.location.href);
+            var facebook_url = "https://www.facebook.com/sharer/sharer.php?u=" + url;
+            window.open(facebook_url, '_blank');
+        }
+
+  	function twitter_share() {
+            var url = encodeURIComponent(window.location.href);
+            var text = encodeURIComponent(document.title);
+            var twitter_url = "https://twitter.com/intent/tweet?url=" + url + "&text=" + text;
+            window.open(twitter_url, '_blank');
+        }
+        
+    function naver_share() {
+            var url = encodeURIComponent(window.location.href);
+            var title = encodeURIComponent(document.title);
+            var naver_url = "http://share.naver.com/web/shareView.nhn?url=" + url + "&title=" + title;
+            window.open(naver_url, '_blank');
+        }    
+        
+ 	 function copyboard() {
 		var copy = document.createElement('input'), text = window.location.href;
 
 		document.body.appendChild(copy);
@@ -233,3 +253,4 @@ function saveChanges(button, event) {
         alert('댓글 수정 중 오류가 발생했습니다: ' + error.message);
     });
 }
+

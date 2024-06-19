@@ -199,14 +199,18 @@ async function gobook(event) {
 /** BookList */
 //예약 상세내용 보러가기
 function go_view(bookseq) {
-    var theForm = document.frm;
-    theForm.method = "post";
-    theForm.action = "/Book_detail";
+    var theForm = document.getElementById("frm");
+    
+
+    $('input[name="bookseq"]').remove();  
     $('<input>').attr({
         type: 'hidden',
         name: 'bookseq',
         value: bookseq
     }).appendTo(theForm);
+
+    theForm.method = "post";
+    theForm.action = "/Book_detail";
     theForm.submit();
 }
 

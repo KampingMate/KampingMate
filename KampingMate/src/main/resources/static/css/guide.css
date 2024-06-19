@@ -107,3 +107,31 @@ table {
 #campingTip {
 	margin: 0 auto;
 }
+
+
+.food-container,
+.fd-container {
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    text-align: center;
+    background: url("/images/cook.jpg");
+    background-size: 50%; /* 배경 이미지 크기를 줄임 */
+}
+.food-content {
+	margin: 0 auto;
+	border: 1px solid #82c4ff;
+	border-radius: 5px;
+	background-color: rgba(255, 255, 255, 0.7);
+	padding: 10px;
+	margin-bottom: 10px;
+}
+.food-content a {
+	text-decoration: none; /* 밑줄 제거 */
+    color: blue; /* 부모 요소의 색상을 유지 */
+}
+.food-content a:hover {
+	color: skyblue;
+}

@@ -210,7 +210,7 @@ body {
             overlay.innerHTML = `
                 <div class="overlay-content">
                     <h3>방 제목을 입력해주세요</h3>
-                    <input type="text" id="newRoomTitle" placeholder="Room Title" required>
+                    <input type="text" id="newRoomTitle" placeholder="Room Title" onkeyup="checkEnter(event)" required>
                     <button class="toggle-button" onclick="createRoom()">Create</button>
                     <button class="toggle-button" onclick="closeOverlay()">Cancel</button>
                 </div>
@@ -301,6 +301,12 @@ body {
                         alert("오류가 발생하였습니다.");
                     }
                 });
+            }
+        }
+        
+        function checkEnter(event) {
+            if (event.key === 'Enter') {
+            	createRoom();
             }
         }
     </script>

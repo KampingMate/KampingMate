@@ -99,7 +99,7 @@
 				                </th:block>
 				            </div>
 			            </td>
-						<td>[[${reviewVO.member_data.id}]]</td>
+						<td th:text="(${#strings.length(reviewVO.member_data.name) > 1} ? ${#strings.substring(reviewVO.member_data.name, 0, 1)} + '**' : ${#strings.substring(reviewVO.member_data.name, 0, 1)} + '*')"></td>
 						<td>[[${reviewVO.cnt}]]</td>
 						<td>[[${reviewVO.goodpoint}]]</td>
 						<td>[[${#dates.format(reviewVO.write_date, 'yyyy-MM-dd')}]]</td>

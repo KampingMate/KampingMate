@@ -88,7 +88,7 @@
             </div>
             
 			등록일 : [[${#dates.format(reviewVO.write_date, "yyyy-MM-dd")}]]<br>
-			작성자 : [[${reviewVO.member_data.id}]]<br>
+			작성자 : <span th:text="(${#strings.length(reviewVO.member_data.name) > 1} ? ${#strings.substring(reviewVO.member_data.name, 0, 1)} + '**' : ${#strings.substring(reviewVO.member_data.name, 0, 1)} + '*')"></span><br>
 			조회수 : [[${reviewVO.cnt}]]<br>
 			리뷰내용
             
@@ -124,7 +124,7 @@
                 </tr>
                 <th:block th:each="replyVO : ${ReplyList}">
                     <tr th:attr="data-replynum=${replyVO.replynum}">
-                        <td>[[${replyVO.member_data.id}]]</td>
+                        <td th:text="(${#strings.length(reviewVO.member_data.name) > 1} ? ${#strings.substring(reviewVO.member_data.name, 0, 1)} + '**' : ${#strings.substring(reviewVO.member_data.name, 0, 1)} + '*')"></td>
                         <td>
                         	<span th:text="${replyVO.content}" th:attr="data-content-view=${replyVO.replynum}">
                         		Reply Content</span> 

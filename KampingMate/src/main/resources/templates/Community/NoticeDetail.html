@@ -25,6 +25,9 @@
                 <h3>내용 </h3>
                 <div class="nd-box">
                     <span th:utext="${noticeVO.notice_content}"></span>
+                    <th:block th:each="image : ${noticeVO.notice_images}">
+                            <img th:src="${image}">
+                        </th:block>
                 </div>
 
         </form>

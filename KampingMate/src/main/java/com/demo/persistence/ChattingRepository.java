@@ -13,7 +13,7 @@ import com.demo.domain.Chatting;
 
 public interface ChattingRepository extends JpaRepository<Chatting, Long> {
 
-    List<Chatting> findByChatRoom(ChatRoom chatRoom);
+	List<Chatting> findByChatRoomOrderByWriteDateAsc(ChatRoom chatRoom);
 
     @Query("SELECT c FROM Chatting c WHERE c.member.no_data = :no_data")
     List<Chatting> findByMemberNoData(@Param("no_data") Long noData);
@@ -33,5 +33,6 @@ public interface ChattingRepository extends JpaRepository<Chatting, Long> {
     @Transactional
     @Query(value = "DELETE FROM chatting WHERE room_seq = :roomSeq", nativeQuery = true)
     void deleteByChatRoomRoomSeq(@Param("roomSeq") int roomSeq);
+    
 
 }

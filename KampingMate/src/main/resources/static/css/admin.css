@@ -1,4 +1,9 @@
-
+.chat-icon {
+	cursor: pointer;
+}
+.chat-icon:hover {
+	color: gold;
+}
 .login-container {
     margin: auto;
     padding: 20px;

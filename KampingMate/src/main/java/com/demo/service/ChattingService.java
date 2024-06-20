@@ -1,5 +1,6 @@
 package com.demo.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,12 @@ public class ChattingService {
         chatMessage.setMember(member);
         chatMessage.setNickname(nickname);
         chatMessage.setContent(content);
+        chatMessage.setWriteDate(new Date());
         chattingRepository.save(chatMessage);
     }
 
     public List<Chatting> getMessagesByRoom(ChatRoom chatRoom) {
-        return chattingRepository.findByChatRoom(chatRoom);
+        return chattingRepository.findByChatRoomOrderByWriteDateAsc(chatRoom);
     }
 
     public List<ChatRoom> getJoinedRooms(Long noData) {

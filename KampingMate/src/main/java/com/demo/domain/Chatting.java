@@ -1,5 +1,8 @@
 package com.demo.domain;
 
+import java.util.Date;
+
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -33,6 +36,9 @@ public class Chatting {
     @ManyToOne
     @JoinColumn(name="no_data")
     private MemberData member;
+    
+    @ColumnDefault("sysdate")
+    private Date writeDate;
     
     private String nickname;
     private String content;

@@ -201,7 +201,7 @@ public class ShoppingController {
         try {
             // ChromeDriver 경로
             System.setProperty("webdriver.chrome.driver",
-                    "E:/kmc/cherish-test1/팀프로젝트/teamproject/chromedriver-win64/chromedriver.exe");
+                    "C:/Users/tiger/Downloads/chromedriver-win64/chromedriver.exe");
 
             
             ChromeOptions options = new ChromeOptions();

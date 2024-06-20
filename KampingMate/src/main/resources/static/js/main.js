@@ -174,7 +174,8 @@ function weatherData(nx, ny) {
     var api_key = "WuMkHTh0aSvlWEtIHd7EkY%2B02m%2BOyVb6UcNDRYXc2kRCohnhAvj%2Ft11Zbjb8KuDwusQlhukBJWddx%2FsBexnBeQ%3D%3D";
     var baseDate = getBaseDate();
     var baseTime1 = getBaseTime1();
-    var baseTime2 = getBaseTime2();
+    var baseTime2 = "0500";
+    
     console.log("날짜 : " + baseDate + ", 시간 : (초단기예보시간=" + baseTime1 + ", 단기예보시간=" + baseTime2 + ")");
 
     // 초단기 예보 fetch 요청
@@ -226,7 +227,7 @@ function weatherData(nx, ny) {
             var items = data.response.body.items.item;
             for (var i = 0; i < items.length; i++) {
                 var item = items[i];
-                if (item.category == "TMX") {
+                if (item.fcstDate === baseDate && item.category == "TMX") {
                     document.getElementById("maxTemperature").innerText = item.fcstValue + "°C";
                 } else if (item.category == "TMN") {
                     document.getElementById("minTemperature").innerText = item.fcstValue + "°C";

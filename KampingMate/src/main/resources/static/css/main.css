@@ -230,7 +230,7 @@ ul, li {
     margin-top: 20px;
 }
 .mid-weather {
-    width: 40%;
+    width: 45%;
     border: 1px solid #ADD8E6; /* 파스텔톤의 하늘색 */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자효과 */
     border-radius: 10px;
@@ -245,7 +245,7 @@ ul, li {
     background-position: center;
 }
 .mid-news {
-    width: 50%;
+    width: 45%;
     border: 1px solid #ADD8E6; /* 파스텔톤의 하늘색 */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자효과 */
     border-radius: 10px;
@@ -390,9 +390,7 @@ span.clickable:hover {
     padding: 8px;
     margin: 0;
 }
-.news-list {
-	background-color: rgba(255, 255, 255, 0.8);
-}
+
 
 .news-container {
     max-width: 800px;
@@ -406,6 +404,7 @@ span.clickable:hover {
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 .news-item h3 {

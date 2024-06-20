@@ -41,7 +41,7 @@ public class ChatController {
 
         List<ChatRoom> availableRooms = chatRoomService.getAvailableChatRooms(noData);
         List<ChatRoom> joinedRooms = chattingService.getJoinedRooms(noData);
-
+        
         model.addAttribute("chatRooms", availableRooms);
         model.addAttribute("joinedRooms", joinedRooms);
         model.addAttribute("usercode",loginUser.getUsercode());

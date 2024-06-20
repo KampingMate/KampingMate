@@ -19,6 +19,13 @@
 .gpt-icon a:visited {
 	color: black;
 }
+.chat-icon {
+	position: fixed;
+	bottom: 140px;
+	right: 18px;
+	font-size: 40px;
+	cursor: pointer;
+}
 
 
 body {

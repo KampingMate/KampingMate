@@ -46,7 +46,9 @@
 <div class="review-write">
     <h2>리뷰 수정 페이지입니다</h2>
     <div class="rw-content">
-        제목 : <input type="text" id="title" placeholder="제목을 입력하세요" /> &nbsp;&nbsp;&nbsp;
+		<input type="hidden" id="review_seq" name="review_seq" th:value="${reviewVO.review_seq}">
+		<input type="hidden" id="write_date" name="write_date" th:value="${reviewVO.write_date}">
+        제목 : <input type="text" id="title" th:value="${reviewVO.title}" /> &nbsp;&nbsp;&nbsp;
         캠핑장 : <input type="text" id="kakao_name" onclick="review_campingsearch()" th:value="${reviewVO.kakao_name}" />
     <input type="hidden" id="kakao_id" name="kakao_id" />
     <button type="button" onclick="review_campingsearch()" class="btn">캠핑장찾기</button>

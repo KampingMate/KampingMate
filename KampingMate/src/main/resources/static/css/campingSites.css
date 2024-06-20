@@ -303,7 +303,64 @@ h1 {
 	padding: 10px;
 	text-align: center;
 	background-color: rgba(255, 255, 255, 0.7); /* 반투명 흰색 배경 */
+	margin-bottom: 20px;
 }
 
+li.li-list button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+}
 
+li.li-list button:hover {
+    background-color: #0056b3;
+}
 
+li.li-list hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* CSS 예시 */
+li.li-list button.book-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+li.li-list button.book-button:hover {
+    background-color: #218838;
+}
+
+/* CSS 예시 */
+.recommend-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.recommend-button:hover {
+    background-color: #0056b3;
+}
+
+/* CSS 예시 */
+.recommend-link {
+    color: #007bff; /* 링크 색상 */
+    text-decoration: none; /* 밑줄 제거 */
+    margin-right: 10px;
+}
+
+.recommend-link:hover {
+    text-decoration: underline; /* 호버 시 밑줄 추가 */
+    color: #0056b3; /* 호버 시 색상 변경 */
+}

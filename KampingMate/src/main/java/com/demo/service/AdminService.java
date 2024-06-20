@@ -72,6 +72,10 @@ public interface AdminService {
 
 	void saveNotice(Notice notice);
 
+	Page<Notice> getAllNotices(Pageable pageable);
+
+	Page<Notice> getAllEvents(Pageable pageable);
+
 	
 
 	

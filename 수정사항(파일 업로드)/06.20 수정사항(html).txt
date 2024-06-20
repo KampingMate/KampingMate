@@ -1,0 +1,43 @@
+1. 채팅방 HTML
+
+<스크립트 추가>
+function checkEnter(event) {
+            if (event.key === 'Enter') {
+            	createRoom();
+            }
+        }
+
+<스크립트 수정>
+function createOverlay() {
+            var overlay = document.createElement('div');
+            overlay.id = 'overlay';
+            overlay.classList.add('overlay');
+            overlay.innerHTML = `
+                <div class="overlay-content">
+                    <h3>방 제목을 입력해주세요</h3>
+                    <input type="text" id="newRoomTitle" placeholder="Room Title" onkeyup="checkEnter(event)" required>
+                    <button class="toggle-button" onclick="createRoom()">Create</button>
+                    <button class="toggle-button" onclick="closeOverlay()">Cancel</button>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+
+
+2. 채팅 HTML
+
+<스크립트 추가>
+function checkEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+
+<HTML 수정>
+<div>
+        <input type="text" id="message" placeholder="Enter message" onkeyup="checkEnter(event)">
+        <input type="button" value="입력" onclick="sendMessage()">
+        <input type="button" value="나가기" onclick="leaveRoom()">
+    </div>

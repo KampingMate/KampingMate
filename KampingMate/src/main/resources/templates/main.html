@@ -186,7 +186,15 @@
     	window.open("/api/chat", "_blank", "width=600,height=400");
     }
     </script>
-    
+    <!-- 채팅방 추가 -->
+    <div class="chat-icon" onclick="openChatRoom()">
+    	<i class="fas fa-comment-dots"></i>
+    </div>
+    <script>
+    function openChatRoom() {
+    	window.open("/chatService", "_blank", "width=600,height=600");
+    }
+    </script>
     <!-- 배너용 스크립트 -->
     <script th:inline="javascript">
     function formatPrice(price) {

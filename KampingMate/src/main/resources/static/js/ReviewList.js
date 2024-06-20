@@ -3,18 +3,19 @@
  */
 
      //검색
-    	function submitSearch() {	
-	if ($("#searchKeyword").val() == "") {
-		alert("검색어를 입력하세요");
-		$("#searchKeyword").focus();
-		return false;
-	}  else{
-		var theform = $("#searchForm");
-		theform.attr("method", "get");
-		theform.attr("action", "/review_search");
-		theform.submit();
-	}
-		}
+    function submitSearch() {
+    var keyword = document.getElementById('searchKeyword').value;
+    if (keyword === "") {
+        alert("검색어를 입력하세요");
+        document.getElementById('searchKeyword').focus();
+        return false;
+    } else {
+        document.getElementById('searchForm').action = "/review_search";
+        document.getElementById('searchForm').submit();
+        return true;
+    }
+}
+
 	
 	//상세페이지로 이동		
 	 function go_view(review_seq) {
@@ -32,66 +33,104 @@
 		theForm.submit();
 	}	
 	
-	//페이징
+	//인기순정렬
 	
-	    function go_next_page() {
-        var nextPage = Math.floor((pageNumber - 1) / 10) * 10 + 11;
-        if (nextPage > totalPages) {
-            nextPage = totalPages;
+	 function keyClick(event) {
+        var category = event.target.getAttribute('data-category');
+        document.getElementById('sort').value = category;
+        document.getElementById('page').value = 1;
+
+        console.log("정렬 키 클릭 : " + category);
+
+        var searchForm = document.getElementById('searchForm');
+        searchForm.action = "/sorted_Review";  
+        searchForm.submit();
+    }
+	
+	//페이징
+    function go_page(page) {
+        var form = document.getElementById('searchForm');
+        var sortInput = document.getElementById('sort');
+        var searchType = document.getElementById('searchType').value;
+        var searchKeyword = document.getElementById('searchKeyword').value;
+
+        var params = new URLSearchParams(new FormData(form));
+        params.set('page', page);
+        if (sort) {
+        	params.set('sort', sortInput.value);
         }
-        go_page(nextPage);
-    }
-    
-    function go_pri_page() {
-        var prevPage = Math.floor((pageNumber - 1) / 10) * 10 - 9;
-        if (prevPage < 1) {
-            prevPage = 1;
-        }
-        go_page(prevPage);
-    }
-    
-	   function go_page(page) {
-    var form = document.forms['searchForm'];
-    var pageInput = form.querySelector('input[name="page"]');
-    var sortInput = form.querySelector('input[name="sort"]');
-    
-    if (!sortInput) {
-        sortInput = document.createElement('input');
-        sortInput.type = 'hidden';
-        sortInput.name = 'sort';
-        sortInput.value = 'cnt_sort'; // 기본값 설정
-        form.appendChild(sortInput);
-    }
-    
-    pageInput.value = page;
-    form.submit();
-}
-
-
-
-    
-        document.addEventListener('DOMContentLoaded', function() {
-        var pageNumber = /*[[${pageNumber}]]*/ 1;
-        var totalPages = /*[[${totalPages}]]*/ 1;
-
-
-        var nextButton = document.getElementById('nextButton');
-        if (nextButton) {
-            nextButton.addEventListener('click', function() {
-                console.log("Next button clicked");
-                var nextPage = Math.floor((pageNumber - 1) / 10) * 10 + 11;
-                console.log("Next page calculated:", nextPage);
-                if (nextPage <= totalPages) {
-                    go_page(nextPage);
-                } else {
-                    go_page(totalPages);
-                }
-            });
+        if (searchType) {
+            params.set('searchType', searchType);
         }
 
-        console.log("pageNumber:", pageNumber);
-        console.log("totalPages:", totalPages);
-    });
+        if (searchKeyword) {
+            params.set('searchKeyword', searchKeyword);
+        }
+        var url = "/sorted_Review?" + params.toString();
+        if (!sort) {
+        	var url = "/review?" + params.toString();
+        }
+        console.log("go_page - URL: " + url);
+
+        window.location.href = url;
+    }
+
+    function go_list() {
+        var form = document.getElementById('searchForm');
+        document.getElementById('sort').value = '';  
+        document.getElementById('page').value = 1;
+
+        var params = new URLSearchParams(new FormData(form));
+        params.set('page', 1);
+
+        form.action = '/review?' + params.toString();
+        form.submit();
+    }
+    
+    window.onload = function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var sort = urlParams.get('sort');
+        if (sort) {
+            document.getElementById('sort').value = sort;
+        }
+        renderPagination();
+    };
+
+    function renderPagination() {
+        var paginationContainer = document.getElementById('pagination');
+        if (!paginationContainer) {
+            console.error('Pagination container not found');
+            return;
+        }
+
+        var totalPages = parseInt(paginationContainer.getAttribute('data-total-pages'));
+        var pageNumber = parseInt(paginationContainer.getAttribute('data-page-number'));
+
+        if (isNaN(totalPages) || isNaN(pageNumber)) {
+            console.error('Invalid totalPages or pageNumber');
+            return;
+        }
+
+        paginationContainer.innerHTML = '';
+
+        if (pageNumber > 1) {
+            var prevPage = document.createElement('li');
+            prevPage.innerHTML = '<a href="javascript:void(0);" onclick="go_page(' + (pageNumber - 1) + ')">&laquo; 이전</a>';
+            paginationContainer.appendChild(prevPage);
+        }
+
+        for (var i = 1; i <= totalPages; i++) {
+            var pageItem = document.createElement('li');
+            pageItem.innerHTML = '<a href="javascript:void(0);" onclick="go_page(' + i + ')" class="' + (i == pageNumber ? 'active' : '') + '">' + i + '</a>';
+            paginationContainer.appendChild(pageItem);
+        }
+
+        if (pageNumber < totalPages) {
+            var nextPage = document.createElement('li');
+            nextPage.innerHTML = '<a href="javascript:void(0);" onclick="go_page(' + (pageNumber + 1) + ')">다음 &raquo;</a>';
+            paginationContainer.appendChild(nextPage);
+        }
+    }
         
    
    //기본정렬
@@ -102,23 +141,7 @@
 		theForm.submit();
 	}
 	
-	//인기도 정렬
-	function keyClick(event) {
-    var category = event.target.getAttribute('data-category');
-    var form = document.forms['searchForm'];
-    var sortInput = form.querySelector('input[name="sort"]');
 
-    if (!sortInput) {
-        sortInput = document.createElement('input');
-        sortInput.type = 'hidden';
-        sortInput.name = 'sort';
-        form.appendChild(sortInput);
-    }
-    sortInput.value = category;
-
-    form.action = '/sorted_Review';
-    form.submit();
-}
 
 
 

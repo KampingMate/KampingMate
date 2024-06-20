@@ -97,7 +97,7 @@ body {
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     text-align: left; /* 내용은 왼쪽 정렬 */
 }
 
@@ -114,14 +114,35 @@ h1 {
 
 .profile-image {
     border-radius: 50%;
-    margin-bottom: 10px;
-    border: 2px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
 }
+
+.profile-image:hover {
+            transform: scale(1.05);
+        }
 
 .profile-buttons {
     text-align: center;
     margin-top: 10px;
 }
+
+.profile-buttons button {
+            background-color: #428bca;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .profile-buttons button:hover {
+            background-color: #3071a9;
+            transform: scale(1.05);
+        }
 
 /* 프로필 이미지 선택 버튼 스타일 */
 #changeProfileButton {
@@ -163,6 +184,10 @@ h1 {
 
 #mainInfo {
     margin-bottom: 20px;
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .my {
@@ -203,6 +228,7 @@ h2 {
     text-align: center;
     margin-top: 20px;
     color: #333;
+    font-size: 24px;
 }
 
 #my_reviews_table {
@@ -258,9 +284,9 @@ h2 {
 
 #bookmarked_reviews_table th, 
 #bookmarked_reviews_table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
 }
 
 #bookmarked_reviews_table th {
@@ -284,7 +310,12 @@ h2 {
 /* Responsiveness */
 @media screen and (max-width: 600px) {
     .container {
-        padding: 10px;
+        max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
     #bookmarked_reviews_table th, 
@@ -299,6 +330,9 @@ h2 {
 }
 
 #bookMark {
+	font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
 	background: url('/images/7488.jpg') no-repeat center center fixed;
     background-size: cover;
 }
@@ -306,6 +340,9 @@ h2 {
 #reviewDetail {
 	background: url('/images/7488.jpg') no-repeat center center fixed;
     background-size: cover;
+     font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
 }
 
 #guestBook {
@@ -337,4 +374,102 @@ h2 {
             color: #333;
         }
         
+        .recombody {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            background: url('/images/7488.jpg') no-repeat center center fixed;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding-top: 50px; /* 헤더 공간 확보 */
+        }
+        .recomcontainer {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9); /* 투명한 배경 */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .recomh1 {
+            text-align: center;
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .recommendations {
+            margin-top: 20px;
+        }
+        .recomtable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
         
+        .recomtable th, .recomtable td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .recomth {
+            color: #333;
+            background-color: #f2f2f2;
+        }
+        .recomtd {
+            background-color: #fff;
+            color: #666;
+        }
+        .recomimg {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        #rdContent {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+#rdContent h3 {
+    margin-bottom: 10px;
+}
+
+#rdContent p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+#myPageBody {
+	font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+}
+
+#mainContent{
+	width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            margin-bottom: 20px;
+}
+
+.myh1 {
+	text-align: center;
+            font-size: 2.5em;
+            color: #333;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+}

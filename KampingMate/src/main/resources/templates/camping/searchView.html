@@ -153,6 +153,7 @@ function go_review(){
     </script>
 
 <body>
+<th:block th:insert="~{include/header}"></th:block>
 <div class="reco-container">
     <div class="search_box">
         <form id="campSearchForm01" method="get">
@@ -212,7 +213,8 @@ function go_review(){
 <div class="search-list">
     <h1>캠핑장 리스트</h1>
     <th:block th:if="${recommendations != null and !recommendations.isEmpty() and recommendations[0] != 123456}">
-        <input type="button" value="추천 캠핑장 전체보기" onclick="getRecommendList()">
+        <input type="button" class="recommend-button" value="추천 캠핑장 전체보기" onclick="getRecommendList()">
+
         <div style="display: flex;">
             <div th:each="recommend_list, iterStat : ${recommend_list}">
                 <th:block th:if="${iterStat.index < 3}">
@@ -232,7 +234,8 @@ function go_review(){
             <input type="hidden" id="campid" name="campid" th:value="${camp.contentId}"/>
             <input type="hidden" id="campname" name="campname" th:value="${camp.facltNm}"/>
             <button type="button" onclick="go_review()">리뷰페이지</button>
-            <button type="button" th:data-campid="${camp.contentId}" th:data-campname="${camp.facltNm}" onclick="go_book(this)">예약하러가기</button>
+            <button type="button" class="book-button" th:data-campid="${camp.contentId}" th:data-campname="${camp.facltNm}" onclick="go_book(this)">예약하러가기</button>
+
             <hr>
                 <h2>[[${camp.facltNm}]]</h2>
                 <hr>
@@ -302,5 +305,7 @@ function go_review(){
         </span>
     </div>
     </div>
+    <!-- 푸터 -->
+<th:block th:insert="~{include/footer}"></th:block>
 </body>
 </html>

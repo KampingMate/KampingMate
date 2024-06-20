@@ -1,21 +1,17 @@
 package com.demo.controller;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.demo.domain.AdminQnaBoard;
 import com.demo.domain.Book;
+import com.demo.domain.FileUploadUtil;
 import com.demo.domain.MemberData;
 import com.demo.domain.Notice;
 import com.demo.domain.askBoard;
@@ -34,7 +31,7 @@ import com.demo.service.AdminService;
 import com.demo.service.MemberService;
 import com.demo.service.NoticeService;
 
-import jakarta.persistence.EntityManager;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 @Controller
@@ -47,12 +44,8 @@ public class AdminController {
     NoticeService noticeService;
     @Autowired
     MemberService memberService;
-    
     @Autowired
-    private EntityManager entityManager;
-    
-    @Autowired
-    private Environment env;
+    private HttpServletRequest request;
     
     @Value("${com.demo.upload.path}")
     private String uploadDirectory;
@@ -298,7 +291,6 @@ public class AdminController {
                                  Notice notice,
                                  @RequestParam("file") MultipartFile[] files,
                                  RedirectAttributes redirectAttributes) throws IOException {
-
         if (loginUser != null && loginUser.getId() != null) {
             adminService.adminCheck(loginUser);
 
@@ -308,21 +300,22 @@ public class AdminController {
 
                 List<String> fileUrls = new ArrayList<>();
                 for (MultipartFile file : files) {
-                    String fileName = file.getOriginalFilename();
-                    String filePath = uploadDirectory + fileName;
+                    if (!file.isEmpty()) {
+                        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                        fileName = fileName.replaceAll("[^a-zA-Z0-9\\-_.]", "");
+                        String uploadDir = "C:/Users/tiger/git/KampingMate2/KampingMate/uploads/";
 
-                    // 파일 저장 예시: 실제 서버에 파일을 저장하는 로직
-                    try {
-                        byte[] bytes = file.getBytes();
-                        Path path = Paths.get(uploadDirectory + fileName);
-                        Files.write(path, bytes);
-                        fileUrls.add(filePath); // 파일이 정상적으로 저장된 경로를 리스트에 추가
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        try {
+                            FileUploadUtil.saveFile(uploadDir, fileName, file);
+                            String fileUrl = "/uploads/" + fileName;
+                            fileUrls.add(fileUrl);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
-                notice.setNotice_images(fileUrls); // 공지사항 객체에 파일 경로 설정
+                notice.setNotice_images(fileUrls);
 
                 if ("event".equals(notice.getNotice_cate())) {
                     adminService.insertNotice(notice);
@@ -340,19 +333,40 @@ public class AdminController {
     }
 
 
+
+
+
     
 
 
     
     @GetMapping("/admin_noticelist.do")
-    public String noticeList(@ModelAttribute("loginUser") MemberData loginUser, Model model) {
+    public String noticeList(@ModelAttribute("loginUser") MemberData loginUser,
+                             @RequestParam(defaultValue = "0") int page,
+                             Model model) {
         if (loginUser != null && loginUser.getId() != null) {
             adminService.adminCheck(loginUser);
 
-            // 공지사항 목록을 가져오기
-            List<Notice> noticeList = adminService.getAllNotices();
+            // 페이지당 표시할 공지사항 수
+            int pageSize = 10;
 
-            model.addAttribute("notices", noticeList);
+            // 페이지 요청 객체 생성
+            Pageable pageable = PageRequest.of(page, pageSize);
+
+            // 페이징 처리된 공지사항 목록 가져오기
+            Page<Notice> noticePage = adminService.getAllNotices(pageable);
+
+            // 현재 페이지 번호
+            int currentPage = noticePage.getNumber();
+
+            // 전체 페이지 수
+            int totalPages = noticePage.getTotalPages();
+
+            // 공지사항 목록과 페이징 정보를 모델에 추가
+            model.addAttribute("notices", noticePage.getContent());
+            model.addAttribute("currentPage", currentPage);
+            model.addAttribute("totalPages", totalPages);
+
             return "admin/boardPage/admin_noticelist"; // 공지사항 목록 페이지
         } else {
             return "redirect:/admin";
@@ -360,73 +374,105 @@ public class AdminController {
     }
     
     @GetMapping("/admin_noticeDetail")
-    public String adminNoticeDetail(@RequestParam("notice_seq") int noticeSeq, Model model) {
+    public String adminNoticeDetail(@RequestParam("notice_seq") int noticeSeq, HttpServletRequest request, Model model) {
         Notice notice = adminService.getBySeq(noticeSeq);
+
+        if (notice != null && notice.getNotice_images() != null && !notice.getNotice_images().isEmpty()) {
+            String contextPath = request.getContextPath();
+            List<String> modifiedImageUrls = new ArrayList<>();
+            for (String imageUrl : notice.getNotice_images()) {
+                modifiedImageUrls.add(contextPath + imageUrl);
+            }
+            notice.setNotice_images(modifiedImageUrls);
+        }
+
         model.addAttribute("notice", notice);
         return "admin/boardPage/admin_noticeDetail";
     }
+
+
+
     
-//    @PostMapping("/admin_updateNotice")
-//    public String adminUpdateNotice(@ModelAttribute("notice") Notice notice,
-//                                    @RequestParam("file") MultipartFile file,
-//                                    RedirectAttributes redirectAttributes) {
-//        // 1. 공지의 notice_seq를 사용하여 데이터베이스에서 해당 공지를 다시 조회
-//        Notice existingNotice = adminService.getBySeq(notice.getNotice_seq());
-//        
-//        if (existingNotice != null) {
-//            // 2. 기존 공지의 member_data를 notice에 설정
-//            notice.setMember_data(existingNotice.getMember_data());
-//            
-//            // 파일 업로드 처리
-//            if (!file.isEmpty()) {
-//                try {
-//                    String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//                    String uploadDir = "notice-photos/" + notice.getNotice_seq();
-//
-//                    // 파일 저장 로직 (예: FileUploadUtil 클래스를 사용한 파일 저장)
-//                    FileUploadUtil.saveFile(uploadDir, fileName, file);
-//
-//                    // 파일 URL 설정
-//                    notice.setFileUrl("/" + uploadDir + "/" + fileName);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    // 파일 업로드 실패 시 처리
-//                    redirectAttributes.addFlashAttribute("message", "파일 업로드 실패: " + e.getMessage());
-//                }
-//            }
-//
-//            // 3. 공지 업데이트 수행
-//            adminService.updateAdminNotice(notice);
-//
-//            // 4. Redirect 경로 결정
-//            if ("event".equals(notice.getNotice_cate())) {
-//                return "redirect:/admin_eventlist.do";
-//            } else if ("notice".equals(notice.getNotice_cate())) {
-//                return "redirect:/admin_noticelist.do";
-//            } else {
-//                // 기타 경우에 대한 처리
-//                return "redirect:/admin_dashboard.do";
-//            }
-//        } else {
-//            // 기존 공지가 없는 경우에 대한 처리
-//            // 예를 들어, 에러 처리 또는 다른 경로로 리다이렉트
-//            return "redirect:/admin_dashboard.do";
-//        }
-//    }
+    @PostMapping("/admin_updateNotice")
+    public String adminUpdateNotice(@ModelAttribute("notice") Notice notice,
+                                    @RequestParam("file") MultipartFile file,
+                                    RedirectAttributes redirectAttributes) {
+        // 1. 공지의 notice_seq를 사용하여 데이터베이스에서 해당 공지를 다시 조회
+        Notice existingNotice = adminService.getBySeq(notice.getNotice_seq());
+
+        if (existingNotice != null) {
+            // 2. 기존 공지의 member_data를 notice에 설정
+            notice.setMember_data(existingNotice.getMember_data());
+
+            // 3. 파일 업로드 처리
+            if (!file.isEmpty()) {
+                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                String uploadDir = "uploads/" + notice.getNotice_seq();
+
+                try {
+                    FileUploadUtil.saveFile(uploadDir, fileName, file);
+                    notice.setFileUrl("/" + uploadDir + "/" + fileName); // 파일 URL 설정
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // 파일 업로드 실패 시 처리
+                }
+
+                // 이미지 파일 URL 리스트에 추가
+                List<String> noticeImages = new ArrayList<>();
+                noticeImages.add("/" + uploadDir + "/" + fileName);
+                notice.setNotice_images(noticeImages);
+            } else {
+                // 기존 이미지 유지
+                notice.setNotice_images(existingNotice.getNotice_images());
+            }
+
+            // 4. 공지 업데이트 수행
+            adminService.updateAdminNotice(notice);
+
+            // 5. Redirect 경로 결정
+            if ("event".equals(notice.getNotice_cate())) {
+                return "redirect:/admin_eventlist.do";
+            } else if ("notice".equals(notice.getNotice_cate())) {
+                return "redirect:/admin_noticelist.do";
+            } else {
+                return "redirect:/admin_dashboard.do";
+            }
+        } else {
+            return "redirect:/admin_dashboard.do";
+        }
+    }
 
 
 
 
 
     @GetMapping("/admin_eventlist.do")
-    public String eventList(@ModelAttribute("loginUser") MemberData loginUser, Model model) {
+    public String eventList(@ModelAttribute("loginUser") MemberData loginUser,
+                            @RequestParam(defaultValue = "0") int page,
+                            Model model) {
         if (loginUser != null && loginUser.getId() != null) {
             adminService.adminCheck(loginUser);
 
-            // 이벤트 목록을 가져오기
-            List<Notice> eventList = adminService.getAllEvents();
+            // 페이지당 표시할 이벤트 수
+            int pageSize = 10;
 
-            model.addAttribute("events", eventList);
+            // 페이지 요청 객체 생성
+            Pageable pageable = PageRequest.of(page, pageSize);
+
+            // 페이징 처리된 이벤트 목록 가져오기
+            Page<Notice> eventPage = adminService.getAllEvents(pageable);
+
+            // 현재 페이지 번호
+            int currentPage = eventPage.getNumber();
+
+            // 전체 페이지 수
+            int totalPages = eventPage.getTotalPages();
+
+            // 이벤트 목록과 페이징 정보를 모델에 추가
+            model.addAttribute("events", eventPage.getContent());
+            model.addAttribute("currentPage", currentPage);
+            model.addAttribute("totalPages", totalPages);
+
             return "admin/boardPage/admin_eventlist"; // 이벤트 목록 페이지
         } else {
             return "redirect:/admin";

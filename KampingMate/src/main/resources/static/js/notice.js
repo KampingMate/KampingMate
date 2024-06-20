@@ -135,11 +135,6 @@ function go_list() {
     searchForm.submit();
 }
 
-
-
-
-
-  
 	
 		//클립보드복사
 	function copyboard() {

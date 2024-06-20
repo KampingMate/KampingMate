@@ -36,7 +36,6 @@
 <title>캠핑장 리뷰</title>
 </head>
 <body>
-<!-- 헤더 -->
 <th:block th:insert="~{include/header}"></th:block>
 <div class="review-container">
 	<!-- 정렬버튼 -->
@@ -111,29 +110,29 @@
 	</div>
 
 	<!-- 페이징처리 -->
-	<div class="pagination">
-	    <ul>
-	        <!-- 이전 버튼 -->
-	        <li th:if="${pageNumber > 10}">
-	            <a href="javascript:void(0);" th:onclick="go_pri_page();">&laquo; 이전</a>
-	        </li>
-	
-	        <!-- 페이지 번호 표시 -->
-	        <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:if="${i >= ((pageNumber - 1) / 10) * 10 + 1} and ${i <= ((pageNumber - 1) / 10 + 1) * 10}">
-	            <a href="javascript:void(0);" th:onclick="go_page([[${i}]]);" th:text="${i}" th:classappend="${i == pageNumber} ? ' active'">1</a>
-	        </li>
-	
-	        <!-- 다음 버튼 -->
-	        <li th:if="${((pageNumber - 1) / 10 + 1) * 10 < totalPages}">
-	            <a href="javascript:void(0);" th:onclick="go_next_page();">다음 &raquo;</a>
-	        </li>
-	    </ul>
-	</div>
+<div class="pagination">
+        <ul id="pagination" th:data-total-pages="${totalPages}" th:data-page-number="${pageNumber}">
+                    <li th:if="${pageNumber > 10}">
+            <a href="javascript:void(0);" th:onclick="go_pri_page();">&laquo; 이전</a>
+        </li>
+
+        <!-- 페이지 번호 표시 -->
+        <li th:each="i : ${#numbers.sequence(1, totalPages)}">
+            <span th:if="${i >= ((pageNumber - 1) / 10) * 10 + 1} and ${i <= ((pageNumber - 1) / 10 + 1) * 10}">
+                <a href="javascript:void(0);" th:onclick="go_page([[${i}]]);" th:text="${i}" th:classappend="${i == pageNumber} ? ' active'">1</a>
+            </span>
+        </li>
+
+        <!-- 다음 버튼 -->
+         <li th:if="${((pageNumber - 1) / 10 + 1) * 10 < totalPages}">
+            <a href="javascript:void(0);" th:onclick="go_next_page();">다음 &raquo;</a>
+        </li>
+    </ul>
+</div>
 
 
 
 </div>
-<!-- 푸터 -->
 <th:block th:insert="~{include/footer}"></th:block>
 </body>
 <script th:inline="javascript">

@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		weatherData(NXNY.nx, NXNY.ny);
 		
+		// 초기 "오늘"의 기온 그래프를 그리기 위해 호출
+    	weatherDay("today", NXNY.nx, NXNY.ny);
+		
 		// 클릭 이벤트 핸들러 내에서 함수 호출
 		$("#today").click(function(){
 			weatherDay("today", NXNY.nx, NXNY.ny);

@@ -29,14 +29,19 @@ def filter_camp_data(camp, selected_faclt, selected_lct, selected_induty, select
         for bottom in bottom_list:
             bottom_mask = None
             if bottom == '잔디':
+                camp['SITE_BOTTOM_CL1'] = pd.to_numeric(camp['SITE_BOTTOM_CL1'], errors='coerce')
                 bottom_mask = camp['SITE_BOTTOM_CL1'].fillna(0) > 0
             elif bottom == '파쇄석':
+                camp['SITE_BOTTOM_CL2'] = pd.to_numeric(camp['SITE_BOTTOM_CL2'], errors='coerce')
                 bottom_mask = camp['SITE_BOTTOM_CL2'].fillna(0) > 0
             elif bottom == '테크':
+                camp['SITE_BOTTOM_CL3'] = pd.to_numeric(camp['SITE_BOTTOM_CL3'], errors='coerce')
                 bottom_mask = camp['SITE_BOTTOM_CL3'].fillna(0) > 0
             elif bottom == '자갈':
+                camp['SITE_BOTTOM_CL4'] = pd.to_numeric(camp['SITE_BOTTOM_CL4'], errors='coerce')
                 bottom_mask = camp['SITE_BOTTOM_CL4'].fillna(0) > 0
             elif bottom == '맨흙':
+                camp['SITE_BOTTOM_CL5'] = pd.to_numeric(camp['SITE_BOTTOM_CL5'], errors='coerce')
                 bottom_mask = camp['SITE_BOTTOM_CL5'].fillna(0) > 0
             if bottom_mask is not None:
                 filtered_data = pd.concat([filtered_data, camp[bottom_mask]])
@@ -91,8 +96,14 @@ if __name__ == "__main__":
     # member_rate 데이터 로드
     member_rate = pd.read_pickle('E:/Student/API/memberRate.pkl')
 
-    # 사용자가 RATING을 부여한 모든 CONTENT_ID 추출
-    user_rated_camps = member_rate[member_rate['NO_DATA'] == int(user_id)]['CONTENT_ID'].tolist()
+    # KAKAO_ID를 정수로 변환 (변환할 수 없는 항목은 NaN으로 설정)
+    member_rate['KAKAO_ID'] = pd.to_numeric(member_rate['KAKAO_ID'], errors='coerce')
+
+    # KAKAO_ID가 200000 미만인 항목만 필터링
+    member_rate = member_rate[member_rate['KAKAO_ID'] < 200000]
+
+    # 사용자가 RATING을 부여한 모든 KAKAO_ID 추출
+    user_rated_camps = member_rate[member_rate['ID'] == int(user_id)]['KAKAO_ID'].tolist()
     user_rated_camps_names = create_combined_features(camp[camp['CONTENT_ID'].isin(user_rated_camps)]).values.tolist()
 
     # 코사인 유사도 기반 추천 (전체 데이터에서 1차 필터링)
@@ -108,11 +119,11 @@ if __name__ == "__main__":
         content_ids = []
 
     # 필터링된 content_id에 해당하는 rating 데이터 필터링
-    filtered_ratings = member_rate[member_rate['CONTENT_ID'].isin(content_ids)]
+    filtered_ratings = member_rate[member_rate['KAKAO_ID'].isin(content_ids)]
 
     # surprise용 데이터 준비
     reader = Reader(rating_scale=(1, 5))
-    data = Dataset.load_from_df(filtered_ratings[['NO_DATA', 'CONTENT_ID', 'RATING']], reader)
+    data = Dataset.load_from_df(filtered_ratings[['ID', 'KAKAO_ID', 'REVIEWRATE']], reader)
 
     try:
         # train-test split
@@ -129,8 +140,8 @@ if __name__ == "__main__":
         predictions = svd.test(testset)
 
         # 추천 결과 출력
-        user_ratings = filtered_ratings[filtered_ratings['NO_DATA'] == int(user_id)]
-        user_unrated_items = [item for item in content_ids if item not in user_ratings['CONTENT_ID'].tolist()]
+        user_ratings = filtered_ratings[filtered_ratings['ID'] == int(user_id)]
+        user_unrated_items = [item for item in content_ids if item not in user_ratings['KAKAO_ID'].tolist()]
 
         # 추천 항목 생성
         recommendations = []

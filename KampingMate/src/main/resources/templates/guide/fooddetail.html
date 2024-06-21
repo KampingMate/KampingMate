@@ -26,6 +26,17 @@
     <div th:if="${recipe == null}">
         <p>레시피가 없습니다</p>
     </div>
+    <button id="goBackButton">목록 보기</button>
+    <script>
+// 버튼 요소를 가져옵니다.
+const goBackButton = document.getElementById('goBackButton');
+
+// 버튼 클릭 시 이전 페이지로 이동하는 함수를 설정합니다.
+goBackButton.addEventListener('click', function() {
+    // history 객체의 back 메서드를 호출하여 이전 페이지로 이동합니다.
+    history.back();
+});
+</script>
 </div>
 </body>
 </html>

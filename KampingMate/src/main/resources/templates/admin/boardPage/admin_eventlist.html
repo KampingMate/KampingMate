@@ -65,28 +65,30 @@
 	                    </tr>
 	                </tbody>
 	            </table>
+	            <!-- 페이징 버튼 -->
+	            <div class="pagination">
+	                <ul style="list-style: none;">
+	                    <!-- 이전 페이지 링크 -->
+						<li th:if="${currentPage > 0}"><a
+							th:href="@{${'/admin_eventlist.do?page=' + (currentPage - 1)}}">&laquo;
+								이전</a></li>
+	
+						<!-- 페이지 번호 링크 -->
+						<li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+							th:class="${currentPage == i}? 'active'"><a
+							th:href="@{${'/admin_eventlist.do?page=' + i}}" th:text="${i + 1}"></a>
+						</li>
+	
+						<!-- 다음 페이지 링크 -->
+						<li th:if="${currentPage < totalPages - 1}"><a
+							th:href="@{${'/admin_eventlist.do?page=' + (currentPage + 1)}}">다음
+								&raquo;</a></li>
+	
+					</ul>
+	            </div>
 	        </div>
 	        
-	        <!-- 페이징 버튼 -->
-            <div class="eventpagination">
-                <ul>
-                    <!-- 이전 페이지 링크 -->
-<li th:if="${currentPage > 0}">
-    <a th:href="@{${'/admin_eventlist.do?page=' + (currentPage - 1)}}">&laquo; 이전</a>
-</li>
-
-<!-- 페이지 번호 링크 -->
-<li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${currentPage == i}? 'active'">
-    <a th:href="@{${'/admin_eventlist.do?page=' + i}}" th:text="${i + 1}"></a>
-</li>
-
-<!-- 다음 페이지 링크 -->
-<li th:if="${currentPage < totalPages - 1}">
-    <a th:href="@{${'/admin_eventlist.do?page=' + (currentPage + 1)}}">다음 &raquo;</a>
-</li>
-
-                </ul>
-            </div>
+	        
 	        
 	        
             <div style="text-align:center; margin-top:10px;">

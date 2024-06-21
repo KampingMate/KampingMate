@@ -141,3 +141,20 @@ table {
 .food-content a:hover {
 	color: skyblue;
 }
+
+#goBackButton {
+	padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: skyblue; /* 버튼 배경색 */
+    color: #fff; /* 버튼 텍스트 색상 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+#goBackButton:hover {
+	background-color: deepskyblue;
+}

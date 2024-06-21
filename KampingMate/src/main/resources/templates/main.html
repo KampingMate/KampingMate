@@ -187,12 +187,14 @@
     }
     </script>
     <!-- 채팅방 추가 -->
-    <div class="chat-icon" onclick="openChatRoom()">
-    	<i class="fas fa-comment-dots"></i>
-    </div>
+    <th:block th:if="${loginUserNumberData != null}">
+    	<div class="chat-icon" onclick="openChatRoom()">
+    		<i class="fas fa-comment-dots"></i>
+    	</div>
+    </th:block>
     <script>
     function openChatRoom() {
-    	window.open("/chatService", "_blank", "width=500,height=700");
+    	window.open("/chatService", "_blank", "width=600,height=700");
     }
     </script>
     <!-- 배너용 스크립트 -->

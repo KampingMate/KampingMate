@@ -64,9 +64,16 @@ async function downloadPDF() {
 
     if (response.ok) {
         const blob = await response.blob();
+        const contentDisposition = response.headers.get('Content-Disposition');
+        let filename = 'download.pdf';
+        if (contentDisposition && contentDisposition.includes('filename=')) {
+            const filenameMatch = contentDisposition.match(/filename="?(.+?)"?$/);
+            if (filenameMatch.length >= 2) {
+                filename = decodeURIComponent(filenameMatch[1].replace(/\+/g, ' '));
+            }
+        }
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
-        const filename = form.book_seq.value + '.pdf';
         a.href = url;
         a.download = filename;
         document.body.appendChild(a);
@@ -77,6 +84,7 @@ async function downloadPDF() {
         console.error('PDF 파일로 다운받는데 실패하였습니다');
     }
 }
+
 
 </script>
 </html>

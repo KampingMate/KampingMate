@@ -1,5 +1,33 @@
 @charset "EUC-KR";
 
+
+.calendar-icon {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	font-size: 40px;
+	cursor: pointer;
+}
+.gpt-icon {
+	position: fixed;
+	bottom: 80px;
+	right: 20px;
+	font-size: 40px;
+	cursor: pointer;
+	color:black;
+}
+.gpt-icon a:visited {
+	color: black;
+}
+.chat-icon {
+	position: fixed;
+	bottom: 140px;
+	right: 18px;
+	font-size: 40px;
+	cursor: pointer;
+}
+
+
 body {
 	margin: 0;
 }
@@ -83,7 +111,9 @@ ul, li {
 .header-top a:hover,
 .header-mid a:hover,
 .header-bottom a:hover {
-	color: #fbe091; /* 호버 시 색상 변경 */
+	color: rgb(128, 0, 255); /* 호버 시 색상 변경 */
+	background-color: rgba(255, 255, 255, 0.7);
+	border-radius: 5px;
 }
 /* 버튼 스타일 */
 .header-serarch {
@@ -168,25 +198,78 @@ ul, li {
 
 
 /* main */
-.w-container {
-	width: 80%;
-	max-width: 800px;
-	padding: 20px;
-	border: 1px solid #dee2e6;
-	border-radius: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	text-align: center;
-	margin: 0 auto; /* 중앙 정렬 */
-	margin-top: 20px;
-	margin-bottom: 20px;
+#main-container {
+    width: 90%;
+    border: 2px solid #ADD8E6; /* 파스텔톤의 하늘색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자효과 */
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+.main-top {
+    width: 90%;
+    border: 1px solid #ADD8E6; /* 파스텔톤의 하늘색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자효과 */
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column; /* 내부 요소들을 세로로 정렬 */
+    justify-content: center; /* 요소들 중앙정렬 배치 */
+    align-items: center; /* 수직 중앙정렬 */
+    background-image: url('/images/choice.jpg');
+    background-size: 90%;
+    background-position: center 10%; /* 이미지의 수직 위치를 조금 올리기 */
+}
+
+.main-mid {
+    width: 100%;
+    display: flex; /* Flexbox 사용 */
+    justify-content: space-around; /* 각 요소를 균등하게 배치 */
+    margin-top: 20px;
+}
+.mid-weather {
+    width: 45%;
+    border: 1px solid #ADD8E6; /* 파스텔톤의 하늘색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자효과 */
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column; /* 내부 요소들을 세로로 정렬 */
+    justify-content: center; /* 요소들 중앙정렬 배치 */
+    align-items: center; /* 수직 중앙정렬 */
+    background: url("/images/weather.jpg");
+    background-size: cover;
+    background-position: center;
+}
+.mid-news {
+    width: 45%;
+    border: 1px solid #ADD8E6; /* 파스텔톤의 하늘색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자효과 */
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column; /* 내부 요소들을 세로로 정렬 */
+    justify-content: center; /* 요소들 중앙정렬 배치 */
+    align-items: center; /* 수직 중앙정렬 */
+    background: url("/images/news.jpg");
+    background-size: 100%;
+}
+.news-h1{
+	background-color: rgba(255, 255, 255, 0.8);
 }
 /* 내부 div 스타일 */
-#weatherInfo, #weatherChart {
+#weatherInfo, #weatherChart, #weatherYoutube {
+	width: 90%;
 	border: 1px solid #dee2e6;
 	border-radius: 10px;
 	padding: 10px;
 	margin-bottom: 20px;
 	text-align: center; /* 텍스트 가운데 정렬 */
+	background-color: rgba(255, 255, 255, 0.8);
 }
 /* 클릭 가능한 항목 스타일 */
 span.clickable {
@@ -200,6 +283,185 @@ span.clickable {
 
 span.clickable:hover {
 	background-color: #f0f0f0;
+}
+
+/* 캠핑사이트 */
+.item {
+	flex: 1 1 calc(25% - 20px); /* 아이템 너비 조정 및 간격 설정 */
+	max-width: 400px; /* 최대 너비 설정 */
+	margin: 10px; /* 간격 설정 */
+	padding: 10px; /* 패딩 조정 */
+	border: 1px solid #dee2e6;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	transition: transform 0.3s ease;
+}
+
+.item:hover {
+	transform: scale(1.05);
+}
+
+.item img {
+	max-width: 200px;
+	height: auto;
+	border-radius: 5px;
+}
+
+/* 캠핑 사이트 목록 스타일 */
+.items-container {
+	display: flex;
+	justify-content: center; /* 가운데 정렬 */
+}
+
+.scrolling {
+    display: inline-block;
+    animation: scroll 1000s linear infinite;
+    height: 100%; /* .items-container에 맞게 높이 설정 */
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+.controls {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.controls button {
+    background-color: #4CAF50; /* 녹색 */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.controls button:hover {
+    background-color: #45a049;
+}
+/*유튜브*/
+#video-container {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    text-align: center;
+}
+
+#video-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#video-container ul li {
+    display: inline-block;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    width: 100px; /* 비디오 카드 너비 */
+    vertical-align: top;
+    overflow: hidden;
+}
+#video-container ul li:hover {
+	transform: scale(1.05);
+}
+
+#video-container ul li img {
+    width: 100%;
+    height: auto;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#video-container ul li p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 8px;
+    margin: 0;
+}
+
+
+.news-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.news-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.news-item h3 {
+    margin-top: 0;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.banner-container {
+    width: 90%;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #ADD8E6;
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 10px;
+    text-align: center;
+    background: url("/images/item.jpg");
+    background-size: 50%;
+}
+.banner-container h2 {
+	background-color: rgba(255, 255, 255, 0.8);
+}
+
+.banner-item {
+	border: 1px solid black;
+	border-radius: 10px;
+	margin:20px auto;
+	padding: 10px;
+    display: none;
+    text-align: center;
+    width: 50%;
+    height: 200px; /* 높이를 고정함 */
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.banner-item img {
+    width: 100px;
+    height: 100px;
 }
 
 

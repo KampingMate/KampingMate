@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import com.demo.domain.MemberData;
 import com.demo.domain.Review;
 
 public interface ReviewService {
@@ -36,10 +37,11 @@ public interface ReviewService {
 	public Page<Review> getReviewByGoodpoint(int review_seq, int page, int size); // 추천순 정렬
 	
 	public Page<Review> getReviewByBookmark(int review_seq, int page, int size); //북마크순 정렬
-
+	
 	public List<Review> getReviewsById(String id);
 
 	public Review getReviewById(int reviewId);
 
 	public List<Review> getBookmarkedReviews(String id);
+
 }

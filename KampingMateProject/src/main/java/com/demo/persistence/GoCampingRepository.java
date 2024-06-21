@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.demo.domain.GoCamping;
-import com.demo.dto.GoCampingSearchList;
 
 @Repository
 public interface GoCampingRepository extends JpaRepository<GoCamping, Integer> {

@@ -1,148 +1,160 @@
-@charset "EUC-KR";
-
-*, *:after, *:before {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-ul, li {
-	margin: 0;
-	padding: 0;
-}
+/* login.css */
 
 body {
-	background: #f0f8f8;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-	margin: 0;
-	font-family: Arial, sans-serif;
-	color: #333;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
-	background-color: white;
-	padding: 20px;
-	border-radius: 10px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-	width: 300px;
-	text-align: center;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: url("/images/login3.jpg");
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
 }
 
-.main-nav {
-	width: 100%;
-	margin: 0 auto;
-	height: 100%;
-	cursor: pointer;
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
 }
 
-.main-nav ul {
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 20px;
+#naver_id_login, #kakao_id_login, #google_id_login {
+    margin-bottom: 20px;
+}
+.login-button:hover {
+    transform: scale(1.1); /* 호버 시 10% 확대 */
+}
+.button-no-style {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
 }
 
-.main-nav li {
-	list-style: none;
-	flex: 1;
-	margin: 0 5px;
+.button-no-style img {
+    border-radius: 5px;
 }
 
-.main-nav a {
-	display: block;
-	height: 50px;
-	line-height: 50px;
-	padding: 0 25px;
-	text-decoration: none;
-	border-radius: 30px;
-	color: #FFF;
-	background: #8FBC8F;
-	transition: all 0.30s ease-in-out;
+.g_id_signin {
+    display: inline-block;
+    margin-bottom: 20px;
 }
 
-.main-nav li.active a {
-	background: #FFF;
-	color: #8FBC8F;
-	border: 2px solid #8FBC8F;
+p {
+    font-size: 14px;
+    color: #666;
+    margin-top: 30px;
 }
 
-.main-nav li:nth-child(1) a:hover, .main-nav li:nth-child(2) a:hover {
-	background: #6B8E23;
+
+
+.join-container {
+    width:70%;
+    margin: 20px auto;
+    padding: 10px;
+    border: 2px solid skyblue;
+    border-radius: 10px;
+    background: url("/images/join.jpg");
+    background-size: 100%;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.join-h1 {
+    padding:10px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+.join-form {
+    padding: 10px;
+    width: 70%;
+    border: 1px solid skyblue;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.join-form input[type="text"],
+.join-form input[type="email"],
+.join-form input[type="password"],
+.join-form select {
+    width: 70%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.join-form input[type="submit"],
+.join-form input[type="button"] {
+    background-color: skyblue;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.join-form input[type="submit"]:hover,
+.join-form input[type="button"]:hover {
+    background-color: deepskyblue;
 }
 
-.form-content {
-	display: none;
-	animation: fadeIn 0.5s;
+.join-form span {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
-#login-container {
-	display: block;
+.join-form .info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
-@keyframes fadeIn {from { opacity:0; } to { opacity: 1; }
-
-}
-input[type="text"], input[type="password"], input[type="email"] {
-	width: 100%;
-	padding: 10px;
-	margin: 10px 0;
-	border: 1px solid #ccc;
-	border-radius: 5px;
+.join-form .box {
+    width: calc(33% - 10px);
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
-input[type="submit"], input[type="button"] {
-	background-color: #8FBC8F;
-	color: white;
-	border: none;
-	padding: 10px;
-	cursor: pointer;
-	width: 100%;
-	border-radius: 5px;
-	margin-top: 10px;
-	transition: background-color 0.3s ease-in-out;
+.join-form hr {
+    width: 100%;
+    border: 0;
+    height: 1px;
+    background-color: #ccc;
+    margin: 20px 0;
 }
 
-input[type="submit"]:hover, input[type="button"]:hover {
-	background-color: #6B8E23;
-}
+/* Responsive Styling */
+@media (max-width: 600px) {
+    .join-form input[type="text"],
+    .join-form input[type="email"],
+    .join-form input[type="password"],
+    .join-form select,
+    .join-form .box {
+        width: calc(100% - 10px);
+    }
 
-a {
-	color: #8FBC8F;
-	text-decoration: none;
-}
+    .join-form span {
+        flex-direction: column;
+        align-items: center;
+    }
 
-a:hover {
-	text-decoration: underline;
-}
-
-#findId-container, #findPW-container, #terms-container {
-	display: none;
-}
-
-#findId-container table, #findPW-container table {
-	width: 100%;
-}
-
-#findId-container td, #findPW-container td {
-	padding: 5px;
-}
-
-#findId-container h1, #findPW-container h1 {
-	font-size: 1.5em;
-	color: #333;
-	margin-bottom: 10px;
-}
-
-#terms-container {
-	text-align: left;
-}
-
-#terms-container p {
-	margin-bottom: 10px;
-}
-
-#terms-container .buttons {
-	text-align: center;
+    .join-form span input[type="button"] {
+        width: calc(100% - 20px);
+        margin-top: 10px;
+    }
 }

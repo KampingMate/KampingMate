@@ -42,9 +42,10 @@ public class Notice {
 	private String notice_title; //제목
 	private String notice_cate; //공지종류 ( event, notice)
 	
-	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name="id", nullable=false)
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="id", nullable=false)
 	private MemberData member_data; 
+
 	
 	private String notice_content; //내용
 	
@@ -56,5 +57,10 @@ public class Notice {
 	
 	@ElementCollection
     private List<String> notice_images;
+
+	public void setFileUrl(String string) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

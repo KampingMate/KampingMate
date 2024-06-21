@@ -25,7 +25,7 @@
             </select> 
             <input type="text" name="searchKeyword" id="searchKeyword" placeholder="검색할 캠핑장 이름을 입력하세요."> 
             <input type="hidden" name="page" id="page" value="1">
-            <a href="#" onclick="submitSearch()">&nbsp;<i class="fas fa-search"></i></a>
+            <button type="submit">&nbsp;<i class="fas fa-search"></i></button>
         </form>
     </div>
     
@@ -40,13 +40,14 @@
                      || 캠핑장명 : <span th:text="${BookVO.campingname}"></span>
                 </a>
                 <hr>
-                <label class="b-label" >상태 : </label><span id="condition" th:data-condition="${BookVO.condition}" th:switch="${BookVO.condition}">
-                    <span th:case="0">대기중</span>
+                <label class="b-label" >상태 : </label>
+                	<span id="condition" th:data-condition="${BookVO.condition}" th:switch="${BookVO.condition}">
+                    <span id="condition-value" th:case="0">대기중</span>
                     <span th:case="1">예약완료</span>
                     <span th:case="2">예약불가</span>
                 </span><br>
                 <hr>
-                <button type="button" th:onclick="'bookupdate(' + ${BookVO.bookseq} + ');'">수정</button>
+                <button type="button" th:onclick="'bookupdate(' + ${BookVO.bookseq} + ', ' + ${BookVO.condition} + ');'">수정</button>
                 <button type="button" th:onclick="'bookdelete(' + ${BookVO.bookseq} + ');'">삭제</button>
             </div>
         </form>
@@ -66,5 +67,7 @@
         </ul>
     </div>
 </div>
+<!-- 푸터 -->
+<th:block th:insert="~{include/footer}"></th:block>
 </body>
 </html>

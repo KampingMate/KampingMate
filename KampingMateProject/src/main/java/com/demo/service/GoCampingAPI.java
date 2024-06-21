@@ -89,6 +89,9 @@ public class GoCampingAPI {
                 int indvdlCaravSiteCo = item.optInt("indvdlCaravSiteCo", 0);
                 int roomCount = gnrlSiteCo + autoSiteCo + glampSiteCo + caravSiteCo + indvdlCaravSiteCo;
                 
+                String firstImageUrl = item.optString("firstImageUrl", "");
+                if (!firstImageUrl.isEmpty()) {
+                  
                 CampingItem campingItem = new CampingItem(
                         item.optString("facltNm", "N/A"),
                         item.optString("contentId", "N/A"),
@@ -117,9 +120,11 @@ public class GoCampingAPI {
                         Integer.toString(roomCount) // Converting roomCount to String
                         
                 );
+                // 이미지 처리
+                
                 items.add(campingItem);
             }
-
+            }
             return new CampingApiResponse(totalCount, items);
         } else {
             throw new RuntimeException("API request failed with response code: " + responseCode);

@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +26,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.demo.domain.Book;
 import com.demo.service.BookService;
+import com.demo.service.ChatService;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 
 @RestController
@@ -36,6 +38,10 @@ public class ApiController {
     
     @Autowired
     private BookService booksv;
+    
+    @Autowired
+    private ChatService chatService;
+
     
     private static final Logger logger = Logger.getLogger(ApiController.class.getName());
 
@@ -73,7 +79,7 @@ public class ApiController {
     
     @GetMapping("/generate-pdf")
     public ResponseEntity<byte[]> generatePdf(@RequestParam Map<String, String> params) {
-    	int book_seq = Integer.parseInt(params.get("book_seq"));
+       int book_seq = Integer.parseInt(params.get("book_seq"));
         Book book = booksv.getBook(book_seq);
         String title = book.getCampingname() + "예약일정";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -120,11 +126,18 @@ public class ApiController {
         } catch (UnsupportedEncodingException e) {
             encodedTitle = title;
         }
-        headers.setContentDispositionFormData("attachment", encodedTitle + ".pdf");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedTitle + ".pdf\"");
 
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(pdfBytes);
+    }
+
+    
+    
+    @PostMapping("/chat/send")
+    public String sendMessage(@RequestParam String message) {
+        return chatService.getChatbotResponse(message);
     }
 }
 

@@ -200,10 +200,26 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public void updateAdminNotice(Notice vo) {
-		vo.setNotice_date(new Date());
-        adminNoticeRepo.save(vo);
-		
+	    vo.setNotice_date(new Date()); // 현재 날짜로 설정
+
+	    // 저장하기 전에 기존의 Notice 엔티티를 찾아서 업데이트
+	    Notice existingNotice = adminNoticeRepo.findById(vo.getNotice_seq()).orElse(null);
+	    if (existingNotice != null) {
+	        existingNotice.setNotice_title(vo.getNotice_title());
+	        existingNotice.setNotice_cate(vo.getNotice_cate());
+	        existingNotice.setNotice_content(vo.getNotice_content());
+	        existingNotice.setNotice_cnt(vo.getNotice_cnt());
+	        existingNotice.setNotice_images(vo.getNotice_images());
+	        existingNotice.setNotice_date(vo.getNotice_date()); // 기존의 날짜를 유지하거나, 필요한 경우에만 변경
+	        existingNotice.setMember_data(vo.getMember_data()); // 멤버 데이터 설정
+
+	        adminNoticeRepo.save(existingNotice); // 업데이트된 Notice 저장
+	    } else {
+	        // 기존 Notice가 없는 경우 처리 (예외 처리 등)
+	        // 예를 들어 throw new EntityNotFoundException("Notice with id " + vo.getNotice_seq() + " not found");
+	    }
 	}
+
 
 	@Override
 	public void deleteAdminNotice(int boardnum2) {
@@ -256,7 +272,17 @@ public class AdminServiceImpl implements AdminService {
     	adminNoticeRepo.save(notice);
     }
 
+	@Override
+	public Page<Notice> getAllNotices(Pageable pageable) {
+		// 공지사항만 가져오는 쿼리를 사용하여 Page 객체로 반환
+        return adminNoticeRepo.getAllNotices("notice", pageable);
+	}
 
+	@Override
+    public Page<Notice> getAllEvents(Pageable pageable) {
+        // 이벤트만 가져오는 쿼리를 사용하여 Page 객체로 반환
+        return adminNoticeRepo.getAllNotices("event", pageable);
+    }
 	
 
 }

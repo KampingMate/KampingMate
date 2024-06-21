@@ -199,14 +199,18 @@ async function gobook(event) {
 /** BookList */
 //예약 상세내용 보러가기
 function go_view(bookseq) {
-    var theForm = document.frm;
-    theForm.method = "post";
-    theForm.action = "/Book_detail";
+    var theForm = document.getElementById("frm");
+    
+
+    $('input[name="bookseq"]').remove();  
     $('<input>').attr({
         type: 'hidden',
         name: 'bookseq',
         value: bookseq
     }).appendTo(theForm);
+
+    theForm.method = "post";
+    theForm.action = "/Book_detail";
     theForm.submit();
 }
 
@@ -339,18 +343,32 @@ async function bookupdatesub(event) {
         const errorData = await response.json();
         console.error('Error data:', errorData);
     }
-}
+    }
 
 
 
 /** BookResult */
 //예약 수정페이지로
-function bookupdate() {
-	var theForm = document.frm;
-	theForm.method = "get";
-	theForm.action = "/Book_update";
-	theForm.submit();
+function bookupdate(bookseq, condition) {
+    if (condition != 0) {
+        alert("현재는 예약을 변경할 수 없습니다");
+    } else {
+       var theForm = document.createElement('form');
+        theForm.method = "get";
+        theForm.action = "/Book_update";
+        
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'bookseq';
+        input.value = bookseq;
+        
+        theForm.appendChild(input);
+        document.body.appendChild(theForm);
+        theForm.submit();
+    }
 }
+
+
 
 
 //내 예약리스트 보기

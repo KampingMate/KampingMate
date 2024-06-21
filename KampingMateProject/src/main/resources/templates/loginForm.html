@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>소셜 로그인 테스트</title>
+    <title>소셜 로그인</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
     <!-- 네이버 로그인 라이브러리 -->
     <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
     <!-- 네이버 로그인 SDK -->
@@ -23,16 +24,23 @@
 </head>
 
 <body>
-    <div>
-        <h1>로그인(소셜로그인)</h1>
-        <div id="naver_id_login"></div>
-        <div id="kakao_id_login"></div>
-        <div id="google_id_login"></div>
-        
-        <p>로그인 확인용</p>
-        <div th:if="${loginUser} != null">
-            [[${loginUser.id}]]
-        </div>
+    <div class="container">
+        <div id="naver_id_login" class="login-button"></div>
+        <div id="kakao_id_login" class="login-button"></div>
+        <!-- 구글 로그인 -->
+	    <div id="g_id_onload"
+	    	data-client_id="77559460292-67etdiipjfgk8ih2k4l706oog2ghftde.apps.googleusercontent.com"
+	         data-callback="onSignIn"
+	         data-auto_prompt="false">
+	    </div>
+	    <div class="g_id_signin login-button" 
+	         data-type="standard" 
+	         data-shape="rectangular" 
+	         data-theme="outline" 
+	         data-text="continue_with" 
+	         data-size="large">
+	         구글 로그인
+    	</div>
     </div>
     
     <!-- 네이버 로그인 초기화 -->
@@ -104,7 +112,6 @@
 
              return (
                 <div className="App">
-                    <h2>카카오 로그인 구현</h2>
                     <button onClick={kakaoLogin} className="button-no-style" >
                         <img
                             src="//k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
@@ -119,22 +126,9 @@
         ReactDOM.render(<App />, document.getElementById('kakao_id_login'));
     </script>
 
-    <!-- 구글 로그인 -->
-    <div id="g_id_onload"
-    	data-client_id="77559460292-67etdiipjfgk8ih2k4l706oog2ghftde.apps.googleusercontent.com"
-         data-callback="onSignIn"
-         data-auto_prompt="false"
-         >
-    </div>
+    
 
-    <div class="g_id_signin" 
-         data-type="standard" 
-         data-shape="rectangular" 
-         data-theme="outline" 
-         data-text="continue_with" 
-         data-size="large">
-         구글 로그인
-    </div>
+    
     
     <script type="text/javascript">
         function onSignIn(response) {

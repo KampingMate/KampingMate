@@ -1,99 +1,103 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>지역 선택</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        let regionMapping = {};
+<meta charset="UTF-8">
+<title>지역 선택</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" th:href="@{/css/campingSites.css}">
+<script>
+    let regionMapping = {};
 
-        $(document).ready(function() {
-            // Fetch region mapping from server
-            fetchRegionMapping().then(mapping => {
-                regionMapping = mapping;
-            });
-
-            $('#c_do').on('change', function() {
-                var selectedSiDo = $(this).val();
-                var mappedSiDo = regionMapping[selectedSiDo] || selectedSiDo;
-                if (mappedSiDo) {
-                    $.ajax({
-                        url: '/get_sigungu',
-                        type: 'GET',
-                        data: { siDo: mappedSiDo },
-                        success: function(data) {
-                            var $cSigngu = $('#c_signgu');
-                            $cSigngu.empty();
-                            $cSigngu.append('<option value="">전체/시/군</option>');
-                            
-                            // 오름차순 정렬
-                            data.sort((a, b) => a.localeCompare(b));
-                            
-                            $.each(data, function(index, value) {
-                                $cSigngu.append('<option value="' + value + '">' + value + '</option>');
-                            });
-                        }
-                    });
-                } else {
-                    $('#c_signgu').empty();
-                    $('#c_signgu').append('<option value="">전체/시/군</option>');
-                }
-            });
-
-            $('#campSearchForm01').on('submit', function(event) {
-                event.preventDefault(); // 기본 폼 제출을 방지
-                submitForm();
-            });
+    $(document).ready(function() {
+        // Fetch region mapping from server
+        fetchRegionMapping().then(mapping => {
+            regionMapping = mapping;
         });
 
-        async function fetchRegionMapping() {
-            const response = await fetch('/regionMapping');
-            return response.json();
-        }
-
-        async function submitForm() {
-            const formData = {
-                doNm: getCheckedValues('c_do'),
-                gungu: getCheckedValues('c_signgu'),
-                faclt: getCheckedValues('faclt_div'),
-                lct: getCheckedValues('searchLctCl'),
-                induty: getCheckedValues('induty'),
-                bottom: getCheckedValues('siteBottom'),
-                sbrs: getCheckedValues('sbrsCl'),
-                keyword: $('#keyword').val() || ''  // 빈 문자열로 설정
-            };
-
-            $.ajax({
-                url: '/processKeywords',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(formData),
-                success: function(response) {
-                	if (response.redirectUrl) {
-                        window.location.href = response.redirectUrl;
+        $('#c_do').on('change', function() {
+            var selectedSiDo = $(this).val();
+            var mappedSiDo = regionMapping[selectedSiDo] || selectedSiDo;
+            if (mappedSiDo) {
+                $.ajax({
+                    url: '/get_sigungu',
+                    type: 'GET',
+                    data: { siDo: mappedSiDo },
+                    success: function(data) {
+                        var $cSigngu = $('#c_signgu');
+                        $cSigngu.empty();
+                        $cSigngu.append('<option value="">전체/시/군</option>');
+                        
+                        // 오름차순 정렬
+                        data.sort((a, b) => a.localeCompare(b));
+                        
+                        $.each(data, function(index, value) {
+                            $cSigngu.append('<option value="' + value + '">' + value + '</option>');
+                        });
                     }
-                    // 서버 응답 처리
-                    console.log(response);
-                    // 필요한 경우 응답을 UI에 표시
-                },
-                error: function(error) {
-                    // 에러 처리
-                    console.error(error);
-                }
-            });
-        }
+                });
+            } else {
+                $('#c_signgu').empty();
+                $('#c_signgu').append('<option value="">전체/시/군</option>');
+            }
+        });
 
-        function getCheckedValues(name) {
-            return $(`select[name="${name}"] option:selected, input[name="${name}"]:checked`).map(function() {
-                return this.value;
-            }).get();
-        }
-    </script>
+        $('#campSearchForm01').on('submit', function(event) {
+            event.preventDefault(); // 기본 폼 제출을 방지
+            submitForm();
+        });
+    });
+
+    async function fetchRegionMapping() {
+        const response = await fetch('/regionMapping');
+        return response.json();
+    }
+
+    async function submitForm() {
+        const formData = {
+            doNm: getCheckedValues('c_do'),
+            gungu: getCheckedValues('c_signgu'),
+            faclt: getCheckedValues('faclt_div'),
+            lct: getCheckedValues('searchLctCl'),
+            induty: getCheckedValues('induty'),
+            bottom: getCheckedValues('siteBottom'),
+            sbrs: getCheckedValues('sbrsCl'),
+            keyword: $('#keyword').val() || ''  // 빈 문자열로 설정
+        };
+
+        $.ajax({
+            url: '/processKeywords',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function(response) {
+            	if (response.redirectUrl) {
+                    window.location.href = response.redirectUrl;
+                }
+                // 서버 응답 처리
+                console.log(response);
+                // 필요한 경우 응답을 UI에 표시
+            },
+            error: function(error) {
+                // 에러 처리
+                console.error(error);
+            }
+        });
+    }
+
+    function getCheckedValues(name) {
+        return $(`select[name="${name}"] option:selected, input[name="${name}"]:checked`).map(function() {
+            return this.value;
+        }).get();
+    }
+</script>
 </head>
 <body>
+<!-- 헤더 -->
+<th:block th:insert="~{include/header}"></th:block>
+<div class="reco-container">
     <div class="search_box">
         <form id="campSearchForm01" method="get">
-            <button type="button" class="btn_dsearch" onclick="detail_popup()">상세검색</button>
+            <button type="button" class="btn" onclick="detail_popup()">상세검색</button>
             <div class="search_box_form">
                 <div class="form1_2">
                     <p class="tt">지역별</p>
@@ -138,14 +142,13 @@
                         <option value="도심">도심</option>
                     </select>
                     <br>
-                    <input type="text" value="" id="keyword" size="15" placeholder="검색어를 입력하세요.">
-			
+                    <input type="text" value="" id="keyword" size="15" placeholder="검색어를 입력하세요." style="margin-bottom:5px;">
                     <button type="submit" class="btnSearch_black01">검색</button>
                 </div>
             </div>
         </form>
     </div>
-    
+</div>
     <script>
         function detail_popup(){
             const url = "/go_detail";
@@ -156,5 +159,7 @@
             window.open(url, '_blank', `width=${width}, height=${height}, left=${left}, top=${top}`);
         }
     </script>
+    <!-- 푸터 -->
+<th:block th:insert="~{include/footer}"></th:block>
 </body>
 </html>

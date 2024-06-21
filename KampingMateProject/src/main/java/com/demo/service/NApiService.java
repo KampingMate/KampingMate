@@ -97,33 +97,53 @@ public class NApiService {
         }
     }
 
+//    private String formatToJsonAndHtml(String json) {
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//        JsonObject jsonObj = JsonParser.parseString(json).getAsJsonObject();
+//        JsonArray items = jsonObj.getAsJsonArray("items");
+//
+//        StringBuilder htmlBuilder = new StringBuilder();
+//        htmlBuilder.append("<table border='1'>");
+//        htmlBuilder.append("<tr><th>뉴스 제목</th><th>뉴스 내용</th><th>바로가기</th><th>날짜</th></tr>");
+//        
+//        for (int i = 0; i < items.size(); i++) {
+//            JsonObject item = items.get(i).getAsJsonObject();
+//            String title = item.get("title").getAsString();
+//            String description = item.get("description").getAsString();
+//            String link = item.get("link").getAsString();
+//            String pubDate = item.get("pubDate").getAsString();
+//            
+//            htmlBuilder.append("<tr>");
+//            htmlBuilder.append("<td>").append(title).append("</td>");
+//            htmlBuilder.append("<td>").append(description).append("</td>");
+//            htmlBuilder.append("<td><a href='").append(link).append("' target='_blank'>Link</a></td>");
+//            htmlBuilder.append("<td>").append(pubDate).append("</td>");
+//            htmlBuilder.append("</tr>");
+//        }
+//        
+//        htmlBuilder.append("</table>");
+//        return htmlBuilder.toString();
+//    }
     private String formatToJsonAndHtml(String json) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jsonObj = JsonParser.parseString(json).getAsJsonObject();
         JsonArray items = jsonObj.getAsJsonArray("items");
 
-        StringBuilder htmlBuilder = new StringBuilder();
-        htmlBuilder.append("<table border='1'>");
-        htmlBuilder.append("<tr><th>뉴스 제목</th><th>뉴스 내용</th><th>바로가기</th><th>날짜</th></tr>");
-        
+        List<Map<String, String>> newsList = new ArrayList<>();
+
         for (int i = 0; i < items.size(); i++) {
             JsonObject item = items.get(i).getAsJsonObject();
-            String title = item.get("title").getAsString();
-            String description = item.get("description").getAsString();
-            String link = item.get("link").getAsString();
-            String pubDate = item.get("pubDate").getAsString();
-            
-            htmlBuilder.append("<tr>");
-            htmlBuilder.append("<td>").append(title).append("</td>");
-            htmlBuilder.append("<td>").append(description).append("</td>");
-            htmlBuilder.append("<td><a href='").append(link).append("' target='_blank'>Link</a></td>");
-            htmlBuilder.append("<td>").append(pubDate).append("</td>");
-            htmlBuilder.append("</tr>");
+            Map<String, String> newsItem = new HashMap<>();
+            newsItem.put("title", item.get("title").getAsString());
+            newsItem.put("description", item.get("description").getAsString());
+            newsItem.put("link", item.get("link").getAsString());
+            newsItem.put("pubDate", item.get("pubDate").getAsString());
+            newsList.add(newsItem);
         }
-        
-        htmlBuilder.append("</table>");
-        return htmlBuilder.toString();
+
+        return gson.toJson(newsList);
     }
+
 
     private List<JsonObject> getPageItems(JsonArray items, int pageNum, int pageSize) {
         List<JsonObject> pageItems = new ArrayList<>();

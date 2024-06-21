@@ -46,10 +46,7 @@ public class OauthController {
     private String refreshToken;
     private String accessToken;
 
-    @GetMapping("/login")
-    public String login() {
-        return "loginForm"; // loginForm.html을 렌더링합니다.
-    }
+    
 
     @PostMapping("/google/callback")
     public String googleCallback(
@@ -140,19 +137,18 @@ public class OauthController {
 
         memberRepo.save(member);
 
-        return "redirect:/";
+        return "main";
     }
 
     @GetMapping("/autoLogin")
-    public String autoLogin(HttpSession session, Model model) {
+    public String autoLogin(HttpSession session) {
         GoogleUser user = (GoogleUser) session.getAttribute("user");
         if (user != null) {
             String id = user.getId();
             MemberData loginUser = memberService.getMember(id);
             Long loginUserNoData = (Long)loginUser.getNo_data();
-            session.setAttribute("loginUser", loginUser);
             session.setAttribute("loginUserNumberData", loginUserNoData);
-            model.addAttribute("loginUserNumberData", session.getAttribute("loginUserNumberData"));
+            session.setAttribute("loginUser", loginUser);
         }
         return "redirect:/main";
     }

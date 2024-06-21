@@ -28,4 +28,7 @@ public interface MemberDataRepository extends JpaRepository<MemberData, Long > {
 	@Query("UPDATE MemberData md SET md.age = :age WHERE md.id = :id")
 	void updateMemberData(@Param("id") String id, @Param("age") Integer age);
 
+	
+	// 채팅서비스
+    Optional<MemberData> findById(long no_data);
 }

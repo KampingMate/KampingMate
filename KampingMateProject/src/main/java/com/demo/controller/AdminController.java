@@ -1,14 +1,17 @@
 package com.demo.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.demo.domain.AdminQnaBoard;
 import com.demo.domain.Book;
+import com.demo.domain.FileUploadUtil;
 import com.demo.domain.MemberData;
 import com.demo.domain.Notice;
 import com.demo.domain.askBoard;
@@ -27,7 +31,7 @@ import com.demo.service.AdminService;
 import com.demo.service.MemberService;
 import com.demo.service.NoticeService;
 
-import jakarta.persistence.EntityManager;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 @Controller
@@ -40,9 +44,12 @@ public class AdminController {
     NoticeService noticeService;
     @Autowired
     MemberService memberService;
-    
     @Autowired
-    private EntityManager entityManager;
+    private HttpServletRequest request;
+    
+    @Value("${com.demo.upload.path}")
+    private String uploadDirectory;
+    
     
 
     @GetMapping("/admin")
@@ -282,31 +289,42 @@ public class AdminController {
     @PostMapping("/noticeReg.do")
     public String noticeRegister(@ModelAttribute("loginUser") MemberData loginUser,
                                  Notice notice,
+                                 @RequestParam("file") MultipartFile[] files,
                                  RedirectAttributes redirectAttributes) throws IOException {
         if (loginUser != null && loginUser.getId() != null) {
             adminService.adminCheck(loginUser);
 
-            // 사용자 ID를 사용하여 MemberData 객체를 데이터베이스에서 조회
             MemberData memberData = memberService.findById(loginUser.getId());
             if (memberData != null) {
-                // Notice 엔티티에 조회된 MemberData 객체를 설정
                 notice.setMember_data(memberData);
 
-                // 파일 이름 리스트를 생성하여 Notice 객체에 추가
-               
+                List<String> fileUrls = new ArrayList<>();
+                for (MultipartFile file : files) {
+                    if (!file.isEmpty()) {
+                        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                        fileName = fileName.replaceAll("[^a-zA-Z0-9\\-_.]", "");
+                        String uploadDir = "C:/Users/tiger/git/KampingMate2/KampingMate/uploads/";
 
-                // 공지 종류가 이벤트인 경우
+                        try {
+                            FileUploadUtil.saveFile(uploadDir, fileName, file);
+                            String fileUrl = "/uploads/" + fileName;
+                            fileUrls.add(fileUrl);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                notice.setNotice_images(fileUrls);
+
                 if ("event".equals(notice.getNotice_cate())) {
-                    // 이벤트로 처리
                     adminService.insertNotice(notice);
-                    return "redirect:/admin_eventlist.do"; // 이벤트 목록 페이지로 리디렉션
+                    return "redirect:/admin_eventlist.do";
                 } else {
-                    // 공지로 처리
                     adminService.insertNotice(notice);
-                    return "redirect:/admin_noticelist.do"; // 공지사항 목록 페이지로 리디렉션
+                    return "redirect:/admin_noticelist.do";
                 }
             } else {
-                // MemberData가 조회되지 않은 경우 처리
                 return "redirect:/admin";
             }
         } else {
@@ -314,16 +332,41 @@ public class AdminController {
         }
     }
 
+
+
+
+
+    
+
+
     
     @GetMapping("/admin_noticelist.do")
-    public String noticeList(@ModelAttribute("loginUser") MemberData loginUser, Model model) {
+    public String noticeList(@ModelAttribute("loginUser") MemberData loginUser,
+                             @RequestParam(defaultValue = "0") int page,
+                             Model model) {
         if (loginUser != null && loginUser.getId() != null) {
             adminService.adminCheck(loginUser);
 
-            // 공지사항 목록을 가져오기
-            List<Notice> noticeList = adminService.getAllNotices();
+            // 페이지당 표시할 공지사항 수
+            int pageSize = 10;
 
-            model.addAttribute("notices", noticeList);
+            // 페이지 요청 객체 생성
+            Pageable pageable = PageRequest.of(page, pageSize);
+
+            // 페이징 처리된 공지사항 목록 가져오기
+            Page<Notice> noticePage = adminService.getAllNotices(pageable);
+
+            // 현재 페이지 번호
+            int currentPage = noticePage.getNumber();
+
+            // 전체 페이지 수
+            int totalPages = noticePage.getTotalPages();
+
+            // 공지사항 목록과 페이징 정보를 모델에 추가
+            model.addAttribute("notices", noticePage.getContent());
+            model.addAttribute("currentPage", currentPage);
+            model.addAttribute("totalPages", totalPages);
+
             return "admin/boardPage/admin_noticelist"; // 공지사항 목록 페이지
         } else {
             return "redirect:/admin";
@@ -331,39 +374,105 @@ public class AdminController {
     }
     
     @GetMapping("/admin_noticeDetail")
-    public String adminNoticeDetail(@RequestParam("notice_seq") int noticeSeq, Model model) {
+    public String adminNoticeDetail(@RequestParam("notice_seq") int noticeSeq, HttpServletRequest request, Model model) {
         Notice notice = adminService.getBySeq(noticeSeq);
+
+        if (notice != null && notice.getNotice_images() != null && !notice.getNotice_images().isEmpty()) {
+            String contextPath = request.getContextPath();
+            List<String> modifiedImageUrls = new ArrayList<>();
+            for (String imageUrl : notice.getNotice_images()) {
+                modifiedImageUrls.add(contextPath + imageUrl);
+            }
+            notice.setNotice_images(modifiedImageUrls);
+        }
+
         model.addAttribute("notice", notice);
         return "admin/boardPage/admin_noticeDetail";
     }
+
+
+
     
     @PostMapping("/admin_updateNotice")
     public String adminUpdateNotice(@ModelAttribute("notice") Notice notice,
+                                    @RequestParam("file") MultipartFile file,
                                     RedirectAttributes redirectAttributes) {
-        adminService.updateAdminNotice(notice);
+        // 1. 공지의 notice_seq를 사용하여 데이터베이스에서 해당 공지를 다시 조회
+        Notice existingNotice = adminService.getBySeq(notice.getNotice_seq());
 
-        // Determine redirect path based on notice_cate
-        if ("event".equals(notice.getNotice_cate())) {
-            return "redirect:/admin_eventlist.do";
-        } else if ("notice".equals(notice.getNotice_cate())) {
-            return "redirect:/admin_noticelist.do";
+        if (existingNotice != null) {
+            // 2. 기존 공지의 member_data를 notice에 설정
+            notice.setMember_data(existingNotice.getMember_data());
+
+            // 3. 파일 업로드 처리
+            if (!file.isEmpty()) {
+                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                String uploadDir = "uploads/" + notice.getNotice_seq();
+
+                try {
+                    FileUploadUtil.saveFile(uploadDir, fileName, file);
+                    notice.setFileUrl("/" + uploadDir + "/" + fileName); // 파일 URL 설정
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // 파일 업로드 실패 시 처리
+                }
+
+                // 이미지 파일 URL 리스트에 추가
+                List<String> noticeImages = new ArrayList<>();
+                noticeImages.add("/" + uploadDir + "/" + fileName);
+                notice.setNotice_images(noticeImages);
+            } else {
+                // 기존 이미지 유지
+                notice.setNotice_images(existingNotice.getNotice_images());
+            }
+
+            // 4. 공지 업데이트 수행
+            adminService.updateAdminNotice(notice);
+
+            // 5. Redirect 경로 결정
+            if ("event".equals(notice.getNotice_cate())) {
+                return "redirect:/admin_eventlist.do";
+            } else if ("notice".equals(notice.getNotice_cate())) {
+                return "redirect:/admin_noticelist.do";
+            } else {
+                return "redirect:/admin_dashboard.do";
+            }
         } else {
-            // Handle other cases or defaults
             return "redirect:/admin_dashboard.do";
         }
     }
 
 
 
+
+
     @GetMapping("/admin_eventlist.do")
-    public String eventList(@ModelAttribute("loginUser") MemberData loginUser, Model model) {
+    public String eventList(@ModelAttribute("loginUser") MemberData loginUser,
+                            @RequestParam(defaultValue = "0") int page,
+                            Model model) {
         if (loginUser != null && loginUser.getId() != null) {
             adminService.adminCheck(loginUser);
 
-            // 이벤트 목록을 가져오기
-            List<Notice> eventList = adminService.getAllEvents();
+            // 페이지당 표시할 이벤트 수
+            int pageSize = 10;
 
-            model.addAttribute("events", eventList);
+            // 페이지 요청 객체 생성
+            Pageable pageable = PageRequest.of(page, pageSize);
+
+            // 페이징 처리된 이벤트 목록 가져오기
+            Page<Notice> eventPage = adminService.getAllEvents(pageable);
+
+            // 현재 페이지 번호
+            int currentPage = eventPage.getNumber();
+
+            // 전체 페이지 수
+            int totalPages = eventPage.getTotalPages();
+
+            // 이벤트 목록과 페이징 정보를 모델에 추가
+            model.addAttribute("events", eventPage.getContent());
+            model.addAttribute("currentPage", currentPage);
+            model.addAttribute("totalPages", totalPages);
+
             return "admin/boardPage/admin_eventlist"; // 이벤트 목록 페이지
         } else {
             return "redirect:/admin";

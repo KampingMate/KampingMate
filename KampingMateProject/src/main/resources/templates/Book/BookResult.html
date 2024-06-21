@@ -24,7 +24,7 @@
         <form name="frm" id="frm">
             <input type="hidden" name="bookseq" id="bookseq" th:value="${BookVO.bookseq}" />
             <h3>
-                예약일자 : [[${#dates.format(BookVO.bookdateS, 'yyyy-MM-dd')}]] ~ [[${#dates.format(BookVO.bookdateE, 'yyyy-MM-dd')}]]
+                예약일자 : [[${#dates.format(BookVO.bookdateS, 'yyyy-MM-dd')}]] ~ [[${#dates.format(BookVO.bookdateE, 'yyyy-MM-dd')}]]<br>
                 캠핑장명 : [[${BookVO.campingname}]]<br>
                 인원수 : [[${BookVO.headcount}]] 명<br>
 			    예약자 성함: [[${BookVO.member_data.name}]]<br>
@@ -35,7 +35,7 @@
                     <span th:case="1">예약완료</span>
                     <span th:case="2">예약불가</span>
                 </span>
-                <button type="button" onclick="bookupdatesub(event)">수정 완료</button>
+                <button type="button" th:onclick="'bookupdate(' + ${BookVO.bookseq} + ', ' + ${BookVO.condition} + ');'">수정</button>
                 <button type="button" onclick="bookdelete()">예약 취소</button>
             </h3>
         </form>
@@ -44,6 +44,8 @@
         <hr>
     </div>
 </div>
+<!-- 푸터 -->
+<th:block th:insert="~{include/footer}"></th:block>
 </body>
 <script>
 function printContent() {
@@ -62,9 +64,16 @@ async function downloadPDF() {
 
     if (response.ok) {
         const blob = await response.blob();
+        const contentDisposition = response.headers.get('Content-Disposition');
+        let filename = 'download.pdf';
+        if (contentDisposition && contentDisposition.includes('filename=')) {
+            const filenameMatch = contentDisposition.match(/filename="?(.+?)"?$/);
+            if (filenameMatch.length >= 2) {
+                filename = decodeURIComponent(filenameMatch[1].replace(/\+/g, ' '));
+            }
+        }
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
-        const filename = form.book_seq.value + '.pdf';
         a.href = url;
         a.download = filename;
         document.body.appendChild(a);
@@ -75,6 +84,7 @@ async function downloadPDF() {
         console.error('PDF 파일로 다운받는데 실패하였습니다');
     }
 }
+
 
 </script>
 </html>

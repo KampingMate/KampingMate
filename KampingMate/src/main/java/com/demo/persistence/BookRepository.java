@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.demo.domain.Book;
+import com.demo.domain.MemberData;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
 	
@@ -30,5 +32,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 	//말머리 검색(캠핑장)
 	@Query(value="SELECT * FROM Book WHERE campingname LIKE %?1% ", nativeQuery=true)
 	public Page<Book> findBookBycampingnameContainingOrderBycampingname(String campingname, int bookseq, Pageable pageable);
+
 
 }

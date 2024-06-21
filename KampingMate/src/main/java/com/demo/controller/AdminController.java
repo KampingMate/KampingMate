@@ -30,6 +30,7 @@ import com.demo.domain.askBoard;
 import com.demo.service.AdminService;
 import com.demo.service.MemberService;
 import com.demo.service.NoticeService;
+import com.demo.service.mailManager;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -46,6 +47,8 @@ public class AdminController {
     MemberService memberService;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    mailManager mailManager;
     
     @Value("${com.demo.upload.path}")
     private String uploadDirectory;
@@ -495,11 +498,21 @@ public class AdminController {
     @PostMapping("/updateBookingCondition.do")
     public String updateBookingCondition(@ModelAttribute("loginUser") MemberData loginUser,
                                          @RequestParam("bookseq") int bookseq,
-                                         @RequestParam("condition") int condition) {
+                                         @RequestParam("condition") int condition) throws Exception {
         if (loginUser != null && loginUser.getId() != null) {
             adminService.adminCheck(loginUser);
 
             adminService.updateBookingCondition(bookseq, condition);
+            MemberData member = adminService.getMemberByBookseq(bookseq);
+
+        	if(condition == 1) {
+        		mailManager.sendCompleteEmail(member.getEmail());
+        	} else if(condition == 2) {
+        		mailManager.sendFailEmail(member.getEmail());
+        	}
+        	
+
+            
             return "redirect:/admin_bookinglist.do"; // 예약 목록 페이지로 리디렉션
         } else {
             return "redirect:/admin";

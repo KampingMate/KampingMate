@@ -76,7 +76,7 @@ public interface AdminService {
 
 	Page<Notice> getAllEvents(Pageable pageable);
 
-	
+	MemberData getMemberByBookseq(int bookseq);
 
 	
 

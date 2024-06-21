@@ -26,4 +26,22 @@ public class mailManager {
         mimeMessage.setText(con);
         javaMailSender.send(mimeMessage);
     }
+    
+    public void sendCompleteEmail(String email) throws Exception{
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+         mimeMessage.setFrom(sender);
+         mimeMessage.addRecipient(RecipientType.TO, new InternetAddress(email));
+         mimeMessage.setSubject("예약이 완료되었습니다");
+         mimeMessage.setText("KampingMate의 예약이 확정되었습니다.");
+         javaMailSender.send(mimeMessage);
+    }
+
+    public void sendFailEmail(String email) throws Exception{
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+         mimeMessage.setFrom(sender);
+         mimeMessage.addRecipient(RecipientType.TO, new InternetAddress(email));
+         mimeMessage.setSubject("예약실패");	//제목
+         mimeMessage.setText("KampingMate 예약 실패 ㅠㅠ");	// 내용
+         javaMailSender.send(mimeMessage);
+    }
 }

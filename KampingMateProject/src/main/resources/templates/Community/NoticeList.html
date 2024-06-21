@@ -13,8 +13,8 @@
 	<!-- 정렬버튼 -->
 	<div class="notice-main">
 		<button type="button" onclick="go_list()">모두 보기</button>
-		<button type="button" id="공지사항" data-category="공지사항" onclick="keyClick(event)">공지사항 보기</button>
-		<button type="button" id="이벤트" data-category="이벤트" onclick="keyClick(event)">이벤트만 보기</button>
+		<button type="button" id="notice" data-category="notice" onclick="keyClick(event)">공지사항 보기</button>
+		<button type="button" id="event" data-category="event" onclick="keyClick(event)">이벤트만 보기</button>
 	</div>
 	
 	<!-- 검색란 -->
@@ -62,24 +62,20 @@
 	
 	<!-- 페이징처리 -->
  <div class="pagination">
-        <ul id="pagination" th:data-total-pages="${totalPages}" th:data-page-number="${pageNumber}">
-                    <li th:if="${pageNumber > 10}">
-            <a href="javascript:void(0);" th:onclick="go_pri_page();">&laquo; 이전</a>
-        </li>
-
-        <!-- 페이지 번호 표시 -->
-        <li th:each="i : ${#numbers.sequence(1, totalPages)}">
-            <span th:if="${i >= ((pageNumber - 1) / 10) * 10 + 1} and ${i <= ((pageNumber - 1) / 10 + 1) * 10}">
-                <a href="javascript:void(0);" th:onclick="go_page([[${i}]]);" th:text="${i}" th:classappend="${i == pageNumber} ? ' active'">1</a>
-            </span>
-        </li>
-
-        <!-- 다음 버튼 -->
-         <li th:if="${((pageNumber - 1) / 10 + 1) * 10 < totalPages}">
-            <a href="javascript:void(0);" th:onclick="go_next_page();">다음 &raquo;</a>
-        </li>
-    </ul>
+    <ul id="pagination" th:data-total-pages="${totalPages}" th:data-page-number="${pageNumber}">
+                    <li th:if="${pageNumber > 1}">
+                <a href="javascript:void(0);" th:onclick="'go_page(' + (${pageNumber} - 1) + ');'">&laquo; 이전</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == pageNumber} ? ' active'">
+                <a href="javascript:void(0);" th:onclick="'go_page(' + ${i} + ');'" th:text="${i}">1</a>
+            </li>
+            <li th:if="${pageNumber < totalPages}">
+                <a href="javascript:void(0);" th:onclick="'go_page(' + (${pageNumber} + 1) + ');'">다음 &raquo;</a>
+            </li>
+        </ul>
+    </div>
 </div>
+
 </div>
 <th:block th:insert="~{include/footer}"></th:block>
 </body>

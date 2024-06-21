@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>QnA</title>
-<link rel="stylesheet" th:href="@{/css/customer.css}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta charset="UTF-8">
+    
+    <!-- 헤더 파일 삽입 -->
+    <th:block th:insert="~{include/header.html}"></th:block>
+    <title>QnA</title>
+
+	<!-- 고객용 CSS 파일 링크 -->
+    <link rel="stylesheet" th:href="@{/css/customer.css}">
+    
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <body>
-<!-- 헤더 파일 삽입 -->
-<th:block th:insert="~{include/header.html}"></th:block>
+
 
     <div class="q_container">
     <!-- QnA 제목 -->
@@ -48,10 +55,10 @@
                 </tbody>
             </table>
         </div>
-        
-    <!-- 페이지네이션 -->
+        <!-- 페이지네이션 -->
     <div id="pagination" class="pagination"></div>
     </div>
+    
     
     
     <!-- JavaScript -->
@@ -120,7 +127,8 @@
         setupPagination();
         displayRows(currentPage);
     </script>
+</body>
+
 <!-- 푸터 파일 삽입 -->
 <th:block th:insert="~{include/footer.html}"></th:block>
-</body>
 </html>

@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					<option disabled selected>일</option>
 			</select>
 		</div>
-		<div id="print-date" style="margin-top:5px;"></div>
+		<div id="print-date" style="margin-top:5px;" ></div>
 		<hr>
 		<input type="hidden" name="age">
 		<h3>이메일</h3>
@@ -232,8 +232,8 @@ document.addEventListener('DOMContentLoaded', function () {
 		    <input type="text" name="verificationCode">
 		    <input type="button" value="인증번호 확인" onclick="verifyCode()">
 	    </span><hr>
-	    <span> 커뮤니티 : 나중에 히든값
-   			<input type="text" name="provider" th:value="${provider}">
+	    <span> 
+   			<input type="hidden" name="provider" th:value="${provider}">
    		</span>
    		<hr>
     	<input type="submit" value="회원가입하기">

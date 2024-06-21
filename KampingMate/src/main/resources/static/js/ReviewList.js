@@ -126,3 +126,68 @@ function renderPagination() {
         paginationContainer.appendChild(nextPage);
     }
 }
+
+
+window.onload = function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var sort = urlParams.get('sort');
+    if (sort) {
+        document.getElementById('sort').value = sort;
+    }
+    renderPagination();
+};
+
+function renderPagination() {
+    var paginationContainer = document.getElementById('pagination');
+    if (!paginationContainer) {
+        console.error('Pagination container not found');
+        return;
+    }
+
+    var totalPages = parseInt(paginationContainer.getAttribute('data-total-pages'));
+    var pageNumber = parseInt(paginationContainer.getAttribute('data-page-number'));
+
+    console.log("totalPages: " + totalPages);  // 디버그 로그 추가
+    console.log("pageNumber: " + pageNumber);  // 디버그 로그 추가
+
+    if (isNaN(totalPages) || isNaN(pageNumber)) {
+        console.error('Invalid totalPages or pageNumber');
+        return;
+    }
+
+    paginationContainer.innerHTML = '';
+
+    var currentBlock = Math.floor((pageNumber - 1) / 10) + 1;
+    var startPage = (currentBlock - 1) * 10 + 1;
+    var endPage = Math.min(currentBlock * 10, totalPages);
+
+    if (startPage > 1) {
+        var prevBlockPage = document.createElement('li');
+        prevBlockPage.innerHTML = '<a href="javascript:void(0);" onclick="go_page(' + (startPage - 1) + ')">&laquo; 이전 10개</a>';
+        paginationContainer.appendChild(prevBlockPage);
+    }
+
+    if (pageNumber > 1) {
+        var prevPage = document.createElement('li');
+        prevPage.innerHTML = '<a href="javascript:void(0);" onclick="go_page(' + (pageNumber - 1) + ')">&laquo; 이전</a>';
+        paginationContainer.appendChild(prevPage);
+    }
+
+    for (var i = startPage; i <= endPage; i++) {
+        var pageItem = document.createElement('li');
+        pageItem.innerHTML = '<a href="javascript:void(0);" onclick="go_page(' + i + ')" class="' + (i == pageNumber ? 'active' : '') + '">' + i + '</a>';
+        paginationContainer.appendChild(pageItem);
+    }
+
+    if (pageNumber < totalPages) {
+        var nextPage = document.createElement('li');
+        nextPage.innerHTML = '<a href="javascript:void(0);" onclick="go_page(' + (pageNumber + 1) + ')">다음 &raquo;</a>';
+        paginationContainer.appendChild(nextPage);
+    }
+
+    if (endPage < totalPages) {
+        var nextBlockPage = document.createElement('li');
+        nextBlockPage.innerHTML = '<a href="javascript:void(0);" onclick="go_page(' + (endPage + 1) + ')">다음 10개 &raquo;</a>';
+        paginationContainer.appendChild(nextBlockPage);
+    }
+}

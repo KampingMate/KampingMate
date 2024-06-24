@@ -61,7 +61,7 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     List<Review> getReviewsById(@Param("id") String id);
     
  // 사용자 ID로 사용자가 북마크한 리뷰와 해당 리뷰를 작성한 다른 사람이 작성한 글 중에서 북마크한 리뷰를 가져오는 쿼리
-    @Query(value="SELECT r FROM Review r WHERE r.bookmark = 1")
+    @Query(value="SELECT r FROM Review r WHERE r.bookmark = 1 AND r.member_data.id = :id")
     List<Review> findBookmarkedReviewsById(@Param("id") String id);
 
 

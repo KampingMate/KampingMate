@@ -31,6 +31,30 @@
   </summary>
   <br>
    📽️<a href="https://www.canva.com/design/DAGJATX1u_Y/7HCcmqUqGlDUzPuIIvNsZQ/view?utm_content=DAGJATX1u_Y&utm_campaign=designshare&utm_medium=link&utm_source=editor#14"> [PPT 자료]</a>
+    
+로그인 페이지 : api를 통한 소셜 로그인 기능  
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/2e8e50ac-db5c-4a8b-83f3-de3804aaa6b0" width="400" height="300">  
+회원가입 페이지 : 이메일과 핸드폰으로 본인 인증 기능  
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/1cf2f1d2-de93-47cc-b1dc-e7238bfe912e" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/01b46b35-7385-4437-8b71-5dc2e9f11ab7" width="400" height="300">  
+메인 페이지  
+[고캠핑 api를 이용해서 캠핑장 리스트 나열]  
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/1a38f50c-aa0a-4ba5-81cf-d75cc4e3d882" width="400" height="300">  
+[네이버 쇼핑 api를 이용해서 캠핑 용품 추천]  
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/8868beb6-ce9b-4e5a-8275-67ad981cadc1" width="400" height="400">
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/e8557d45-bf60-4615-b8e5-28c096523872" width="400" height="400">  
+[일기예보 api를 이용해서 날씨 정보 표시]  
+> 현재온도, 최고온도, 최저온도, 하늘상태, 습도 표시  
+> 오늘, 내일, 모레 버튼을 통해 그날의 기온을 그래프화
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/0953f754-8dfe-4f96-b3ef-e8fff2683aed" width="300" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/e9e1df85-3e73-41e8-968b-6e57902b7f1b" width="300" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/1ce5821c-5221-4bc8-867a-4009aaa8763a" width="300" height="300"><br>
+[유튜브 api를 이용해서 유튜브 "오늘비와"채널의 최신순으로 정렬해서 10개 나열]  
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/9fcd4ea5-8ac1-4053-9538-dc9ec9ea5e97" width="500" height="350"><br>
+[네이버 뉴스 api를 이용해서 캠핑 관련 기사를 최신순으로 정렬해서 10개 나열]<br>
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/72d325a4-404d-4fe0-84fa-7456a502f5cf" width="400" height="300">  
+
+
 </details>
 
 <details>

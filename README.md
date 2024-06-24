@@ -40,7 +40,10 @@ JSON, AJAX....
     :memo: 개선할 점..
   </summary>
   <br>
-  완벽한데?
+   <ul>
+     <li>다양한 소셜 로그인 추가</li>
+     <li>...</li>
+   </ul>
 </details>
 
 
@@ -49,15 +52,15 @@ JSON, AJAX....
     :seedling: 팀원 및 역할
   </summary>
   <br>
-  :crown: 오세현 : 
+  :crown: 오세현 : 전체 CSS + 메인(일기예보 API, 유튜브 API)
   <br>
-  :crown: 배재천 : 
+  :crown: 배재천 : 캠핑 추천시스템(고캠핑 API) + 소셜 로그인(네이버 API, 카카오 API, 구글 API) 및 회원가입(이메일 인증, 핸드폰 인증) + 캘린더
   <br>
-  :crown: 정영훈 : 
+  :crown: 정영훈 : 캠핑 추천시스템(고캠핑 API) + 소셜 로그인(네이버 API, 카카오 API, 구글 API) 및 회원가입(이메일 인증, 핸드폰 인증) + 메인(네이버 쇼핑 API) + 채팅방 (WebSocket 활용)
   <br>
-  :crown: 전선아 : 
+  :crown: 전선아 : 관리자페이지 + 마이페이지(OOO API를 통한 프로필 이미지 저장) + 공지사항/이벤트페이지 + 메인(캠핑 관련 기사 API) + QR코드
   <br>
-  :crown: 권민채 : 
+  :crown: 권민채 : 지도페이지(카카오 맵 API) + 리뷰페이지(SNS 공유) + 예약페이지 + 가이드페이지(네이버카페, 유튜브 크롤링) + 레시피데이터 활용
   <br>
 </details>
 

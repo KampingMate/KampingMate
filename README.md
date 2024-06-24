@@ -55,7 +55,7 @@
 [네이버 뉴스 api를 이용해서 캠핑 관련 기사를 최신순으로 정렬해서 10개 나열]<br>
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/72d325a4-404d-4fe0-84fa-7456a502f5cf" width="400" height="300">  
 <hr>
-소개 페이지  
+소개 페이지   
 > 간단한 소개글과 설명글<br>
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/e3673352-afe0-4080-9a4f-8fb1ee139f5e" width="400" height="300">
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/cf6707c8-3604-4c28-8717-5f61bf4629b8" width="400" height="300"><br>
@@ -64,7 +64,8 @@
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/3f9fd157-2f87-45ae-9620-c8f0cfc34f0f" width="400" height="300">
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/bb2e5fbf-390d-4f9a-900d-5b507ccec5e3" width="400" height="300">
 <hr>
-
+가이드라인  
+[]
 
 
 </details>

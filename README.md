@@ -38,15 +38,15 @@
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/1cf2f1d2-de93-47cc-b1dc-e7238bfe912e" width="400" height="300">
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/01b46b35-7385-4437-8b71-5dc2e9f11ab7" width="400" height="300">  
 <hr>
-메인 페이지  
-[고캠핑 api를 이용해서 캠핑장 리스트 나열]  
-<img src="https://github.com/KampingMate/KampingMate/assets/167276559/1a38f50c-aa0a-4ba5-81cf-d75cc4e3d882" width="400" height="300">  
-[네이버 쇼핑 api를 이용해서 캠핑 용품 추천]  
+메인 페이지<br>
+[고캠핑 api를 이용해서 캠핑장 리스트 나열]<br>
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/1a38f50c-aa0a-4ba5-81cf-d75cc4e3d882" width="400" height="300"><br>
+[네이버 쇼핑 api를 이용해서 캠핑 용품 추천]<br>
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/8868beb6-ce9b-4e5a-8275-67ad981cadc1" width="400" height="400">
-<img src="https://github.com/KampingMate/KampingMate/assets/167276559/e8557d45-bf60-4615-b8e5-28c096523872" width="400" height="400">  
-[기상청 api를 이용해서 날씨 정보 표시]  
-> 현재온도, 최고온도, 최저온도, 하늘상태, 습도 표시  
-> 오늘, 내일, 모레 버튼을 통해 그날의 기온을 그래프화
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/e8557d45-bf60-4615-b8e5-28c096523872" width="400" height="400"><br>
+[기상청 api를 이용해서 날씨 정보 표시]<br>  
+> 현재온도, 최고온도, 최저온도, 하늘상태, 습도 표시<br>  
+> 오늘, 내일, 모레 버튼을 통해 그날의 기온을 그래프화<br>
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/0953f754-8dfe-4f96-b3ef-e8fff2683aed" width="300" height="300">
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/e9e1df85-3e73-41e8-968b-6e57902b7f1b" width="300" height="300">
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/1ce5821c-5221-4bc8-867a-4009aaa8763a" width="300" height="300"><br>
@@ -55,14 +55,15 @@
 [네이버 뉴스 api를 이용해서 캠핑 관련 기사를 최신순으로 정렬해서 10개 나열]<br>
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/72d325a4-404d-4fe0-84fa-7456a502f5cf" width="400" height="300">  
 <hr>
-소개 페이지
-> 간단한 소개글과 설명글
+소개 페이지  
+> 간단한 소개글과 설명글<br>
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/e3673352-afe0-4080-9a4f-8fb1ee139f5e" width="400" height="300">
-<img src="https://github.com/KampingMate/KampingMate/assets/167276559/cf6707c8-3604-4c28-8717-5f61bf4629b8" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/cf6707c8-3604-4c28-8717-5f61bf4629b8" width="400" height="300"><br>
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/b7a9c5ba-2897-4bf8-9491-53628bcfedf3" width="400" height="300">
-<img src="https://github.com/KampingMate/KampingMate/assets/167276559/137e8453-0a2f-43f3-bd8a-8db20567a832" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/137e8453-0a2f-43f3-bd8a-8db20567a832" width="400" height="300"><br>
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/3f9fd157-2f87-45ae-9620-c8f0cfc34f0f" width="400" height="300">
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/bb2e5fbf-390d-4f9a-900d-5b507ccec5e3" width="400" height="300">
+<hr>
 
 
 

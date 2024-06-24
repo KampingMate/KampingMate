@@ -30,7 +30,7 @@
     :books: 구현 및 기능 설명
   </summary>
   <br>
-  
+   📽️<a href="https://www.canva.com/design/DAGJATX1u_Y/7HCcmqUqGlDUzPuIIvNsZQ/view?utm_content=DAGJATX1u_Y&utm_campaign=designshare&utm_medium=link&utm_source=editor#14"> [PPT 자료]</a>
 </details>
 
 <details>

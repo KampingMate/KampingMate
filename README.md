@@ -37,6 +37,7 @@
 회원가입 페이지 : 이메일과 핸드폰으로 본인 인증 기능  
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/1cf2f1d2-de93-47cc-b1dc-e7238bfe912e" width="400" height="300">
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/01b46b35-7385-4437-8b71-5dc2e9f11ab7" width="400" height="300">  
+<hr>
 메인 페이지  
 [고캠핑 api를 이용해서 캠핑장 리스트 나열]  
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/1a38f50c-aa0a-4ba5-81cf-d75cc4e3d882" width="400" height="300">  
@@ -53,6 +54,16 @@
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/9fcd4ea5-8ac1-4053-9538-dc9ec9ea5e97" width="500" height="350"><br>
 [네이버 뉴스 api를 이용해서 캠핑 관련 기사를 최신순으로 정렬해서 10개 나열]<br>
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/72d325a4-404d-4fe0-84fa-7456a502f5cf" width="400" height="300">  
+<hr>
+소개 페이지
+> 간단한 소개글과 설명글
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/e3673352-afe0-4080-9a4f-8fb1ee139f5e" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/cf6707c8-3604-4c28-8717-5f61bf4629b8" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/b7a9c5ba-2897-4bf8-9491-53628bcfedf3" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/137e8453-0a2f-43f3-bd8a-8db20567a832" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/3f9fd157-2f87-45ae-9620-c8f0cfc34f0f" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/167276559/bb2e5fbf-390d-4f9a-900d-5b507ccec5e3" width="400" height="300">
+
 
 
 </details>

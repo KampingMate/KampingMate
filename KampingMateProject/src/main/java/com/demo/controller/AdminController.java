@@ -306,7 +306,7 @@ public class AdminController {
                     if (!file.isEmpty()) {
                         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
                         fileName = fileName.replaceAll("[^a-zA-Z0-9\\-_.]", "");
-                        String uploadDir = "C:/Users/tiger/git/KampingMate2/KampingMate/uploads/";
+                        String uploadDir = "E:/Student/SpringBootWorkspace/KampingMate/KampingMateProject/uploads/";
 
                         try {
                             FileUploadUtil.saveFile(uploadDir, fileName, file);

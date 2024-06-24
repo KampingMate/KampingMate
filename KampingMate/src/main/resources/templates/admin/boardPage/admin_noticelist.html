@@ -65,9 +65,11 @@
                         </tr>
                     </tbody>
                 </table>
-                <!-- 페이징 버튼 -->
-            <div class="pagination">
-                <ul style="list-style: none;">
+            </div>
+            
+            <!-- 페이징 버튼 -->
+            <div class="noticepagination">
+                <ul>
                     <li th:if="${currentPage > 0}">
                         <a th:href="@{/admin_noticelist.do(page=${currentPage - 1})}">&laquo; 이전</a>
                     </li>
@@ -79,9 +81,6 @@
                     </li>
                 </ul>
             </div>
-            </div>
-            
-            
             
             <div style="text-align:center; margin-top:10px;">
                 <button type="button" class="btn btn-primary" onclick="window.location.href='admin_notice.do'">공지사항 등록</button>

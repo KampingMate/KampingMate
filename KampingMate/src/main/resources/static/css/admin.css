@@ -274,3 +274,35 @@ hr {
 	background-color: #0056b3;
 	color: white;
 }
+
+.noticepagination {
+        text-align: center;
+        margin-top: 10px;
+    }
+    .noticepagination ul {
+        list-style-type: none;
+        display: inline-flex;
+        padding: 0;
+    }
+    .noticepagination li {
+        margin: 0 5px;
+    }
+    .noticepagination li.active a {
+        font-weight: bold;
+    }
+    
+    .eventpagination {
+        text-align: center;
+        margin-top: 10px;
+    }
+    .eventpagination ul {
+        list-style-type: none;
+        display: inline-flex;
+        padding: 0;
+    }
+    .eventpagination li {
+        margin: 0 5px;
+    }
+    .eventpagination li.active a {
+        font-weight: bold;
+    }

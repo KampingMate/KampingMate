@@ -307,6 +307,11 @@ input[type="button"]:hover,
     padding: 10px;
     width: 90%;
 }
+
+.nd-box img {
+	width : 89%;
+	height : 1000px;
+}
 textarea {
     height: 100px;
     resize: none;

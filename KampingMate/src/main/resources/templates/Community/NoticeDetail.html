@@ -24,10 +24,11 @@
                 <h3>조회수 : [[${noticeVO.notice_cnt}]]</h3>
                 <h3>내용 </h3>
                 <div class="nd-box">
-                    <span th:utext="${noticeVO.notice_content}"></span>
+                    
                     <th:block th:each="image : ${noticeVO.notice_images}">
                             <img th:src="${image}">
-                        </th:block>
+                        </th:block><br>
+                        <span th:utext="${noticeVO.notice_content}"></span>
                 </div>
 
         </form>

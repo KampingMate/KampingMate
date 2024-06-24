@@ -2,9 +2,13 @@ package com.demo.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.demo.domain.GoCamping;
 import com.demo.domain.MemberData;
 import com.demo.domain.Review;
+import com.demo.domain.SearchHistory;
 import com.demo.persistence.SearchHistoryRepository;
 import com.demo.service.MemberService;
 import com.demo.service.ReviewService;
@@ -211,8 +216,18 @@ public class MypageController {
         model.addAttribute("searchHistoryList", searchHistoryList);
 
         // Fetch recommendations based on search history
-        List<GoCamping> recommendedCampingList = searchHistoryRepo.findAllCampingByMemberNoData(loginUser.getNo_data());
-        model.addAttribute("recommendedCampingList", recommendedCampingList);
+        List<SearchHistory> recommendedSearchHistoryList = searchHistoryRepo.findAllByMemberNoData(loginUser.getNo_data());
+
+        // Group recommended campings by date
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        Map<String, List<SearchHistory>> groupedByDate = recommendedSearchHistoryList.stream()
+            
+            .collect(Collectors.groupingBy(history -> history.getRecommendDate().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .format(formatter)));
+        
+        model.addAttribute("groupedByDate", groupedByDate);
 
         return "mypage/recommend";
     }

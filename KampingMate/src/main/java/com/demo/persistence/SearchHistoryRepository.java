@@ -1,5 +1,6 @@
 package com.demo.persistence;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,9 +19,12 @@ public interface SearchHistoryRepository extends JpaRepository<SearchHistory, In
 
 	 @Modifying
 	 @Transactional
-	 @Query(value="INSERT INTO Search_History (history_id, content_Id, no_data) VALUES (HISTORY_SEQ.nextval, :contentId, :no_data)", nativeQuery = true)
-	 void insertHistoryItem(@Param("contentId") int contentId, @Param("no_data") Long no_data);
+	 @Query(value="INSERT INTO Search_History (history_id, content_Id, no_data, recommend_date) VALUES (HISTORY_SEQ.nextval, :contentId, :no_data, :recommend_date)", nativeQuery = true)
+	 void insertHistoryItem(@Param("contentId") int contentId, @Param("no_data") Long no_data, @Param("recommend_date") Date recommend_date);
 
 	 @Query("SELECT sh.gocamping FROM SearchHistory sh WHERE sh.member.no_data = :no_data")
 	 List<GoCamping> findAllCampingByMemberNoData(@Param("no_data") Long no_data);
+	 
+	 @Query("SELECT sh FROM SearchHistory sh WHERE sh.member.no_data = :no_data")
+	 List<SearchHistory> findAllByMemberNoData(@Param("no_data") Long no_data);
 }

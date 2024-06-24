@@ -4,13 +4,34 @@
     <meta charset="UTF-8">
     <title>내가 본 캠핑장들</title>
     <link rel="stylesheet" th:href="@{/css/mypage.css}">
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.toggle-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const contentId = this.getAttribute('data-target');
+                const content = document.querySelectorAll(`[data-content="${contentId}"]`);
+
+                content.forEach(item => {
+                    if (item.style.display === 'none' || item.style.display === '') {
+                        item.style.display = 'table-row';
+                        this.textContent = '-';
+                    } else {
+                        item.style.display = 'none';
+                        this.textContent = '+';
+                    }
+                });
+            });
+        });
+    });
+    </script>
 </head>
 <body class="recombody">
-<!-- 헤더 -->
-<th:block th:insert="~{include/header}"></th:block>
+    <!-- 헤더 -->
+    <th:block th:insert="~{include/header}"></th:block>
 
-<!-- 메뉴 -->
-<th:block th:insert="~{mypage/menu}"></th:block>
+    <!-- 메뉴 -->
+    <th:block th:insert="~{mypage/menu}"></th:block>
+
     <div class="recomcontainer">
         <h1 class="recomh1">내가 본 캠핑장들</h1>
 
@@ -23,14 +44,35 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="camping : ${recommendedCampingList}">
-                        <td class="recomtd">
-                            <a th:href="@{'/detailView?contentId=' + ${camping.contentId}}">
-                                <img class="recomimg" th:src="${camping.firstImageUrl}" alt="Camping Image" style="width: 300px; height: auto;">
-                            </a>
-                        </td>
-                        <td th:text="${camping.facltNm}"></td>
-                    </tr>
+                    <th:block th:each="entry : ${groupedByDate}">
+                        <tr class="date-header">
+                            <td colspan="2">
+                                <button class="toggle-button" th:data-target="${#strings.replace(entry.key, '-', '')}">+</button>
+                                <span th:text="${entry.key}"></span>
+                            </td>
+                        </tr>
+                        <th:block th:each="history, iterStat : ${entry.value}">
+                            <tr th:attr="data-content=${#strings.replace(entry.key, '-', '')}" style="display: none;">
+                                <td>
+                                    <span th:if="${history != null and history.gocamping != null}">
+                                        <span th:if="${history.gocamping.firstImageUrl != null}">
+                                            <a th:href="@{'/detailView?contentId=' + ${history.gocamping.contentId}}">
+                                                <img class="recomimg" th:src="${history.gocamping.firstImageUrl}" alt="Camping Image" style="width: 300px; height: auto;">
+                                            </a>
+                                        </span>
+                                        <span th:if="${history.gocamping.firstImageUrl == null}">
+                                            <a th:href="@{'/detailView?contentId=' + ${history.gocamping.contentId}}">
+                                                <img class="recomimg" src="#" alt="Camping Image" style="width: 300px; height: auto;">
+                                            </a>
+                                        </span>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span th:text="${history.gocamping.facltNm}"></span>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </th:block>
                 </tbody>
             </table>
         </div>

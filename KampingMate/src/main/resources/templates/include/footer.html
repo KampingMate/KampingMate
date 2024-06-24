@@ -20,6 +20,7 @@
             background-color: #f8f9fa;
             padding: 20px;
             border-top: 1px solid #ccc;
+            text-align: center;
         }
         .f-content {
             flex: 1;
@@ -59,6 +60,16 @@
             vertical-align: middle;
             margin-right: 8px;
         }
+        .f-content-image {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .f-content-image img {
+	        width: 200px;
+	        height: 200px;
+        }
     </style>
 </head>
 <body>
@@ -86,6 +97,9 @@
                 <li><a th:href="@{/customer_service}">고객 지원</a></li>
                 <li><a th:href="@{/inquiry/inquiryForm}">문의하기</a></li>
             </ul>
+        </div>
+        <div class="f-content-image">
+            <img src="https://lh3.google.com/u/0/d/1m6Qh_9ia0rGU6KTbSLZY1zqv9tIE7yXb=w1671-h801-iv1" alt="1po9x.jpg 표시 중" aria-hidden="true">
         </div>
     </div>
     <div class="copyright">

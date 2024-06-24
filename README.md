@@ -43,7 +43,7 @@
 [네이버 쇼핑 api를 이용해서 캠핑 용품 추천]  
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/8868beb6-ce9b-4e5a-8275-67ad981cadc1" width="400" height="400">
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/e8557d45-bf60-4615-b8e5-28c096523872" width="400" height="400">  
-[일기예보 api를 이용해서 날씨 정보 표시]  
+[기상청 api를 이용해서 날씨 정보 표시]  
 > 현재온도, 최고온도, 최저온도, 하늘상태, 습도 표시  
 > 오늘, 내일, 모레 버튼을 통해 그날의 기온을 그래프화
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/0953f754-8dfe-4f96-b3ef-e8fff2683aed" width="300" height="300">
@@ -64,6 +64,8 @@
   <br>
    <ul>
      <li>다양한 소셜 로그인 추가</li>
+     <li>중기예보 api를 이용해서 일주일 일기예보도 볼 수 있게...</li>
+     <li>다양한 기상청 api를 이용해서 자외선 지수, 미세먼지 등 다양한 데이터 시각화....</li>
      <li>...</li>
    </ul>
 </details>

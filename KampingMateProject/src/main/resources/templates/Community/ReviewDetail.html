@@ -6,6 +6,8 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" th:src="@{js/ReviewDetail.js}"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-해시값" crossorigin="anonymous" />
+
 <link rel="stylesheet" th:href="@{/css/review.css}">
 <style>
 
@@ -67,11 +69,11 @@
 			</th:block> <th:block
 			    th:if="${session.bookmarkStatusMap != null and session.bookmarkStatusMap[reviewVO.review_seq] == 'on'}">
 			    <a href="#" th:attr="data-seq=${reviewVO.review_seq}"
-			        onclick="bookmark_plus(this)">북마크해제 [[${reviewVO.bookmark}]]</a>
+			        onclick="bookmark_plus(this)"><i class="fa-solid fa-bookmark" style="color:silver;"></i> 북마크 취소</a>
 			</th:block> <th:block
 			    th:if="${session.bookmarkStatusMap == null or session.bookmarkStatusMap[reviewVO.review_seq] != 'on'}">
 			    <a href="#" th:attr="data-seq=${reviewVO.review_seq}"
-			        onclick="bookmark_plus(this)">북마크하기 [[${reviewVO.bookmark}]]</a>
+			        onclick="bookmark_plus(this)"><i class="fa-solid fa-bookmark" style="color:deepskyblue;"></i> 북마크</a>
 			</th:block>
         </div>
 

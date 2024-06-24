@@ -2,7 +2,6 @@ package com.demo.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -284,5 +283,10 @@ public class AdminServiceImpl implements AdminService {
         return adminNoticeRepo.getAllNotices("event", pageable);
     }
 	
+	@Override
+	   public MemberData getMemberByBookseq(int bookseq) {
+	      
+	      return adminBookRepo.findMemberByBookSeq(bookseq);
+	   }
 
 }

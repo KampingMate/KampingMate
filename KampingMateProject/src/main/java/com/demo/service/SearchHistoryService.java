@@ -1,5 +1,6 @@
 package com.demo.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class SearchHistoryService {
 
     public void insertHistoryItem(int contentId, Long no_data) {
         if (!searchHistoryRepository.existsByGocampingContentIdAndMemberNo_data(contentId, no_data)) {
-            searchHistoryRepository.insertHistoryItem(contentId, no_data);
+            searchHistoryRepository.insertHistoryItem(contentId, no_data, new Date());
         }
     }
     

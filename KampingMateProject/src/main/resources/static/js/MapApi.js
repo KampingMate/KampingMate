@@ -180,7 +180,7 @@ function mylocation() {
         navigator.geolocation.getCurrentPosition(function(position) {
             var lat = position.coords.latitude,
                 lon = position.coords.longitude;
-            
+            console.log("카카오 위도"+lat+"카카오 경도"+lon);
             var locPosition = new kakao.maps.LatLng(lat, lon);
             
             map.setCenter(locPosition);

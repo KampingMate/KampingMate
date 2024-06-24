@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.demo.domain.Book;
+import com.demo.domain.MemberData;
 
 public interface AdminBookRepository extends JpaRepository<Book, Integer> {
 
@@ -17,4 +18,7 @@ public interface AdminBookRepository extends JpaRepository<Book, Integer> {
     @Modifying
     @Query("UPDATE Book b SET b.condition = :condition WHERE b.bookseq = :bookseq")
     void updateBookCondition(@Param("bookseq") int bookseq, @Param("condition") int condition);
+    
+	@Query("SELECT b.member_data FROM Book b WHERE b.bookseq =:bookseq")
+    MemberData findMemberByBookSeq(@Param("bookseq")int bookseq);
 }

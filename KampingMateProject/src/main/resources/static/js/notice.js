@@ -133,7 +133,7 @@ function go_list() {
 //    var searchForm = document.getElementById('searchForm');
 //    searchForm.action = "/notice";  // URL을 /notice로 설정
 //    searchForm.submit();
-		history.back();
+		window.location.href = "/notice";
 }
 
 	

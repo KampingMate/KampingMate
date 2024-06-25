@@ -117,28 +117,7 @@ function go_review(){
      theForm.submit();
  }
 
- function go_book(element) {
-     var campid = element.getAttribute("data-campid");
-     var campname = element.getAttribute("data-campname");
-     var theForm = document.createElement('form');
-     theForm.method = "get";
-     theForm.action = "/book";
 
-     var idField = document.createElement('input');
-     idField.type = "hidden";
-     idField.name = "campingid";
-     idField.value = campid;
-
-     var nameField = document.createElement('input');
-     nameField.type = "hidden";
-     nameField.name = "campingname";
-     nameField.value = campname;
-
-     theForm.appendChild(idField);
-     theForm.appendChild(nameField);
-     document.body.appendChild(theForm);
-     theForm.submit();
- }
 
 </script>
 <script>
@@ -234,7 +213,7 @@ function go_review(){
             <input type="hidden" id="campid" name="campid" th:value="${camp.contentId}"/>
             <input type="hidden" id="campname" name="campname" th:value="${camp.facltNm}"/>
             <button type="button" onclick="go_review()">리뷰페이지</button>
-            <button type="button" class="book-button" th:data-campid="${camp.contentId}" th:data-campname="${camp.facltNm}" onclick="go_book(this)">예약하러가기</button>
+            <button type="button" class="book-button" th:onclick="'window.location.href=\'/book\''">예약하러가기</button>
 
             <hr>
                 <h2>[[${camp.facltNm}]]</h2>

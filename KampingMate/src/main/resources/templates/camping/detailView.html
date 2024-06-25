@@ -1,21 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" th:href="@{/css/camping.css}">
-    <title>캠핑장 상세 정보</title>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .icon {
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-        
-    </style>
+<meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/css/camping.css}">
+<title>캠핑장 상세 정보</title>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+.icon {
+	font-size: 24px;
+	margin-bottom: 30px;
+}
+
+#goBackButton {
+	position: fixed;
+	top: 100px;
+	right: 20px;
+	padding: 10px 10px;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	background-color: skyblue; /* 버튼 배경색 */
+	color: #fff; /* 버튼 텍스트 색상 */
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+#goBackButton:hover {
+	background-color: deepskyblue;
+}
+.home-icon {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	font-size: 40px;
+	cursor: pointer;
+	color:skyblue;
+}
+.home-icon:hover {
+	color: deepskyblue;
+}
+</style>
 </head>
 <body class="campDetail">
     <div class="campcontainer">
+    	<a th:href="@{/main}" class="home-icon"><i class="fas fa-home"></i></a>
+    	<button id="goBackButton"><i class="fas fa-undo"></i></button>
+		<script>
+			// 버튼 요소를 가져옵니다.
+			const goBackButton = document.getElementById('goBackButton');
+
+			// 버튼 클릭 시 이전 페이지로 이동하는 함수를 설정합니다.
+			goBackButton.addEventListener('click', function() {
+				// history 객체의 back 메서드를 호출하여 이전 페이지로 이동합니다.
+				history.back();
+			});
+		</script>
         <h1 class="camph1" th:text="${campDetail.facltNm}">캠핑장 이름</h1>
         <div>
             <a th:href="${campDetail.firstImageUrl}">
@@ -127,6 +170,8 @@
                 </div>
             </th:block>
         </div>
-    </div>
+        
+		
+	</div>
 </body>
 </html>

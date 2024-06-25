@@ -28,6 +28,7 @@
 }
 
 #my_menu li button {
+	margin-top: 3px;
     display: block;
     color: #000000; /* 텍스트 색상을 흰색으로 변경하여 파란색 배경과 대비 */
     text-align: center;
@@ -381,11 +382,10 @@ h2 {
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            padding-top: 50px; /* 헤더 공간 확보 */
         }
         .recomcontainer {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 20px auto;
             background-color: rgba(255, 255, 255, 0.9); /* 투명한 배경 */
             padding: 20px;
             border-radius: 10px;
@@ -436,8 +436,8 @@ h2 {
     background-color: #f9f9f9;
 }
 #rdContent img {
-	width: 89%;
-	height: 1000px;
+	width: 500px;
+	height: 500px;
 }
 #rdContent h3 {
     margin-bottom: 10px;

@@ -127,12 +127,13 @@ function go_page(page) {
 }
 
 function go_list() {
-    document.getElementById('category').value = "";  
-    document.getElementById('page').value = 1;
-
-    var searchForm = document.getElementById('searchForm');
-    searchForm.action = "/notice";  // URL을 /notice로 설정
-    searchForm.submit();
+//    document.getElementById('category').value = "";  
+//    document.getElementById('page').value = 1;
+//
+//    var searchForm = document.getElementById('searchForm');
+//    searchForm.action = "/notice";  // URL을 /notice로 설정
+//    searchForm.submit();
+		history.back();
 }
 
 	

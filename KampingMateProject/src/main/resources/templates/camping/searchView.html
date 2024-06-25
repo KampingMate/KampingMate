@@ -212,8 +212,9 @@ function go_review(){
 	<hr>
 <div class="search-list">
     <h1>캠핑장 리스트</h1>
-    <th:block th:if="${recommendations != null and !recommendations.isEmpty() and recommendations[0] != 123456}">
-        <input type="button" class="recommend-button" value="추천 캠핑장 전체보기" onclick="getRecommendList()">
+    
+    	<th:block th:if="${recommendations != null and !recommendations.isEmpty() and recommendations[0] != 123456}">
+        	<input type="button" class="recommend-button" value="추천 캠핑장 전체보기" onclick="getRecommendList()">
 
         <div style="display: flex;">
             <div th:each="recommend_list, iterStat : ${recommend_list}">

@@ -438,16 +438,7 @@ public class ReviewController {
 		    model.addAttribute("pageNumber", page);
 		    model.addAttribute("startNumber", startNumber);
 	        
-	        List<Review> top3Cnt = new ArrayList<>();
-	        List<Review> top3Goodpoint = new ArrayList<>();
-	        
-	        if (sort.equals("cnt_sort")) {
-	            top3Cnt = reviewList.stream().sorted((b1, b2) -> Integer.compare(b2.getCnt(), b1.getCnt())).limit(3).collect(Collectors.toList());
-	            model.addAttribute("top3Cnt", top3Cnt);
-	        } else if (sort.equals("goodpoint_sort")) {
-	            top3Goodpoint = reviewList.stream().sorted((b1, b2) -> Integer.compare(b2.getGoodpoint(), b1.getGoodpoint())).limit(3).collect(Collectors.toList());
-	            model.addAttribute("top3Goodpoint", top3Goodpoint);
-	        }
+	     
 
 	        return "Community/ReviewList";
 	    }

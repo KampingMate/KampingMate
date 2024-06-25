@@ -33,7 +33,7 @@
 
         </form>
 
-	<input type="button" value="목록" onClick="go_list()" style="margin-top: 10px;">
+	<input type="button" value="목록" th:onclick="|window.location.href='@{/notice}'|" style="margin-top: 10px;">
 </div>
 <!-- 푸터 -->
 <th:block th:insert="~{include/footer}"></th:block>

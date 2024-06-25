@@ -30,7 +30,7 @@
     :books: 구현 및 기능 설명
   </summary>
   <br>
-   📽️<a href="https://www.canva.com/design/DAGJATX1u_Y/7HCcmqUqGlDUzPuIIvNsZQ/view?utm_content=DAGJATX1u_Y&utm_campaign=designshare&utm_medium=link&utm_source=editor#14"> [PPT 자료]</a>
+   📽️<a href="https://www.canva.com/design/DAGJATX1u_Y/7HCcmqUqGlDUzPuIIvNsZQ/view?utm_content=DAGJATX1u_Y&utm_campaign=designshare&utm_medium=link&utm_source=editor"> [PPT 자료]</a>
     
 로그인 페이지 : api를 통한 소셜 로그인 기능  
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/2e8e50ac-db5c-4a8b-83f3-de3804aaa6b0" width="400" height="300">  

@@ -1,15 +1,59 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" th:href="@{/css/camping.css}">
-    <title>검색 결과</title>
-    
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" th:href="@{/css/camping.css}">
+<title>검색 결과</title>
+<style>
+#goBackButton {
+	position: fixed;
+	top: 100px;
+	right: 20px;
+	padding: 10px 10px;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	background-color: skyblue; /* 버튼 배경색 */
+	color: #fff; /* 버튼 텍스트 색상 */
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+#goBackButton:hover {
+	background-color: deepskyblue;
+}
+.home-icon {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	font-size: 40px;
+	cursor: pointer;
+	color:skyblue;
+}
+.home-icon:hover {
+	color: deepskyblue;
+}
+</style>
 </head>
-
-
 <body class="search">
     <div class="searchcontainer">
+    	<a th:href="@{/main}" class="home-icon"><i class="fas fa-home"></i></a>
+    	<button id="goBackButton"><i class="fas fa-undo"></i></button>
+		<script>
+			// 버튼 요소를 가져옵니다.
+			const goBackButton = document.getElementById('goBackButton');
+
+			// 버튼 클릭 시 이전 페이지로 이동하는 함수를 설정합니다.
+			goBackButton.addEventListener('click', function() {
+				// history 객체의 back 메서드를 호출하여 이전 페이지로 이동합니다.
+				history.back();
+			});
+		</script>
+		
         <h1 class="search1">캠핑장 리스트</h1>
         
        
@@ -20,9 +64,16 @@
                 <h2 class="camp_tt">[[${camp.facltNm}]]</h2><br>
                 
                     <a th:href="@{/detailView(contentId=${camp.contentId})}" class="dc_none"><br>
-                        <div class="img_box">
-                            <img th:src="@{${camp.firstImageUrl}}" alt="캠핑장 이미지">
-                        </div>    
+                        <th:block th:if="${camp.firstImageUrl != null}">
+                        	<div class="img_box">
+                            	<img th:src="@{${camp.firstImageUrl}}" alt="캠핑장 이미지">
+                        	</div>  
+                        </th:block>
+                        <th:block th:if="${camp.firstImageUrl == null}">
+                        	<div class="img_box">
+                            	<img src="https://www.gocamping.or.kr/img/2018/layout/noimg.jpg" alt="캠핑장 이미지">
+                        	</div>  
+                        </th:block>
                     </a>
                     
                     <div class="camp_cont">

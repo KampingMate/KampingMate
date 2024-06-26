@@ -24,15 +24,16 @@
                 <h3>조회수 : [[${noticeVO.notice_cnt}]]</h3>
                 <h3>내용 </h3>
                 <div class="nd-box">
-                    <span th:utext="${noticeVO.notice_content}"></span>
+                    
                     <th:block th:each="image : ${noticeVO.notice_images}">
                             <img th:src="${image}">
-                        </th:block>
+                        </th:block><br>
+                        <span th:utext="${noticeVO.notice_content}"></span>
                 </div>
 
         </form>
 
-	<input type="button" value="목록" onClick="go_list()" style="margin-top: 10px;">
+	<input type="button" value="목록" th:onclick="|window.location.href='@{/notice}'|" style="margin-top: 10px;">
 </div>
 <!-- 푸터 -->
 <th:block th:insert="~{include/footer}"></th:block>

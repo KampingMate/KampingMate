@@ -15,12 +15,10 @@
         </a>
         </div>
         <div class="admin-side">
-        <h4>회원관리</h4>
             <a class="admin-a" th:href="@{/memberList.do}">
                 <i class="fas fa-tachometer-alt"></i>&nbsp;회원 목록
-            </a>
-            <br>
-            <a class="nav-link" href="admin_QnA.do"><i class="fas fa-question-circle"></i> Q&A 게시판</a><br>
+            </a><br>
+             <a class="nav-link" href="admin_QnA.do"><i class="fas fa-question-circle"></i> Q&A 게시판</a><br>
             <a class="nav-link" href="admin_ask.do"><i class="fas fa-comments"></i> 1:1 문의 게시판</a><br>
             <a class="nav-link" href="admin_noticelist.do"><i class="fas fa-bullhorn"></i> 공지사항 게시판</a><br>
             <a class="nav-link" href="admin_eventlist.do"><i class="fas fa-calendar-alt"></i> 이벤트 게시판</a><br>
@@ -29,7 +27,7 @@
 		    <div class="chat-icon" onclick="openChatRoom()">
 		    	<i class="fas fa-comment-dots"></i>&nbsp;채팅방 관리
 		    </div>
-		     <script>
+		    <script>
 		    function openChatRoom() {
 		    	window.open("/chatService", "_blank", "width=600,height=600");
 		    }

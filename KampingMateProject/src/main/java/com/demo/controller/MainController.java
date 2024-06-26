@@ -103,7 +103,7 @@ public class MainController {
     public String logout(HttpSession session) {
         session.removeAttribute("loginUserNumberData");
     	session.removeAttribute("loginUser");
-        return "main"; // 로그아웃 후 로그인 화면으로 리다이렉트
+        return "redirect:/main"; // 로그아웃 후 로그인 화면으로 리다이렉트
     }
     @GetMapping("/test")
 	public String test() {

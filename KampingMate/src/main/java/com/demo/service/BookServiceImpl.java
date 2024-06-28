@@ -1,7 +1,5 @@
 package com.demo.service;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -58,18 +56,5 @@ public class BookServiceImpl implements BookService {
 		return bookRepo.findBookBycampingnameContainingOrderBycampingname(campingname, bookseq, pageable);
 	}
 	
-	//시작일자 
-	@Override
-	public Page<Book> getBookByBookdateS(int bookseq, int page, int size, Date bookdateS) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	//종료일자
-	@Override
-	public Page<Book> getBookByBookdateE(int bookseq, int page, int size, Date bookdateE) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

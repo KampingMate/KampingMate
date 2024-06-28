@@ -99,7 +99,6 @@
     background-color: #333;
     color: #fff;
     padding: 20px 10px;
-   height: 100vh;
     min-width: 200px; /* 최소 너비 */
 }
 .admin-nav a {

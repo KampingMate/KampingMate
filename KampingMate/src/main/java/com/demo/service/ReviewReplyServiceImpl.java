@@ -54,4 +54,9 @@ public class ReviewReplyServiceImpl implements ReviewReplyService {
 		return ReplyRepo.getReviewReplyByReplynum(replynum);
 	}
 
+//	@Override
+//	public List<Review> getMyRecipe(String id) {
+//		return BoardDetailRepo.getMyRecipeListById(id);
+//	}
+
 }

@@ -20,5 +20,8 @@ public interface ReviewReplyService {
 	
 	public ReviewReply findReplyByreplynum(int replynum);
 	
+	// 회원별 작성한 레시피 목록(마이페이지용)
+//    public List<Review> getMyRecipe(String id);
+
 
 }

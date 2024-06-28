@@ -194,13 +194,13 @@ function go_review(){
     <th:block th:if="${recommendations != null and !recommendations.isEmpty() and recommendations[0] != 123456}">
         <input type="button" class="recommend-button" value="추천 캠핑장 전체보기" onclick="getRecommendList()">
 
-        <div style="display: flex;">
+        <div style="display: flex; ">
             <div th:each="recommend_list, iterStat : ${recommend_list}">
                 <th:block th:if="${iterStat.index < 3}">
-                    <a th:href="@{/detailView(contentId=${recommend_list.contentId})}" th:text="${recommend_list.facltNm}" style="margin-right: 10px;"></a>
+                    <a th:href="@{/detailView(contentId=${recommend_list.contentId})}" th:text="${recommend_list.facltNm}" style="margin-right: 10px; padding: 10px; background-color: rgba(255, 255, 255, 0.7);"></a>
                 </th:block>
             </div>
-             <span>...</span>
+             <span >...</span>
         </div>
     </th:block>
     <div th:if="${#lists.isEmpty(goCampingList)}" style="text-align: center;">검색 결과가 없습니다.</div>

@@ -80,7 +80,8 @@ KampingMate는 캠핑 초보자들을 위한 종합적인 정보 제공을 목�
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/137e8453-0a2f-43f3-bd8a-8db20567a832" width="400" height="300"><br>
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/3f9fd157-2f87-45ae-9620-c8f0cfc34f0f" width="400" height="300">
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/bb2e5fbf-390d-4f9a-900d-5b507ccec5e3" width="400" height="300">
-마이 페이지
+<br>
+마이페이지
 > 
 <hr>
 가이드라인  

@@ -5,7 +5,24 @@
   </summary>
   <br>
 
-저희 팀이 [KampingMate]를 만들게 된 계기는...
+KampingMate는 캠핑 초보자들을 위한 종합적인 정보 제공을 목표로 하는 웹사이트입니다. 저희는 다음과 같은 이유로 이 홈페이지를 제작하게 되었습니다
+
+캠핑 초보자를 위한 안내 필요성: 많은 사람들이 캠핑을 즐기기 위해 관련 정보를 찾고 있으나, 초보자들은 시작하기에 어려움을 겪을 수 있습니다. KampingMate는 이들에게 필요한 기본적인 정보와 가이드를 제공하여 캠핑을 쉽게 접근할 수 있도록 돕습니다.
+
+캠핑장 추천과 정보 제공: 다양한 캠핑장에 대한 추천과 함께, 각 캠핑장의 특징, 시설, 예약 방법 등을 상세히 안내하여 사용자가 선택할 수 있도록 도와줍니다.
+
+캠핑과 관련된 다양한 연관 정보 제공: 캠핑의 장비 준비, 안전 수칙, 자연 보호에 대한 정보 또한 제공하여 사용자가 안전하고 즐거운 캠핑 경험을 할 수 있도록 지원합니다.
+
+초심자를 위한 특화된 서비스: KampingMate는 초보자들이 캠핑을 시작하고 즐기기 위한 필수적인 모든 정보를 한 곳에서 제공함으로써, 사용자들이 편리하게 캠핑에 참여할 수 있도록 합니다.
+
+이와 같은 이유로 KampingMate는 캠핑을 좋아하는 사람들에게 유용한 정보를 제공하고, 캠핑 초보자들이 쉽게 즐길 수 있는 환경을 조성하고자 합니다.
+
+
+
+
+
+
+
 </details>
 
 <details>
@@ -63,6 +80,8 @@
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/137e8453-0a2f-43f3-bd8a-8db20567a832" width="400" height="300"><br>
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/3f9fd157-2f87-45ae-9620-c8f0cfc34f0f" width="400" height="300">
 <img src="https://github.com/KampingMate/KampingMate/assets/167276559/bb2e5fbf-390d-4f9a-900d-5b507ccec5e3" width="400" height="300">
+마이 페이지
+> 
 <hr>
 가이드라인  
 []

@@ -84,10 +84,26 @@ KampingMate는 캠핑 초보자들을 위한 종합적인 정보 제공을 목�
 고객센터
 > 1:1 문의 작성/출력<br>
 > QnA 출력/ 제목을 통한 검색<br>
-<img src="<img src="https://github.com/KampingMate/KampingMate/assets/144196557/f51ebe0f-c4fb-4a6a-954b-1b053c1c83be" width="400" height="300">" width="400" height="300">
-<img src="<img src="https://github.com/KampingMate/KampingMate/assets/167276559/bb2e5fbf-390d-4f9a-900d-5b507ccec5e3" width="400" height="300">" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/f51ebe0f-c4fb-4a6a-954b-1b053c1c83be" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/26993a48-8132-4fb7-9774-0fa756c7025f" width="400" height="300"><br>
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/2836a7dd-5100-46ec-84f7-86db54657fcf" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/c0bfb32f-cc1b-46c8-b8f9-84660a269efe" width="400" height="300"><br>
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/0c5727dd-6adf-47cd-a2a9-4356eb462306" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/0b7b4f90-66e0-4496-a4c5-4e4f352486c3" width="400" height="300"><br>
+푸터
+> qr을 통한 만족도 조사 구글 폼 제작<br>
+> 푸터 디자인<br>
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/9ce07231-2777-4cd3-96c0-5c9ef124aa7d" width="700" height="300"><br>
 마이페이지
-> 
+> Dicebear API를 이용한 랜덤 프로필 이미지를 설정 및 저장기능<br>
+> 내 정보 출력/ 회원 탈퇴<br>
+> 내가 북마크한 리뷰 출력<br>
+> 받은 추천 기록 출력<br>
+> 내가 작성한 리뷰 출력<br>
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/0693b17f-adcd-47b1-805f-8fc85df02c0c" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/0b7b4f90-66e0-4496-a4c5-4e4f352486c3" width="400" height="300"><br>
+![image](https://github.com/KampingMate/KampingMate/assets/144196557/0693b17f-adcd-47b1-805f-8fc85df02c0c)
+
 <hr>
 가이드라인  
 []

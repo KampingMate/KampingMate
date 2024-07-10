@@ -118,19 +118,12 @@ KampingMate는 캠핑 초보자들을 위한 종합적인 정보 제공을 목�
 <img src="https://github.com/KampingMate/KampingMate/assets/144196557/f06b0386-0d54-4475-b4aa-b2a206234f2e" width="400" height="300"><br>
 <img src="https://github.com/KampingMate/KampingMate/assets/144196557/c5c2414d-2d9d-475b-aef2-21a9fcc481e8" width="600" height="300">
 <img src="https://github.com/KampingMate/KampingMate/assets/144196557/e91f48b3-a735-477c-ae92-e7c363eedafc" width="400" height="300"><br>
-<img src="https://github.com/KampingMate/KampingMate/assets/144196557/c5c2414d-2d9d-475b-aef2-21a9fcc481e8" width="600" height="300">
-<img src="https://github.com/KampingMate/KampingMate/assets/144196557/e91f48b3-a735-477c-ae92-e7c363eedafc" width="400" height="300"><br>
-![image](https://github.com/KampingMate/KampingMate/assets/144196557/e91f48b3-a735-477c-ae92-e7c363eedafc)
-
-
-
-
-
-
-
-
-
-
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/2badf130-66cb-49f3-9f13-fe581e8d4f58" width="800" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/8a966a3d-b36c-483e-92d0-76d8f4e57f04" width="800" height="300"><br>
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/d17dd8ec-5e33-42b2-8e84-5a737b5a1734" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/9a6d8b78-59a9-42ef-9a8b-21821a751330" width="600" height="300"><br>
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/1399ccd6-a5ef-4e4f-8322-5015ea34e21d" width="400" height="300">
+<img src="https://github.com/KampingMate/KampingMate/assets/144196557/05674676-a0f4-441e-9c9e-184a3a3f6ebd" width="600" height="300"><br>
 <hr>
 가이드라인  
 []
